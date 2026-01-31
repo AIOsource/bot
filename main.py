@@ -38,7 +38,10 @@ async def process_news_cycle():
         # Начальный прогресс - сбор новостей
         await notifier.update_progress(0, 100, "Сбор новостей")
         
-        articles = collector.collect_all_parallel()
+        # Run blocking collection in executor
+        loop = asyncio.get_running_loop()
+        articles = await loop.run_in_executor(None, collector.collect_all_parallel)
+        
         new_articles_count = len(articles)
         logger.info(f"✅ Collection complete: {new_articles_count} new articles")
         
@@ -89,7 +92,9 @@ async def process_news_cycle():
                 if idx == 1 or idx % 5 == 0 or idx == total_articles:
                     await notifier.update_progress(idx, total_articles, "AI-анализ")
                 
-                event = ai_filter.filter_article(article)
+                # Run blocking AI filtering in executor
+                event = await loop.run_in_executor(None, ai_filter.filter_article, article)
+                
                 if event:
                     filtered_events.append(event)
                     logger.info(f"  ✓ Relevant: {article.title[:60]}...")

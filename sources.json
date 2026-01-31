@@ -1,0 +1,512 @@
+[
+  {
+    "name": "Google News Russia (ЖКХ)",
+    "url": "https://news.google.com/rss/search?q=жкх+авария+OR+теплосети+OR+водоканал+when:1d&hl=ru&gl=RU&ceid=RU:ru",
+    "category": "aggregator",
+    "region": "Federal"
+  },
+  {
+    "name": "Яндекс ЖКХ",
+    "url": "https://news.yandex.ru/housing_and_public_utilities.rss",
+    "category": "aggregator",
+    "region": "Federal"
+  },
+  {
+    "name": "Яндекс Происшествия",
+    "url": "https://news.yandex.ru/incident.rss",
+    "category": "aggregator",
+    "region": "Federal"
+  },
+  {
+    "name": "РИА Новости – Архив",
+    "url": "https://ria.ru/export/rss2/archive/index.xml",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "ТАСС – Общая лента",
+    "url": "https://tass.ru/rss/v2.xml",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "ТАСС – Происшествия",
+    "url": "https://tass.ru/rss/v2.xml?sections=proisshestviya",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "Российская газета – Общество/ЖКХ",
+    "url": "https://rg.ru/xml/index.xml",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "Интерфакс – Россия",
+    "url": "https://www.interfax.ru/rss.asp",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "Lenta.ru – Россия",
+    "url": "https://lenta.ru/rss/news",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "Коммерсантъ – Происшествия",
+    "url": "https://www.kommersant.ru/RSS/news.xml",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "Известия – Новости",
+    "url": "https://iz.ru/xml/rss/all.xml",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "МЧС России – Новости",
+    "url": "http://www.mchs.gov.ru/news/rss/",
+    "category": "emergency",
+    "region": "Federal"
+  },
+  {
+    "name": "ЕАН – Екатеринбург, Свердловская область",
+    "url": "https://eanews.ru/rss",
+    "category": "regional_media",
+    "region": "Sverdlovsk"
+  },
+  {
+    "name": "URA.RU – УрФО",
+    "url": "https://ura.news/rss",
+    "category": "regional_media",
+    "region": "Ural"
+  },
+  {
+    "name": "Fontanka.ru – Санкт‑Петербург",
+    "url": "https://www.fontanka.ru/fontanka.rss",
+    "category": "regional_media",
+    "region": "SPB"
+  },
+  {
+    "name": "DP.ru – Петербург",
+    "url": "https://www.dp.ru/rss",
+    "category": "regional_media",
+    "region": "SPB"
+  },
+  {
+    "name": "74.ru – Челябинск",
+    "url": "https://74.ru/rss/all/",
+    "category": "regional_media",
+    "region": "Chelyabinsk"
+  },
+  {
+    "name": "66.ru – Екатеринбург",
+    "url": "https://66.ru/rss/",
+    "category": "regional_media",
+    "region": "Sverdlovsk"
+  },
+  {
+    "name": "NGS.ru – Новосибирск",
+    "url": "https://ngs.ru/rss/",
+    "category": "regional_media",
+    "region": "Novosibirsk"
+  },
+  {
+    "name": "E1.ru – Екатеринбург",
+    "url": "https://www.e1.ru/rss/full.xml",
+    "category": "regional_media",
+    "region": "Sverdlovsk"
+  },
+  {
+    "name": "KazanFirst – Казань",
+    "url": "https://kazanfirst.ru/rss",
+    "category": "regional_media",
+    "region": "Tatarstan"
+  },
+  {
+    "name": "Ksonline – Красноярск",
+    "url": "https://ksonline.ru/feed/",
+    "category": "regional_media",
+    "region": "Krasnoyarsk"
+  },
+  {
+    "name": "V‑pravda – Волгоградская область",
+    "url": "https://v-pravda.ru/feed/",
+    "category": "regional_media",
+    "region": "Volgograd"
+  },
+  {
+    "name": "News.mail.ru – Россия, общество",
+    "url": "https://news.mail.ru/rss/",
+    "category": "aggregator",
+    "region": "Federal"
+  },
+  {
+    "name": "News.mail.ru – Россия",
+    "url": "https://news.mail.ru/rss/",
+    "category": "aggregator",
+    "region": "Federal"
+  },
+  {
+    "name": "Rambler Новости – Россия",
+    "url": "https://news.rambler.ru/rss/Russia/",
+    "category": "aggregator",
+    "region": "Federal"
+  },
+  {
+    "name": "Rambler Новости – Москва",
+    "url": "https://news.rambler.ru/rss/Moscow/",
+    "category": "aggregator",
+    "region": "Moscow"
+  },
+  {
+    "name": "Rambler Новости – Санкт‑Петербург",
+    "url": "https://news.rambler.ru/rss/SaintPetersburg/",
+    "category": "aggregator",
+    "region": "SPB"
+  },
+  {
+    "name": "Rambler Новости – Новосибирск",
+    "url": "https://news.rambler.ru/rss/Novosibirsk/",
+    "category": "aggregator",
+    "region": "Novosibirsk"
+  },
+  {
+    "name": "Rambler Новости – Екатеринбург",
+    "url": "https://news.rambler.ru/rss/Yekaterinburg/",
+    "category": "aggregator",
+    "region": "Sverdlovsk"
+  },
+  {
+    "name": "Rambler Новости – Красноярск",
+    "url": "https://news.rambler.ru/rss/Krasnoyarsk/",
+    "category": "aggregator",
+    "region": "Krasnoyarsk"
+  },
+  {
+    "name": "Rambler Новости – Самара",
+    "url": "https://news.rambler.ru/rss/Samara/",
+    "category": "aggregator",
+    "region": "Samara"
+  },
+  {
+    "name": "Rambler Новости – Омск",
+    "url": "https://news.rambler.ru/rss/Omsk/",
+    "category": "aggregator",
+    "region": "Omsk"
+  },
+  {
+    "name": "Rambler Новости – Казань",
+    "url": "https://news.rambler.ru/rss/Kazan/",
+    "category": "aggregator",
+    "region": "Tatarstan"
+  },
+  {
+    "name": "Российская газета – Регионы РФ",
+    "url": "https://rg.ru/xml/rss/region.xml",
+    "category": "federal",
+    "region": "Federal"
+  },
+  {
+    "name": "Bg.ru – Москва, новости города",
+    "url": "https://bg.ru/feeds/news.xml",
+    "category": "regional_media",
+    "region": "Moscow"
+  },
+  {
+    "name": "Bg.ru – Город",
+    "url": "https://bg.ru/feeds/gorod.xml",
+    "category": "regional_media",
+    "region": "Moscow"
+  },
+  {
+    "name": "E1.ru – Новости",
+    "url": "https://www.e1.ru/rss/e1_all.xml",
+    "category": "regional_media",
+    "region": "Sverdlovsk"
+  },
+  {
+    "name": "66.ru – Новости Екатеринбурга",
+    "url": "https://66.ru/rss/news/",
+    "category": "regional_media",
+    "region": "Sverdlovsk"
+  },
+  {
+    "name": "NGS.ru – Происшествия",
+    "url": "https://ngs.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "Novosibirsk"
+  },
+  {
+    "name": "74.ru – Происшествия",
+    "url": "https://74.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "Chelyabinsk"
+  },
+  {
+    "name": "63.ru – Самара, происшествия",
+    "url": "https://63.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "Samara"
+  },
+  {
+    "name": "59.ru – Пермь, происшествия",
+    "url": "https://59.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "Perm"
+  },
+  {
+    "name": "161.ru – Ростов‑на‑Дону, происшествия",
+    "url": "https://161.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "Rostov"
+  },
+  {
+    "name": "Fontanka.ru – Происшествия",
+    "url": "https://www.fontanka.ru/fontanka.rss?section=incident",
+    "category": "regional_media",
+    "region": "SPB"
+  },
+  {
+    "name": "V‑pravda – Коммунальные новости",
+    "url": "https://v-pravda.ru/feed/",
+    "category": "regional_media",
+    "region": "Volgograd"
+  },
+  {
+    "name": "Ksonline – Коммуналка и город",
+    "url": "https://ksonline.ru/feed/",
+    "category": "regional_media",
+    "region": "Krasnoyarsk"
+  },
+  {
+    "name": "Zhel.city – Железногорск, коммунальные новости",
+    "url": "https://zhel.city/rss/",
+    "category": "regional_media",
+    "region": "Krasnoyarsk"
+  },
+  {
+    "name": "Energyland.info – Аварии в энергетике",
+    "url": "https://www.energyland.info/rss/news/",
+    "category": "industry",
+    "region": "Federal"
+  },
+  {
+    "name": "Logika‑consortium – Теплосети и аварии",
+    "url": "https://www.logika-consortium.ru/feed/",
+    "category": "industry",
+    "region": "Federal"
+  },
+  {
+    "name": "Коммунальный комплекс России – Новости ЖКХ",
+    "url": "https://kommuna.ru/rss/news.xml",
+    "category": "industry",
+    "region": "Federal"
+  },
+  {
+    "name": "Городские вести Волгоград – ЖКХ",
+    "url": "https://gorvesti.ru/rss",
+    "category": "regional_media",
+    "region": "Volgograd"
+  },
+  {
+    "name": "Омск здесь – Общество/ЖКХ",
+    "url": "https://omskzdes.ru/rss/",
+    "category": "regional_media",
+    "region": "Omsk"
+  },
+  {
+    "name": "Мос.ру – Новости города",
+    "url": "https://www.mos.ru/rss/",
+    "category": "official",
+    "region": "Moscow"
+  },
+  {
+    "name": "Правительство Санкт‑Петербурга – Новости",
+    "url": "https://www.gov.spb.ru/rss/",
+    "category": "official",
+    "region": "SPB"
+  },
+  {
+    "name": "Novgorodskie Vedomosti – Новости",
+    "url": "https://novvedomosti.ru/rss/novosti/",
+    "category": "regional_media",
+    "region": "Novgorod"
+  },
+  {
+    "name": "Novgorodskie Vedomosti – Пресс-релизы",
+    "url": "https://novvedomosti.ru/rss/press-relizy/",
+    "category": "regional_media",
+    "region": "Novgorod"
+  },
+  {
+    "name": "Администрация Омска – Новости",
+    "url": "https://admomsk.ru/web/guest/news/-/asset_publisher/rss",
+    "category": "official",
+    "region": "Omsk"
+  },
+  {
+    "name": "Администрация Калининграда – Новости",
+    "url": "https://www.klgd.ru/rss/news.xml",
+    "category": "official",
+    "region": "Kaliningrad"
+  },
+  {
+    "name": "News161.ru – Общество",
+    "url": "https://news161.ru/category/society/feed/",
+    "category": "regional_media",
+    "region": "Rostov"
+  },
+  {
+    "name": "News161.ru – Экономика",
+    "url": "https://news161.ru/category/ekonomika/feed/",
+    "category": "regional_media",
+    "region": "Rostov"
+  },
+  {
+    "name": "News161.ru – Экология",
+    "url": "https://news161.ru/category/ekologiya/feed/",
+    "category": "regional_media",
+    "region": "Rostov"
+  },
+  {
+    "name": "News161.ru – Азов",
+    "url": "https://news161.ru/tag/azov/feed/",
+    "category": "regional_media",
+    "region": "Rostov"
+  },
+  {
+    "name": "News161.ru – Волгодонск",
+    "url": "https://news161.ru/tag/volgodonsk/feed/",
+    "category": "regional_media",
+    "region": "Rostov"
+  },
+  {
+    "name": "News161.ru – Шахты",
+    "url": "https://news161.ru/tag/shahty/feed/",
+    "category": "regional_media",
+    "region": "Rostov"
+  },
+  {
+    "name": "Администрация Перми – Новости",
+    "url": "https://perm.ru/rss/news/",
+    "category": "official",
+    "region": "Perm"
+  },
+  {
+    "name": "Администрация Новосибирска – Новости",
+    "url": "https://novo-sibirsk.ru/rss/news/",
+    "category": "official",
+    "region": "Novosibirsk"
+  },
+  {
+    "name": "Администрация Екатеринбурга – Новости",
+    "url": "https://ekaterinburg.rf/news/rss",
+    "category": "official",
+    "region": "Sverdlovsk"
+  },
+  {
+    "name": "Администрация Челябинска – Новости",
+    "url": "https://cheladmin.ru/rss/news.xml",
+    "category": "official",
+    "region": "Chelyabinsk"
+  },
+  {
+    "name": "Администрация Красноярска – Новости",
+    "url": "https://www.admkrsk.ru/rss/news/",
+    "category": "official",
+    "region": "Krasnoyarsk"
+  },
+  {
+    "name": "Город N – Нижний Новгород, происшествия",
+    "url": "https://www.gorodn.ru/rss/proisshestviya/",
+    "category": "regional_media",
+    "region": "NizhnyNovgorod"
+  },
+  {
+    "name": "NN.ru – Нижний Новгород, происшествия",
+    "url": "https://nn.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "NizhnyNovgorod"
+  },
+  {
+    "name": "35media.ru – Вологодская область, происшествия",
+    "url": "https://35media.ru/rss/proisshestviya",
+    "category": "regional_media",
+    "region": "Vologda"
+  },
+  {
+    "name": "76.ru – Ярославль, происшествия",
+    "url": "https://76.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "Yaroslavl"
+  },
+  {
+    "name": "116.ru – Казань, происшествия",
+    "url": "https://116.ru/rss/incidents/",
+    "category": "regional_media",
+    "region": "Tatarstan"
+  },
+  {
+    "name": "Khabarovsk.kp.ru – Хабаровск, происшествия",
+    "url": "https://www.khabarovsk.kp.ru/rss/proisshestviya/",
+    "category": "regional_media",
+    "region": "Khabarovsk"
+  },
+  {
+    "name": "Irkutsk.kp.ru – Иркутск, происшествия",
+    "url": "https://www.irk.kp.ru/rss/proisshestviya/",
+    "category": "regional_media",
+    "region": "Irkutsk"
+  },
+  {
+    "name": "Omsk.kp.ru – Омск, происшествия",
+    "url": "https://www.omsk.kp.ru/rss/proisshestviya/",
+    "category": "regional_media",
+    "region": "Omsk"
+  },
+  {
+    "name": "Spb.kp.ru – Петербург, происшествия",
+    "url": "https://www.spb.kp.ru/rss/proisshestviya/",
+    "category": "regional_media",
+    "region": "SPB"
+  },
+  {
+    "name": "Msk.kp.ru – Москва, происшествия",
+    "url": "https://www.msk.kp.ru/rss/proisshestviya/",
+    "category": "regional_media",
+    "region": "Moscow"
+  },
+  {
+    "name": "Tendence.ru – IT и сбои инфраструктуры",
+    "url": "https://tendence.ru/rss/news.xml",
+    "category": "industry",
+    "region": "Federal"
+  },
+  {
+    "name": "ComNews.ru – Связь и инфраструктура",
+    "url": "https://www.comnews.ru/rss/news.xml",
+    "category": "industry",
+    "region": "Federal"
+  },
+  {
+    "name": "Минстрой России – Новости",
+    "url": "https://minstroyrf.gov.ru/rss/news/",
+    "category": "official",
+    "region": "Federal"
+  },
+  {
+    "name": "РосТехНадзор – Новости",
+    "url": "https://www.gosnadzor.ru/rss/news/",
+    "category": "official",
+    "region": "Federal"
+  },
+  {
+    "name": "Росводоканал – Новости",
+    "url": "https://rosvodokanal.ru/rss/news/",
+    "category": "industry",
+    "region": "Federal"
+  }
+]

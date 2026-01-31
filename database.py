@@ -15,7 +15,7 @@ class Database:
     
     @contextmanager
     def get_connection(self):
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_path, check_same_thread=False)
         conn.row_factory = sqlite3.Row
         try:
             yield conn
@@ -40,20 +40,41 @@ class Database:
                     category TEXT,
                     published_at TEXT,
                     collected_at TEXT NOT NULL,
-                    processed BOOLEAN DEFAULT 0
+                    processed BOOLEAN DEFAULT 0,
+                    content_hash TEXT
                 )
             """)
+            
+            # Migration for existing table
+            try:
+                cursor.execute("ALTER TABLE articles ADD COLUMN content_hash TEXT")
+            except sqlite3.OperationalError:
+                pass  # Column already exists
+            
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS filtered_events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     article_id TEXT NOT NULL,
                     relevance_score REAL NOT NULL,
-                    key_points TEXT,
+                    category TEXT,
+                    urgency INTEGER,
+                    object TEXT,
+                    action TEXT,
                     reasoning TEXT,
                     filtered_at TEXT NOT NULL,
                     FOREIGN KEY (article_id) REFERENCES articles (id)
                 )
             """)
+            
+            # Migration for existing filtered_events
+            try:
+                cursor.execute("ALTER TABLE filtered_events ADD COLUMN category TEXT")
+                cursor.execute("ALTER TABLE filtered_events ADD COLUMN urgency INTEGER")
+                cursor.execute("ALTER TABLE filtered_events ADD COLUMN object TEXT")
+                cursor.execute("ALTER TABLE filtered_events ADD COLUMN action TEXT")
+            except sqlite3.OperationalError:
+                pass
+
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS sent_signals (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,12 +90,25 @@ class Database:
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_articles_processed ON articles(processed)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_articles_collected ON articles(collected_at)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_events_score ON filtered_events(relevance_score)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_articles_hash ON articles(content_hash)")
+
             # Таблица для авторизованных пользователей (персистентная авторизация)
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS authenticated_users (
                     user_id INTEGER PRIMARY KEY,
                     first_name TEXT,
-                    authenticated_at TEXT NOT NULL
+                    authenticated_at TEXT NOT NULL,
+                    settings_json TEXT,  -- For storing user preferences
+                    paused_until TEXT    -- For pause functionality
+                )
+            """)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS user_feedback (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    event_id TEXT NOT NULL,
+                    user_id INTEGER NOT NULL,
+                    vote TEXT NOT NULL, -- 'like' / 'dislike'
+                    created_at TEXT NOT NULL
                 )
             """)
             logger.info("Database initialized successfully")
@@ -84,17 +118,26 @@ class Database:
             cursor = conn.cursor()
             cursor.execute("SELECT 1 FROM articles WHERE id = ?", (article_id,))
             return cursor.fetchone() is not None
+            
+    def article_hash_exists(self, content_hash: str) -> bool:
+        if not content_hash:
+            return False
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1 FROM articles WHERE content_hash = ?", (content_hash,))
+            return cursor.fetchone() is not None
     
     def save_article(self, article: dict) -> bool:
         try:
             with self.get_connection() as conn:
                 cursor = conn.cursor()
                 cursor.execute("""
-                    INSERT INTO articles (id, title, url, content, source, category, published_at, collected_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO articles (id, title, url, content, source, category, published_at, collected_at, content_hash)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     article['id'], article['title'], article['url'], article['content'],
-                    article['source'], article['category'], article.get('published_at'), article['collected_at']
+                    article['source'], article['category'], article.get('published_at'), article['collected_at'],
+                    article.get('content_hash')
                 ))
                 return True
         except sqlite3.IntegrityError:
@@ -116,11 +159,12 @@ class Database:
         with self.get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO filtered_events (article_id, relevance_score, key_points, reasoning, filtered_at)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO filtered_events (article_id, relevance_score, category, urgency, object, action, reasoning, filtered_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 event['article_id'], event['relevance_score'],
-                '|'.join(event.get('key_points', [])), event['reasoning'], event['filtered_at']
+                event.get('category'), event.get('urgency'), event.get('object'), event.get('action'),
+                event.get('reasoning'), event['filtered_at']
             ))
             return cursor.lastrowid
     
@@ -153,6 +197,26 @@ class Database:
                 'filtered_events': total_events,
                 'sent_signals': total_signals
             }
+
+
+    def save_user_feedback(self, event_id: str, user_id: int, vote: str):
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO user_feedback (event_id, user_id, vote, created_at)
+                VALUES (?, ?, ?, ?)
+            """, (event_id, user_id, vote, datetime.now().isoformat()))
+
+    def update_user_settings(self, user_id: int, settings: dict):
+        import json
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            # Ensure user exists first
+            cursor.execute("INSERT OR IGNORE INTO authenticated_users (user_id, authenticated_at) VALUES (?, ?)", 
+                           (user_id, datetime.now().isoformat()))
+            
+            cursor.execute("UPDATE authenticated_users SET settings_json = ? WHERE user_id = ?", 
+                           (json.dumps(settings), user_id))
 
 
 db = Database()

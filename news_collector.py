@@ -109,6 +109,7 @@ class NewsCollector:
             if not title or not url:
                 return None
             
+            # Level 1 Dedup: URL
             article_id = generate_article_id(url)
             if db.article_exists(article_id):
                 return None
@@ -122,6 +123,16 @@ class NewsCollector:
             if content:
                 soup = BeautifulSoup(content, 'html.parser')
                 content = soup.get_text()
+                
+            # Level 2 Dedup: Content Hash
+            # Using Title + First 200 chars of content for robust deduplication
+            from utils import generate_content_hash # delayed import to avoid circular if any
+            dedup_text = title + " " + (content[:200] if content else "")
+            content_hash = generate_content_hash(dedup_text)
+            
+            if db.article_hash_exists(content_hash):
+                # logger.debug(f"Duplicate content found: {title}")
+                return None
             
             published_at = None
             if 'published' in entry:
@@ -137,7 +148,8 @@ class NewsCollector:
                 source=source['name'],
                 category=source['category'],
                 published_at=published_at,
-                collected_at=datetime.now()
+                collected_at=datetime.now(),
+                content_hash=content_hash
             )
             
             article_dict = article.model_dump()

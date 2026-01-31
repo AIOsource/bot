@@ -42,6 +42,15 @@ def generate_article_id(url: str) -> str:
     return hashlib.md5(url.encode('utf-8')).hexdigest()
 
 
+def generate_content_hash(text: str) -> str:
+    """Generate MD5 hash of the normalized content for deduplication"""
+    if not text:
+        return ""
+    # Normalize: lower case, remove spaces
+    normalized = "".join(text.lower().split())[:500] # Hash first 500 chars (approx 100 words) strictly
+    return hashlib.md5(normalized.encode('utf-8')).hexdigest()
+
+
 def clean_text(text: str) -> str:
     if not text:
         return ""

@@ -1,7 +1,7 @@
 import logging
 import asyncio
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Dict, Set
 from telegram import Update, Bot, InlineKeyboardButton, InlineKeyboardMarkup, InputFile
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
@@ -18,6 +18,7 @@ authenticated_users: Set[int] = set()
 user_settings: Dict[int, dict] = {}
 user_languages: Dict[int, str] = {}  # Язык пользователя (ru/en)
 pending_auth: Set[int] = set()  # Пользователи ожидающие ввода пароля
+user_wizard_state: Dict[int, dict] = {} # Состояние мастера настройки
 
 
 class TelegramNotifier:
@@ -77,11 +78,40 @@ class TelegramNotifier:
         ]
         return InlineKeyboardMarkup(keyboard)
     
+    async def start_wizard(self, chat_id: int, user_id: int, lang: str = "ru"):
+        """Запуск мастера настройки"""
+        text = get_text("wizard_start", lang)
+        keyboard = [
+            [InlineKeyboardButton(get_text("wizard_quick", lang), callback_data="wizard_quick")],
+            [InlineKeyboardButton(get_text("wizard_custom", lang), callback_data="wizard_custom")]
+        ]
+        await self.bot.send_message(chat_id=chat_id, text=text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode=ParseMode.HTML)
+
     def _get_settings_keyboard(self, user_id: int = None) -> InlineKeyboardMarkup:
         lang = user_languages.get(user_id, "ru") if user_id else "ru"
         current_lang = "🇷🇺 RU" if lang == "ru" else "🇬🇧 EN"
+        
+        # Check pause status
+        paused_until = None
+        if user_id:
+            settings = user_settings.get(user_id, {})
+            paused_until = settings.get("paused_until")
+            
+        pause_btn_text = "⏸ Пауза 24ч"
+        pause_callback = "pause_enable_24h"
+        
+        if paused_until:
+            try:
+                pause_dt = datetime.fromisoformat(paused_until)
+                if pause_dt > datetime.now():
+                    pause_btn_text = "▶️ Возобновить"
+                    pause_callback = "pause_disable"
+            except:
+                pass
+
         keyboard = [
-            [InlineKeyboardButton(get_text("notifications", lang) + ": ВКЛ", callback_data="toggle_notifications")],
+            [InlineKeyboardButton(get_text("notifications", lang) + ": ВКЛ", callback_data="toggle_notifications"),
+             InlineKeyboardButton(pause_btn_text, callback_data=pause_callback)],
             [InlineKeyboardButton(get_text("threshold_medium", lang), callback_data="threshold_medium"), 
              InlineKeyboardButton(get_text("threshold_high", lang), callback_data="threshold_high")],
             [InlineKeyboardButton(f"🌐 {get_text('language', lang)}: {current_lang}", callback_data="switch_language")],
@@ -242,7 +272,78 @@ class TelegramNotifier:
                 )
             return
         
-        elif callback_data == "continue_to_auth":
+            return
+
+        # --- WIZARD HANDLERS ---
+        if callback_data == "wizard_quick":
+            user_settings[user_id] = {
+                "notifications": True, 
+                "threshold": 0.6, 
+                "region": "all",
+                "focus": "all",
+                "noise": "med"
+            }
+            await self._finish_wizard(query.message.chat.id, user_id, lang)
+            return
+
+        elif callback_data == "wizard_custom":
+            keyboard = [
+                [InlineKeyboardButton(get_text("wizard_region_fed", lang), callback_data="wizard_region_fed")],
+                [InlineKeyboardButton(get_text("wizard_region_moscow", lang), callback_data="wizard_region_moscow")],
+                [InlineKeyboardButton(get_text("wizard_region_all", lang), callback_data="wizard_region_all")],
+            ]
+            await query.message.edit_text(get_text("wizard_step_1", lang), reply_markup=InlineKeyboardMarkup(keyboard), parse_mode=ParseMode.HTML)
+            return
+
+        elif callback_data.startswith("wizard_region_"):
+            region = callback_data.replace("wizard_region_", "")
+            user_wizard_state[user_id] = {"region": region}
+            keyboard = [
+                [InlineKeyboardButton(get_text("wizard_focus_accidents", lang), callback_data="wizard_focus_accidents")],
+                [InlineKeyboardButton(get_text("wizard_focus_repairs", lang), callback_data="wizard_focus_repairs")],
+                [InlineKeyboardButton(get_text("wizard_focus_all", lang), callback_data="wizard_focus_all")],
+            ]
+            await query.message.edit_text(get_text("wizard_step_2", lang), reply_markup=InlineKeyboardMarkup(keyboard), parse_mode=ParseMode.HTML)
+            return
+
+        elif callback_data.startswith("wizard_focus_"):
+            focus = callback_data.replace("wizard_focus_", "")
+            if user_id in user_wizard_state: user_wizard_state[user_id]["focus"] = focus
+            keyboard = [
+                [InlineKeyboardButton(get_text("wizard_noise_low", lang), callback_data="wizard_noise_low")],
+                [InlineKeyboardButton(get_text("wizard_noise_med", lang), callback_data="wizard_noise_med")],
+                [InlineKeyboardButton(get_text("wizard_noise_high", lang), callback_data="wizard_noise_high")],
+            ]
+            await query.message.edit_text(get_text("wizard_step_3", lang), reply_markup=InlineKeyboardMarkup(keyboard), parse_mode=ParseMode.HTML)
+            return
+
+        elif callback_data.startswith("wizard_noise_"):
+            noise = callback_data.replace("wizard_noise_", "")
+            state = user_wizard_state.get(user_id, {})
+            user_settings[user_id] = {
+                "notifications": True, "threshold": 0.6,
+                "region": state.get("region", "all"), "focus": state.get("focus", "all"), "noise": noise
+            }
+            await self._finish_wizard(query.message.chat.id, user_id, lang)
+            return
+        
+        # --- FEEDBACK HANDLERS ---
+        if callback_data.startswith("feedback_"):
+            try:
+                action, article_id = callback_data.replace("feedback_", "").split("_", 1)
+                vote = "like" if action == "like" else "dislike"
+                db.save_user_feedback(article_id, user_id, vote)
+                await query.answer(f"Спасибо! Ваш отзыв учтен ({'👍' if vote=='like' else '👎'}).")
+                
+                # Remove buttons or mark as voted
+                # For now just answer toast is enough, or we can edit markup to remove buttons
+                await query.edit_message_reply_markup(reply_markup=None)
+            except Exception as e:
+                logger.error(f"Error handling feedback: {e}")
+                await query.answer("Ошибка при сохранении отзыва.")
+            return
+
+        if callback_data == "continue_to_auth":
             pending_auth.add(user_id)
             chat_id = query.message.chat_id
             msg_id = query.message.message_id
@@ -328,6 +429,33 @@ class TelegramNotifier:
             )
             return
         
+        elif callback_data == "pause_enable_24h":
+            # Set pause for 24h
+            paused_until = (datetime.now() + timedelta(hours=24)).isoformat()
+            if user_id not in user_settings: user_settings[user_id] = {}
+            user_settings[user_id]["paused_until"] = paused_until
+            
+            # Save to DB
+            db.update_user_settings(user_id, user_settings[user_id])
+            await query.answer("⏸ Уведомления приостановлены на 24 часа")
+            
+            # Refresh keyboard
+            await query.edit_message_reply_markup(reply_markup=self._get_settings_keyboard(user_id))
+            return
+
+        elif callback_data == "pause_disable":
+            # Resume
+            if user_id in user_settings and "paused_until" in user_settings[user_id]:
+                del user_settings[user_id]["paused_until"]
+                
+            # Save to DB
+            db.update_user_settings(user_id, user_settings[user_id])
+            await query.answer("▶️ Уведомления возобновлены")
+            
+            # Refresh keyboard
+            await query.edit_message_reply_markup(reply_markup=self._get_settings_keyboard(user_id))
+            return
+        
         elif callback_data == "change_password":
             await query.edit_message_text(
                 get_text("change_password", lang) + "\n\n" +
@@ -364,44 +492,28 @@ class TelegramNotifier:
             return
         
         if message_text == BOT_PASSWORD:
-            authenticated_users.add(user_id)
-            user_settings[user_id] = {"notifications": True, "threshold": 0.6}
+            # Remove from pending auth if any
             pending_auth.discard(user_id)
             
-            # Удаляем сообщение пользователя с паролем (для чистоты чата)
+            # Delete password message for security
             try:
                 await update.message.delete()
             except:
                 pass
-            
-            # Удаляем сообщение с запросом пароля (если есть)
+                
+            # Delete request message if we saved it
             if hasattr(self, 'pending_auth_messages') and chat_id in self.pending_auth_messages:
                 try:
-                    await self.bot.delete_message(chat_id, self.pending_auth_messages[chat_id])
+                    await self.bot.delete_message(chat_id=chat_id, message_id=self.pending_auth_messages[chat_id])
+                    del self.pending_auth_messages[chat_id]
                 except:
                     pass
-                del self.pending_auth_messages[chat_id]
             
-            # Сохраняем chat_id для отправки главного меню после проверки
-            if not hasattr(self, 'first_login_chats'):
-                self.first_login_chats = set()
-            self.first_login_chats.add(chat_id)
+            # START WIZARD (User is NOT yet in authenticated_users)
+            # They will be added in _finish_wizard
+            await self.start_wizard(chat_id, user_id, lang)
             
-            # Отправляем сообщение и сохраняем для обновления прогресса
-            progress_msg = await self.bot.send_message(
-                chat_id=chat_id,
-                text=f"{get_text('auth_success', lang)}\n\n"
-                     f"{get_text('progress_wait', lang)}\n\n"
-                     f"🔍 {get_text('progress_collecting', lang)}...\n"
-                     "[░░░░░░░░░░] 0%\n\n"
-                     f"<i>{get_text('progress_time', lang)}</i>",
-                parse_mode=ParseMode.HTML
-            )
-            
-            # Сохраняем для обновления прогресса
-            if not hasattr(self, 'progress_messages'):
-                self.progress_messages = {}
-            self.progress_messages[chat_id] = progress_msg.message_id
+            logger.info(f"User {user_id} authenticated - starting wizard")
             
             logger.info(f"User {user_id} authenticated - starting initial check")
         else:
@@ -471,16 +583,54 @@ class TelegramNotifier:
         if not authenticated_users:
             logger.warning("No authenticated users")
             return False
+            
         try:
             message = self._format_message(event)
-            priority = self._determine_priority(event.relevance_score)
+            priority = "high" if event.urgency >= 4 else "medium"
+            
+            # Feedback Keyboard
+            keyboard = [
+                [InlineKeyboardButton("👍 Релевантно", callback_data=f"feedback_like_{event.article_id}"),
+                 InlineKeyboardButton("👎 Спам/Не то", callback_data=f"feedback_dislike_{event.article_id}")]
+            ]
+            markup = InlineKeyboardMarkup(keyboard)
+            
             sent_count = 0
             for user_id in authenticated_users:
+                # User Settings Filter
+                settings = user_settings.get(user_id, {})
+                
+                # Check Pause
+                paused_until = settings.get("paused_until")
+                if paused_until:
+                    try:
+                        pause_dt = datetime.fromisoformat(paused_until)
+                        if pause_dt > datetime.now():
+                            # Paused
+                            continue
+                    except:
+                        pass
+                
+                noise_level = settings.get("noise", "med")
+                
+                # Determine threshold
+                if noise_level == "low":    # Vital only
+                    threshold = 4
+                elif noise_level == "high": # All
+                    threshold = 1
+                else:                       # Med/Default
+                    threshold = 3
+                
+                # Apply Filter
+                if event.urgency < threshold and event.action != 'call':
+                    continue
+                
                 try:
-                    await self.bot.send_message(chat_id=user_id, text=message, parse_mode=ParseMode.HTML, disable_web_page_preview=False)
+                    await self.bot.send_message(chat_id=user_id, text=message, parse_mode=ParseMode.HTML, disable_web_page_preview=False, reply_markup=markup)
                     sent_count += 1
                 except TelegramError as e:
                     logger.error(f"Error sending to {user_id}: {e}")
+            
             if sent_count > 0:
                 signal = TelegramSignal(event_id=event.article_id, title=event.title, message=message, url=event.url, priority=priority, sent_at=datetime.now())
                 signal_dict = signal.model_dump()
@@ -494,29 +644,56 @@ class TelegramNotifier:
             return False
     
     def _format_message(self, event: FilteredEvent) -> str:
-        reasoning_parts = event.reasoning.split('|')
-        region = "не указан"
-        obj = "не указан"
-        actual_reasoning = event.reasoning
+        # Format:
+        # <Priority Emoji> <TITLE>
+        # <Region> • <Sphere>
+        #
+        # 📝 <Body text>
+        #
+        # 💡 <Why importance>
+        #
+        # 🔗 <Source Link>
         
-        if len(reasoning_parts) >= 4:
-            region_obj = reasoning_parts[0].strip()
-            if '] ' in region_obj:
-                region = region_obj.split('] ')[0].replace('[', '')
-                obj = region_obj.split('] ')[1]
-            actual_reasoning = reasoning_parts[3].strip() if len(reasoning_parts) > 3 else event.reasoning
+        # Emoji mapping
+        urgency_emojis = {
+            5: "🔴", # Critical
+            4: "🟠", # High
+            3: "🟡", # Medium
+        }
+        emoji = urgency_emojis.get(event.urgency, "🔵")
         
-        return f"""🚨 <b>СИГНАЛ</b>
+        # Category mapping
+        cat_map = {
+            "accident": "АВАРИЯ",
+            "outage": "ОТКЛЮЧЕНИЕ",
+            "repair": "РЕМОНТ",
+            "other": "ИНЦИДЕНТ"
+        }
+        category_ru = cat_map.get(event.category, event.category.upper())
+        
+        # Object mapping
+        obj_map = {
+            "water": "Водоснабжение",
+            "heat": "Теплоснабжение",
+            "industrial": "Промышленность",
+            "unknown": "ЖКХ / Инфраструктура"
+        }
+        object_ru = obj_map.get(event.object, event.object)
+        
+        # Region (Mockup if not parseable, but let's assume federal/Moscow for now)
+        # In a real scenario we'd parse region from tags. For now let's be generic or use category if applicable.
+        region_str = "РФ / Регионы"
 
-<b>Регион:</b> {region}
-<b>Тип:</b> {event.category}
-<b>Объект:</b> {obj}
+        return f"""{emoji} <b>{category_ru} | Уровень {event.urgency}</b>
+<i>{object_ru} • {region_str}</i>
 
-<b>Суть:</b> {event.title}
+<b>Суть события</b>
+{event.title}
 
-<b>Потенциал:</b> {actual_reasoning}
+<b>Почему это важно</b>
+{event.why}
 
-<b>Источник:</b> {event.url}"""
+🔗 <a href="{event.url}">Читать оригинал</a>"""
     
     def _determine_priority(self, score: float) -> str:
         if score >= 0.9:
@@ -574,9 +751,49 @@ class TelegramNotifier:
                     logger.error(f"Error sending welcome to {chat_id}: {e}")
             self.first_login_chats.clear()
             
-            # Очищаем progress_messages после первого входа
             if hasattr(self, 'progress_messages'):
                 self.progress_messages.clear()
+
+    async def _finish_wizard(self, chat_id: int, user_id: int, lang: str):
+        """Завершение настройки и запуск проверки"""
+        # 0. Save settings to DB
+        if user_id in user_settings:
+            try:
+                db.update_user_settings(user_id, user_settings[user_id])
+                logger.info(f"Settings saved for user {user_id}")
+            except Exception as e:
+                logger.error(f"Error saving settings for {user_id}: {e}")
+
+        # 1. Send completion message
+        await self.bot.send_message(chat_id=chat_id, text=get_text("wizard_complete", lang), parse_mode=ParseMode.HTML)
+        
+        # 2. Start Initial Check UI
+        progress_msg = await self.bot.send_message(
+            chat_id=chat_id,
+            text=f"{get_text('progress_wait', lang)}\n\n"
+                 f"🔍 {get_text('progress_collecting', lang)}...\n"
+                 "[░░░░░░░░░░] 0%\n\n"
+                 f"<i>{get_text('progress_time', lang)}</i>",
+            parse_mode=ParseMode.HTML
+        )
+        
+        # 3. Register progress message
+        if not hasattr(self, 'progress_messages'):
+            self.progress_messages = {}
+        self.progress_messages[chat_id] = progress_msg.message_id
+        
+        # 4. Activate User (Now they are authenticated)
+        authenticated_users.add(user_id)
+        
+        # 5. Trigger first check (if manual trigger needed, otherwise loop catches it)
+        # We can trigger it by setting the event
+        if self.manual_check_event:
+            self.manual_check_event.set()
+            if not hasattr(self, 'pending_check_chats'):
+                self.pending_check_chats = set()
+            self.pending_check_chats.add(chat_id)
+
+        logger.info(f"Wizard finished for {user_id}. Authenticated and check triggered.")
 
 
 notifier = TelegramNotifier()

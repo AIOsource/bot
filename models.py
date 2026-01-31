@@ -12,6 +12,7 @@ class NewsArticle(BaseModel):
     category: str = Field(description="Source category")
     published_at: Optional[datetime] = Field(default=None)
     collected_at: datetime = Field(default_factory=datetime.now)
+    content_hash: Optional[str] = Field(default=None, description="Hash for deduplication")
     
     class Config:
         json_encoders = {datetime: lambda v: v.isoformat()}
@@ -21,10 +22,12 @@ class FilteredEvent(BaseModel):
     article_id: str = Field(description="Reference to original article")
     title: str = Field(description="Article title")
     url: str = Field(description="Article URL")
-    relevance_score: float = Field(description="AI relevance score")
-    key_points: List[str] = Field(default_factory=list)
-    category: str = Field(description="Event category")
-    reasoning: str = Field(description="AI reasoning")
+    relevance_score: float = Field(description="AI relevance score (0.0-1.0)")
+    category: str = Field(description="Event category: accident | outage | repair | other")
+    urgency: int = Field(description="Urgency level 1-5")
+    object: str = Field(description="Affected object: water | heat | industrial | unknown")
+    why: str = Field(description="Short explanation")
+    action: str = Field(description="Action: call | watch | ignore")
     filtered_at: datetime = Field(default_factory=datetime.now)
     
     class Config:
