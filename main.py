@@ -1,233 +1,532 @@
+"""Main entry point for PRSBOT."""
 import asyncio
-import logging
-import sys
-import signal
-from news_collector import collector
-from ai_filter import ai_filter  
-from database import db
-from telegram_bot import notifier
-from models import NewsArticle
-from config import config
-from utils import setup_logging
+import uuid
+from datetime import datetime
+from typing import Optional
 
-logger = setup_logging()
-manual_check_event = asyncio.Event()
-shutdown_event = asyncio.Event()
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+
+from settings import get_settings
+from config_loader import get_config_loader, get_config
+from logging_setup import setup_logging, get_logger
+from db_pkg import init_database, get_session, NewsRepository, SignalRepository, LockRepository
+from sources_pkg import RSSFetcher, WebsiteFetcher
+from pipeline_pkg import (
+    normalize_news_item, prepare_for_llm, Deduplicator, compute_simhash,
+    KeywordFilter, detect_region, OpenRouterClient, LLMResponse,
+    decide, get_status_from_decision, create_signal_from_llm,
+    check_freshness, check_resolved, check_noise
+)
+from bot_pkg import create_bot, Broadcaster
 
 
-def signal_handler(sig, frame):
-    """Handle Ctrl+C gracefully"""
-    logger.info("\n👋 Получен сигнал завершения, останавливаемся...")
-    shutdown_event.set()
+logger = None  # Will be initialized in main()
 
 
-async def process_news_cycle():
-    new_articles_count = 0
-    relevant_events_count = 0
-    sent_signals_count = 0
+async def process_news_cycle(broadcaster: Optional[Broadcaster] = None):
+    """
+    Main news processing cycle.
     
-    try:
-        logger.info("=" * 70)
-        logger.info("🚀 STARTING NEWS PROCESSING CYCLE")
-        logger.info("=" * 70)
-        
-        logger.info("")
-        logger.info("📥 STEP 1/4: PARALLEL COLLECTION")
-        logger.info("-" * 70)
-        
-        # Начальный прогресс - сбор новостей
-        await notifier.update_progress(0, 100, "Сбор новостей")
-        
-        # Run blocking collection in executor
-        loop = asyncio.get_running_loop()
-        articles = await loop.run_in_executor(None, collector.collect_all_parallel)
-        
-        new_articles_count = len(articles)
-        logger.info(f"✅ Collection complete: {new_articles_count} new articles")
-        
-        # Прогресс - сбор завершён
-        await notifier.update_progress(100, 100, "Сбор завершён")
-        
-        if not articles:
-            logger.info("ℹ️  No new articles to process")
-            await notifier.send_check_results(0, 0, 0)
-            return
-        
-        logger.info("")
-        logger.info("📊 STEP 2/4: RETRIEVING UNPROCESSED ARTICLES")
-        logger.info("-" * 70)
-        unprocessed = db.get_unprocessed_articles(limit=config.MAX_ARTICLES_PER_CHECK)
-        logger.info(f"✅ Found {len(unprocessed)} unprocessed articles")
-        
-        if not unprocessed:
-            logger.info("ℹ️  No unprocessed articles")
-            await notifier.send_check_results(new_articles_count, 0, 0)
-            return
-        
-        articles_to_filter = []
-        for article_dict in unprocessed:
-            try:
-                article = NewsArticle(**article_dict)
-                articles_to_filter.append(article)
-            except Exception as e:
-                logger.error(f"Error converting article: {e}")
-                continue
-        
-        logger.info("")
-        logger.info(f"🤖 STEP 3/4: AI FILTERING ({len(articles_to_filter)} articles)")
-        logger.info("-" * 70)
-        total_articles = len(articles_to_filter)
-        filtered_events = []
-        
-        for idx, article in enumerate(articles_to_filter, 1):
-            try:
-                progress_percent = int((idx / total_articles) * 100)
-                filled = int(progress_percent / 10)
-                bar = "█" * filled + "░" * (10 - filled)
-                
-                if idx == 1 or idx == total_articles or progress_percent % 10 == 0:
-                    logger.info(f"[{bar}] {progress_percent}% - {idx}/{total_articles} articles")
-                
-                # Обновляем прогресс в Telegram
-                if idx == 1 or idx % 5 == 0 or idx == total_articles:
-                    await notifier.update_progress(idx, total_articles, "AI-анализ")
-                
-                # Run blocking AI filtering in executor
-                event = await loop.run_in_executor(None, ai_filter.filter_article, article)
-                
-                if event:
-                    filtered_events.append(event)
-                    logger.info(f"  ✓ Relevant: {article.title[:60]}...")
-                
-                db.mark_article_processed(article.id)
-            except Exception as e:
-                logger.error(f"Error filtering article: {e}")
-                continue
-
-        
-        relevant_events_count = len(filtered_events)
-        logger.info(f"✅ AI filtering complete: {relevant_events_count} relevant events found")
-        
-        if not filtered_events:
-            logger.info("ℹ️  No relevant events found")
-            await notifier.send_check_results(new_articles_count, 0, 0)
-            return
-        
-        logger.info("")
-        logger.info(f"📱 STEP 4/4: SENDING NOTIFICATIONS ({len(filtered_events)} events)")
-        logger.info("-" * 70)
-        sent_count = 0
-        
-        for idx, event in enumerate(filtered_events, 1):
-            try:
-                progress_percent = int((idx / len(filtered_events)) * 100)
-                filled = int(progress_percent / 10)
-                bar = "█" * filled + "░" * (10 - filled)
-                logger.info(f"[{bar}] {progress_percent}% - Sending {idx}/{len(filtered_events)}")
-                
-                if await notifier.send_event(event):
-                    sent_count += 1
-                    logger.info(f"  ✓ Sent: {event.title[:60]}...")
-            except Exception as e:
-                logger.error(f"Error sending event: {e}")
-                continue
-        
-        sent_signals_count = sent_count
-        logger.info(f"✅ Notifications sent: {sent_count}/{len(filtered_events)}")
-        
-        stats = db.get_stats()
-        logger.info("")
-        logger.info("=" * 70)
-        logger.info("📊 CYCLE STATISTICS")
-        logger.info("=" * 70)
-        logger.info(f"  📰 Total articles: {stats['total_articles']}")
-        logger.info(f"  ✅ Processed: {stats['processed_articles']}")
-        logger.info(f"  🎯 Filtered events: {stats['filtered_events']}")
-        logger.info(f"  📤 Sent signals: {stats['sent_signals']}")
-        logger.info("=" * 70)
-        
-        await notifier.send_check_results(new_articles_count, relevant_events_count, sent_signals_count)
-        
-    except Exception as e:
-        logger.error(f"Error in processing cycle: {e}", exc_info=True)
-        await notifier.send_check_results(new_articles_count, relevant_events_count, sent_signals_count)
-
-
-async def main_loop():
-    logger.info("🤖 News Monitoring System Started")
-    logger.info(f"⏱️  Check interval: {config.CHECK_INTERVAL_MINUTES} minutes")
-    logger.info(f"🔍 Relevance threshold: {config.RELEVANCE_THRESHOLD}")
-    logger.info(f"📡 Monitoring {len(config.RSS_SOURCES)} sources")
-    logger.info("=" * 70)
+    Steps:
+    1. Fetch from all sources
+    2. Normalize and deduplicate
+    3. Apply filter1
+    4. Send to LLM if passed
+    5. Decide and send signals
+    """
+    global logger
+    if logger is None:
+        logger = get_logger("main")
     
-    await notifier.start(manual_check_event)
+    settings = get_settings()
+    config = get_config()
     
-    # Ждём первого пользователя или сигнала завершения
-    logger.info("⏳ Waiting for first user to login...")
-    while not notifier.has_authenticated_users() and not shutdown_event.is_set():
-        await asyncio.sleep(0.5)
+    # Acquire processing lock
+    instance_id = str(uuid.uuid4())[:8]
+    async with get_session() as session:
+        acquired = await LockRepository.acquire(
+            session, "processing", duration_seconds=600, instance_id=instance_id
+        )
+        await session.commit()
     
-    if shutdown_event.is_set():
-        await notifier.shutdown()
+    if not acquired:
+        logger.info("processing_skipped", reason="lock_held")
         return
     
-    logger.info("✅ User authenticated! Starting news monitoring...")
-    
     try:
-        while not shutdown_event.is_set():
-            await process_news_cycle()
+        start_time = datetime.now()
+        
+        # 1. Fetch from sources
+        rss_fetcher = RSSFetcher(
+            timeout=config.http.timeout,
+            retries=config.http.retries
+        )
+        
+        # Filter to RSS and Google News sources only
+        rss_sources = [s for s in config.sources if s.type in ("rss", "google_news_rss")]
+        
+        logger.info("fetch_start", sources_count=len(rss_sources))
+        raw_items = await rss_fetcher.fetch_all(rss_sources)
+        
+        # 2. Also fetch from web sources
+        web_sources = [s for s in config.sources if s.type == "web"]
+        if web_sources:
+            web_fetcher = WebsiteFetcher(timeout=config.http.timeout)
+            for source in web_sources:
+                web_items = await web_fetcher.fetch_news_list(source)
+                raw_items.extend(web_items)
+        
+        logger.info("fetch_complete", items=len(raw_items))
+        
+        if not raw_items:
+            logger.info("processing_complete", new_items=0, signals=0)
+            return
+        
+        # 3. Normalize and check duplicates
+        deduplicator = Deduplicator(simhash_threshold=config.dedup.simhash_threshold)
+        
+        # Load recent simhashes
+        async with get_session() as session:
+            recent_hashes = await NewsRepository.get_recent_simhashes(session, hours=72)
+            deduplicator.set_existing_hashes(recent_hashes)
+        
+        # Counters for cycle stats
+        stats = {
+            "filtered_old": 0,
+            "filtered_resolved": 0, 
+            "filtered_noise": 0,
+            "filtered_combo": 0,
+            "filtered_score": 0,
+            "llm_failed": 0,
+            "llm_skipped": 0,
+            "sent": 0
+        }
+        
+        new_items = []
+        url_params = set(config.dedup.url_params_to_remove)
+        
+        for item in raw_items:
+            normalized = normalize_news_item(item, list(url_params))
             
-            if shutdown_event.is_set():
-                break
+            # URL dedup
+            async with get_session() as session:
+                existing = await NewsRepository.url_exists(session, normalized["url_normalized"])
+                if existing:
+                    logger.debug("dedup_url_skip", url=normalized["url_normalized"][:60])
+                    continue
+            
+            # Freshness check (BEFORE simhash to avoid computing hash for stale news)
+            freshness_result = check_freshness(
+                published_at=normalized.get("published_at"),
+                collected_at=datetime.utcnow(),
+                max_age_days=config.freshness.max_age_days,
+                allow_missing_published_at=config.freshness.allow_missing_published_at,
+                fallback_to_collected_at=config.freshness.fallback_to_collected_at,
+                trace_id=f"pre-{normalized['url_normalized'][:30]}"
+            )
+            
+            if not freshness_result.passed:
+                stats["filtered_old"] += 1
+                logger.info(
+                    "freshness_rejected",
+                    decision_code=freshness_result.decision_code,
+                    age_days=freshness_result.age_days
+                )
+                continue
+            
+            # Simhash dedup
+            duplicate_of = deduplicator.check_duplicate(
+                normalized["title"],
+                normalized["text"]
+            )
+            
+            # Compute simhash for storage
+            normalized["simhash"] = deduplicator.compute_hash(
+                normalized["title"],
+                normalized["text"]
+            )
+            
+            if duplicate_of:
+                # Save as duplicate with canonical reference (per ТЗ)
+                async with get_session() as session:
+                    await NewsRepository.create(session, {
+                        "title": normalized["title"],
+                        "text": normalized["text"],
+                        "source": normalized["source"],
+                        "url": normalized["url"],
+                        "url_normalized": normalized["url_normalized"],
+                        "published_at": normalized.get("published_at"),
+                        "collected_at": datetime.utcnow(),
+                        "simhash": normalized["simhash"],
+                        "canonical_news_id": duplicate_of,
+                        "status": "duplicate",
+                    })
+                    await session.commit()
+                logger.debug("dedup_simhash_saved", canonical_id=duplicate_of)
+                continue
+            
+            # Detect region
+            if not normalized.get("region"):
+                normalized["region"] = detect_region(
+                    normalized["text"],
+                    normalized["title"],
+                    item.get("region_hint")
+                )
+            
+            new_items.append(normalized)
+        
+        logger.info("dedup_complete", new_items=len(new_items), raw_items=len(raw_items))
+        
+        if not new_items:
+            logger.info("processing_complete", new_items=0, signals=0)
+            return
+        
+        # 4. Save new items and process
+        keyword_filter = KeywordFilter(
+            keywords=config.keywords,
+            weights=config.weights,
+            threshold=config.thresholds.filter1_to_llm
+        )
+        
+        llm_client = OpenRouterClient(settings)
+        # Apply throttle config
+        llm_client.max_requests_per_cycle = config.llm_throttle.max_requests_per_cycle
+        llm_client.max_consecutive_429 = config.llm_throttle.max_consecutive_429
+        llm_client.backoff_seconds = config.llm_throttle.backoff_on_429_seconds
+        llm_client.reset_cycle()  # Reset throttle state
+        
+        signals_sent = 0
+        
+        for item in new_items:
+            # Generate trace_id
+            trace_id = str(uuid.uuid4())[:8]
+            
+            # Save to DB
+            async with get_session() as session:
+                news = await NewsRepository.create(session, {
+                    "title": item["title"],
+                    "text": item["text"],
+                    "source": item["source"],
+                    "url": item["url"],
+                    "url_normalized": item["url_normalized"],
+                    "published_at": item.get("published_at"),
+                    "collected_at": datetime.utcnow(),
+                    "region": item.get("region"),
+                    "simhash": item.get("simhash"),
+                    "status": "raw",
+                })
+                await session.commit()
+                news_id = news.id
                 
-            interval_seconds = config.CHECK_INTERVAL_MINUTES * 60
-            logger.info(f"\n⏳ Next check in {config.CHECK_INTERVAL_MINUTES} minutes...")
+                # Add to deduplicator cache
+                deduplicator.add_hash(news_id, item.get("simhash", ""))
             
-            # Ждём либо ручную проверку, либо таймаут, либо shutdown
-            try:
-                done, pending = await asyncio.wait(
-                    [
-                        asyncio.create_task(manual_check_event.wait()),
-                        asyncio.create_task(shutdown_event.wait()),
-                        asyncio.create_task(asyncio.sleep(interval_seconds))
-                    ],
-                    return_when=asyncio.FIRST_COMPLETED
+            # Resolved filter
+            if config.resolved_filter.enabled:
+                resolved_result = check_resolved(
+                    title=item["title"],
+                    text=item["text"],
+                    hard_resolved_phrases=config.resolved_filter.hard_resolved_phrases,
+                    soft_resolved_words=config.resolved_filter.soft_resolved_words,
+                    allow_if_still_ongoing_words=config.resolved_filter.allow_if_still_ongoing_words,
+                    enabled=True,
+                    trace_id=trace_id
                 )
                 
-                # Отменяем незавершённые задачи
-                for task in pending:
-                    task.cancel()
-                    try:
-                        await task
-                    except asyncio.CancelledError:
-                        pass
+                if not resolved_result.passed:
+                    stats["filtered_resolved"] += 1
+                    async with get_session() as session:
+                        await NewsRepository.update_status(
+                            session, news_id, "filtered_resolved",
+                            decision_code=resolved_result.decision_code
+                        )
+                        await session.commit()
+                    continue
+            
+            # Noise filter
+            if config.noise_filter.enabled:
+                noise_result = check_noise(
+                    title=item["title"],
+                    text=item["text"],
+                    hard_negative_topics=config.noise_filter.hard_negative_topics,
+                    domestic_noise=config.noise_filter.бытовое_шум,
+                    exception_infra_phrases=config.noise_filter.exception_infra_phrases,
+                    enabled=True,
+                    trace_id=trace_id
+                )
                 
-                if shutdown_event.is_set():
-                    break
-                    
-                if manual_check_event.is_set():
-                    manual_check_event.clear()
-                    logger.info("🔔 Manual check triggered!")
-                    
-            except Exception as e:
-                logger.error(f"Error in wait loop: {e}")
-                break
+                if not noise_result.passed:
+                    stats["filtered_noise"] += 1
+                    async with get_session() as session:
+                        await NewsRepository.update_status(
+                            session, news_id, "filtered_noise",
+                            decision_code=noise_result.decision_code
+                        )
+                        await session.commit()
+                    continue
+            
+            # Filter 1 with combo rules
+            passed, filter_result, decision_code = keyword_filter.should_send_to_llm(
+                item["title"],
+                item["text"],
+                require_combo=config.filter1_gate.require_combo_to_llm,
+                event_categories=config.filter1_gate.event_categories_required,
+                object_categories=config.filter1_gate.object_categories_required,
+                trace_id=trace_id
+            )
+            
+            logger.info(
+                "filter1_scored",
+                trace_id=trace_id,
+                news_id=news_id,
+                score=filter_result.score,
+                matched=filter_result.positive_matches[:5],
+                decision_code=decision_code,
+                passed_to_llm=passed
+            )
+            
+            if not passed:
+                if decision_code == "COMBO_RULE_FAILED":
+                    stats["filtered_combo"] += 1
+                else:
+                    stats["filtered_score"] += 1
+                async with get_session() as session:
+                    await NewsRepository.update_status(
+                        session, news_id, "filtered",
+                        filter1_score=filter_result.score,
+                        decision_code=decision_code
+                    )
+                    await session.commit()
+                continue
+            
+            # Check if LLM is available
+            llm_available, llm_skip_reason = llm_client.is_available()
+            if not llm_available:
+                stats["llm_skipped"] += 1
+                logger.warning("llm_unavailable", trace_id=trace_id, reason=llm_skip_reason)
+                async with get_session() as session:
+                    await NewsRepository.update_status(
+                        session, news_id, "llm_skipped",
+                        filter1_score=filter_result.score,
+                        decision_code=llm_skip_reason
+                    )
+                    await session.commit()
+                continue
+            
+            # Filter 2 (LLM)
+            llm_text = prepare_for_llm(item["title"], item["text"])
+            llm_response, llm_raw, llm_error = await llm_client.analyze(
+                title=item["title"],
+                text=llm_text,
+                region=item.get("region"),
+                source=item["source"],
+                trace_id=trace_id
+            )
+            
+            if llm_response:
+                logger.info(
+                    "llm_classified",
+                    trace_id=trace_id,
+                    news_id=news_id,
+                    relevance=llm_response.relevance,
+                    urgency=llm_response.urgency,
+                    action=llm_response.action
+                )
+            else:
+                stats["llm_failed"] += 1
+                logger.warning("llm_failed", trace_id=trace_id, news_id=news_id, error_code=llm_error)
+            
+            # Decision
+            async with get_session() as session:
+                signals_today = await SignalRepository.count_today(session)
+            
+            decision = decide(
+                llm_response=llm_response,
+                filter1_score=filter_result.score,
+                filter1_passed=True,
+                signals_today=signals_today,
+                max_signals_per_day=config.limits.max_signals_per_day,
+                relevance_threshold=config.thresholds.llm_relevance,
+                urgency_threshold=config.thresholds.llm_urgency
+            )
+            
+            status = get_status_from_decision(decision, llm_failed=(llm_response is None))
+            
+            # Update news status with llm_json as TEXT string (per ТЗ)
+            import json as json_module
+            async with get_session() as session:
+                await NewsRepository.update_status(
+                    session, news_id, status,
+                    filter1_score=filter_result.score,
+                    llm_json=json_module.dumps(llm_response.model_dump(), ensure_ascii=False) if llm_response else None,
+                    llm_raw_response=llm_raw  # Store raw LLM output
+                )
+                await session.commit()
+            
+            # Send signal if approved (with atomic limit check)
+            if decision.should_send and broadcaster and llm_response:
+                signal_data = create_signal_from_llm(
+                    llm_response,
+                    title=item["title"],
+                    url=item["url"],
+                    region=item.get("region")
+                )
                 
+                # Atomic signal creation with limit check (per ТЗ)
+                async with get_session() as session:
+                    signal = await SignalRepository.try_create_if_under_limit(
+                        session,
+                        {
+                            "news_id": news_id,
+                            "sent_at": datetime.utcnow(),
+                            "event_type": signal_data["event_type"],
+                            "urgency": signal_data["urgency"],
+                            "object_type": signal_data["object_type"],
+                            "sphere": signal_data["sphere"],
+                            "region": signal_data["region"],
+                            "why": signal_data["why"],
+                            "message_text": signal_data["message_text"],
+                            "recipients_count": 0,
+                        },
+                        max_per_day=config.limits.max_signals_per_day,
+                        timezone_str=settings.app_timezone  # Per ТЗ: APP_TIMEZONE for limits
+                    )
+                    
+                    if signal is None:
+                        # Limit reached atomically - update status
+                        await NewsRepository.update_status(session, news_id, "suppressed_limit")
+                        await session.commit()
+                        logger.info("signal_limit_reached_atomic", news_id=news_id)
+                        continue
+                    
+                    signal_id = signal.id
+                    await session.commit()
+                
+                # Broadcast
+                recipients = await broadcaster.send_signal(signal_data["message_text"])
+                
+                # Update recipients count
+                async with get_session() as session:
+                    from sqlalchemy import update
+                    from db_pkg.models import Signal
+                    await session.execute(
+                        update(Signal).where(Signal.id == signal_id).values(recipients_count=recipients)
+                    )
+                    await session.commit()
+                
+                signals_sent += 1
+                
+                logger.info(
+                    "signal_sent",
+                    news_id=news_id,
+                    signal_id=signal_id,
+                    recipients=recipients
+                )
+        
+        stats["sent"] = signals_sent
+        duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
+        logger.info(
+            "cycle_complete",
+            new_items=len(new_items),
+            signals=signals_sent,
+            duration_ms=duration_ms,
+            filtered_old=stats["filtered_old"],
+            filtered_resolved=stats["filtered_resolved"],
+            filtered_noise=stats["filtered_noise"],
+            filtered_combo=stats["filtered_combo"],
+            filtered_score=stats["filtered_score"],
+            llm_failed=stats["llm_failed"],
+            llm_skipped=stats["llm_skipped"]
+        )
+        
     finally:
-        await notifier.shutdown()
-        logger.info("✅ Shutdown complete")
+        # Release lock
+        async with get_session() as session:
+            await LockRepository.release(session, "processing")
+            await session.commit()
+
+
+# Global state for first start trigger
+_first_search_triggered = False
+_broadcaster_ref = None
+_scheduler_ref = None
+
+
+async def trigger_first_search():
+    """Trigger the first search after /start."""
+    global _first_search_triggered
+    if _first_search_triggered:
+        return False
+    _first_search_triggered = True
+    
+    if _broadcaster_ref:
+        logger.info("first_search_triggered")
+        await process_news_cycle(_broadcaster_ref)
+    return True
+
+
+def is_first_search_done():
+    """Check if first search was triggered."""
+    return _first_search_triggered
+
+
+async def main():
+    """Main entry point."""
+    global logger, _broadcaster_ref, _scheduler_ref
+    
+    # Load settings
+    settings = get_settings()
+    
+    # Setup logging
+    setup_logging(settings.log_level)
+    logger = get_logger("main")
+    
+    logger.info("prsbot_starting", version="1.0.0")
+    
+    # Load config
+    config_loader = get_config_loader()
+    config = config_loader.load()
+    logger.info("config_loaded", sources=len(config.sources))
+    
+    # Initialize database
+    await init_database(settings.database_url)
+    logger.info("database_initialized")
+    
+    # Create bot
+    bot, dp = await create_bot(settings.telegram_bot_token)
+    broadcaster = Broadcaster(bot)
+    _broadcaster_ref = broadcaster
+    logger.info("bot_created")
+    
+    # Setup scheduler (but don't run initial check yet)
+    scheduler = AsyncIOScheduler()
+    scheduler.add_job(
+        process_news_cycle,
+        trigger=IntervalTrigger(minutes=config.schedule.check_interval_minutes),
+        args=[broadcaster],
+        id="news_cycle",
+        name="News Processing Cycle",
+        replace_existing=True,
+    )
+    _scheduler_ref = scheduler
+    
+    # Wait for first /start to trigger initial search
+    logger.info("waiting_for_first_start", message="Bot ready, waiting for first /start command")
+    
+    # Start bot polling
+    logger.info("bot_polling_start")
+    try:
+        # Start scheduler after bot starts (will run on interval)
+        scheduler.start()
+        logger.info("scheduler_started", interval_minutes=config.schedule.check_interval_minutes)
+        
+        await dp.start_polling(bot, drop_pending_updates=True)
+    finally:
+        scheduler.shutdown()
+        await bot.session.close()
+        logger.info("prsbot_shutdown")
 
 
 if __name__ == "__main__":
-    # Устанавливаем обработчики сигналов
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
-    
-    try:
-        config.validate()
-        asyncio.run(main_loop())
-    except KeyboardInterrupt:
-        logger.info("👋 Бот остановлен")
-    except Exception as e:
-        logger.error(f"Fatal error: {e}", exc_info=True)
-        sys.exit(1)
+    asyncio.run(main())
