@@ -47,3 +47,36 @@ def setup_logging(log_level: str = "INFO") -> None:
 def get_logger(name: str = None) -> structlog.BoundLogger:
     """Get a bound logger instance."""
     return structlog.get_logger(name)
+
+
+def bind_trace_id(trace_id: str):
+    """Bind trace_id to current context for all subsequent log calls.
+    
+    Usage:
+        structlog.contextvars.bind_contextvars(trace_id=trace_id)
+        # ... all logs in this context will include trace_id
+        structlog.contextvars.unbind_contextvars("trace_id")
+    """
+    structlog.contextvars.bind_contextvars(trace_id=trace_id)
+
+
+def unbind_trace_id():
+    """Remove trace_id from context."""
+    try:
+        structlog.contextvars.unbind_contextvars("trace_id")
+    except KeyError:
+        pass
+
+
+class TraceContext:
+    """Context manager for trace_id propagation."""
+    
+    def __init__(self, trace_id: str):
+        self.trace_id = trace_id
+    
+    def __enter__(self):
+        bind_trace_id(self.trace_id)
+        return self
+    
+    def __exit__(self, *args):
+        unbind_trace_id()

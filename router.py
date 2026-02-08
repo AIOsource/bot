@@ -3,6 +3,7 @@ from aiogram import Bot, Dispatcher, Router
 
 from user import router as user_router
 from admin import router as admin_router
+from ui_callbacks import router as ui_router
 from logging_setup import get_logger
 
 logger = get_logger("bot.router")
@@ -12,9 +13,10 @@ def setup_routers(dp: Dispatcher) -> None:
     """Setup all routers for the dispatcher."""
     # Include routers (order matters - admin first for priority)
     dp.include_router(admin_router)
+    dp.include_router(ui_router)  # Inline UI callbacks
     dp.include_router(user_router)
     
-    logger.info("bot_routers_setup", routers=["admin", "user"])
+    logger.info("bot_routers_setup", routers=["admin", "ui", "user"])
 
 
 async def create_bot(token: str) -> tuple[Bot, Dispatcher]:

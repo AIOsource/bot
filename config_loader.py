@@ -44,6 +44,7 @@ class ThresholdsConfig(BaseModel):
 class LimitsConfig(BaseModel):
     """System limits."""
     max_signals_per_day: int = 5
+    max_processing_batch: int = 100  # Max news items to process per cycle
 
 
 class DedupConfig(BaseModel):
@@ -73,6 +74,13 @@ class FreshnessConfig(BaseModel):
     fallback_to_collected_at: bool = True
 
 
+class PriorityScoreConfig(BaseModel):
+    """Priority score calculation weights for ranking candidates."""
+    urgency_weight: float = 0.4      # 1-5 scaled to 0-1 
+    relevance_weight: float = 0.4    # 0-1 from LLM
+    filter1_weight: float = 0.2      # Normalized filter1 score
+
+
 class ResolvedFilterConfig(BaseModel):
     """Resolved (already fixed) filter settings."""
     enabled: bool = True
@@ -98,6 +106,12 @@ class Filter1GateConfig(BaseModel):
     require_combo_to_llm: bool = True
     event_categories_required: list[str] = Field(default_factory=lambda: ["accident", "repair"])
     object_categories_required: list[str] = Field(default_factory=lambda: ["infrastructure", "industrial"])
+    strong_event_override_enabled: bool = True
+    strong_event_override_phrases: list[str] = Field(default_factory=lambda: [
+        "авария на водоканале", "прорыв трубопровода", "отключение отопления",
+        "затопление", "ЧП на объекте", "массовое отключение", "разлив нефти",
+        "взрыв на производстве", "обрушение", "пожар на объекте"
+    ])
 
 
 class LLMThrottleConfig(BaseModel):
@@ -107,6 +121,7 @@ class LLMThrottleConfig(BaseModel):
     concurrency: int = 1
     backoff_on_429_seconds: list[int] = Field(default_factory=lambda: [2, 5, 10, 20, 40])
     max_consecutive_429: int = 3
+    max_candidates_after_filter1: int = 200  # Limit candidates sent to LLM
 
 
 class UIMessagesConfig(BaseModel):
@@ -141,6 +156,7 @@ class AppConfig(BaseModel):
     noise_filter: NoiseFilterConfig = Field(default_factory=NoiseFilterConfig)
     filter1_gate: Filter1GateConfig = Field(default_factory=Filter1GateConfig)
     llm_throttle: LLMThrottleConfig = Field(default_factory=LLMThrottleConfig)
+    priority_score: PriorityScoreConfig = Field(default_factory=PriorityScoreConfig)
     ui: UIConfig = Field(default_factory=UIConfig)
 
 
@@ -219,6 +235,47 @@ class ConfigLoader:
         if self._config is None:
             self.load()
         return self._config
+
+    def get_diff(self) -> Dict[str, Dict[str, Any]]:
+        """Get diff between overrides and base config.
+        
+        Returns:
+            Dict[key, {"old": base_val, "new": override_val}]
+        """
+        if not self._config:
+            self.load()
+            
+        diff = {}
+        # Temporarily reload base without overrides to get baseline
+        # (Inefficient but safe)
+        base_loader = ConfigLoader(self.config_path)
+        base_config = base_loader.load()
+        
+        for key, value in self._overrides.items():
+            # Get base value
+            parts = key.split(".")
+            obj = base_config
+            base_val = None
+            
+            try:
+                for part in parts:
+                    if hasattr(obj, part):
+                        obj = getattr(obj, part)
+                    elif isinstance(obj, dict):
+                         obj = obj.get(part)
+                    else:
+                        break
+                else:
+                    base_val = obj
+            except Exception:
+                pass
+                
+            diff[key] = {
+                "base": base_val,
+                "current": value
+            }
+            
+        return diff
 
 
 # Global config loader instance

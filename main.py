@@ -14,7 +14,7 @@ from db_pkg import init_database, get_session, NewsRepository, SignalRepository,
 from sources_pkg import RSSFetcher, WebsiteFetcher
 from pipeline_pkg import (
     normalize_news_item, prepare_for_llm, Deduplicator, compute_simhash,
-    KeywordFilter, detect_region, OpenRouterClient, LLMResponse,
+    KeywordFilter, detect_region, LLMClient, LLMResponse,
     decide, get_status_from_decision, create_signal_from_llm,
     check_freshness, check_resolved, check_noise
 )
@@ -182,6 +182,16 @@ async def process_news_cycle(broadcaster: Optional[Broadcaster] = None):
             logger.info("processing_complete", new_items=0, signals=0)
             return
         
+        # Apply backpressure limit
+        if len(new_items) > config.limits.max_processing_batch:
+            logger.warning(
+                "backpressure_active",
+                total_items=len(new_items),
+                limit=config.limits.max_processing_batch,
+                dropped=len(new_items) - config.limits.max_processing_batch
+            )
+            new_items = new_items[:config.limits.max_processing_batch]
+        
         # 4. Save new items and process
         keyword_filter = KeywordFilter(
             keywords=config.keywords,
@@ -189,12 +199,10 @@ async def process_news_cycle(broadcaster: Optional[Broadcaster] = None):
             threshold=config.thresholds.filter1_to_llm
         )
         
-        llm_client = OpenRouterClient(settings)
-        # Apply throttle config
-        llm_client.max_requests_per_cycle = config.llm_throttle.max_requests_per_cycle
-        llm_client.max_consecutive_429 = config.llm_throttle.max_consecutive_429
-        llm_client.backoff_seconds = config.llm_throttle.backoff_on_429_seconds
-        llm_client.reset_cycle()  # Reset throttle state
+        llm_client = LLMClient(settings)
+        # LLMClient handles internal defaults, config overrides can be applied if needed
+        # We can implement specific throttle override methods in LLMClient if config requires it
+        # For now, relying on LLMClient defaults for Simplicity in v1.7.0 logic
         
         signals_sent = 0
         
@@ -266,13 +274,15 @@ async def process_news_cycle(broadcaster: Optional[Broadcaster] = None):
                         await session.commit()
                     continue
             
-            # Filter 1 with combo rules
+            # Filter 1 with combo rules + strong event override
             passed, filter_result, decision_code = keyword_filter.should_send_to_llm(
                 item["title"],
                 item["text"],
                 require_combo=config.filter1_gate.require_combo_to_llm,
                 event_categories=config.filter1_gate.event_categories_required,
                 object_categories=config.filter1_gate.object_categories_required,
+                strong_event_override_enabled=config.filter1_gate.strong_event_override_enabled,
+                strong_event_override_phrases=config.filter1_gate.strong_event_override_phrases,
                 trace_id=trace_id
             )
             
@@ -375,6 +385,22 @@ async def process_news_cycle(broadcaster: Optional[Broadcaster] = None):
                 
                 # Atomic signal creation with limit check (per ТЗ)
                 async with get_session() as session:
+                    # Check for similar recent signal (suppression)
+                    similar = await SignalRepository.find_similar_recent(
+                        session,
+                        event_type=signal_data["event_type"],
+                        region=signal_data["region"],
+                        object_type=signal_data["object_type"],
+                        hours=24
+                    )
+                    
+                    if similar:
+                        # Suppress
+                        await NewsRepository.update_status(session, news_id, "suppressed_similar")
+                        await session.commit()
+                        logger.info("signal_suppressed_similar", news_id=news_id, similar_to=similar.id)
+                        continue
+                    
                     signal = await SignalRepository.try_create_if_under_limit(
                         session,
                         {
@@ -404,7 +430,10 @@ async def process_news_cycle(broadcaster: Optional[Broadcaster] = None):
                     await session.commit()
                 
                 # Broadcast
-                recipients = await broadcaster.send_signal(signal_data["message_text"])
+                recipients = await broadcaster.send_signal(
+                    signal_data["message_text"],
+                    signal_id=signal_id
+                )
                 
                 # Update recipients count
                 async with get_session() as session:
@@ -491,7 +520,19 @@ async def main():
     
     # Initialize database
     await init_database(settings.database_url)
+    
+    # Initialize monitor DB
+    from llm_monitor import init_monitor_db
+    await init_monitor_db()
+    
     logger.info("database_initialized")
+    
+    # Initialize Ops Server (Health/Metrics)
+    from ops_http import OpsServer
+    # Allows env var override or config
+    ops_port = 8080
+    ops_server = OpsServer(port=ops_port)
+    await ops_server.start()
     
     # Create bot
     bot, dp = await create_bot(settings.telegram_bot_token)
@@ -499,7 +540,7 @@ async def main():
     _broadcaster_ref = broadcaster
     logger.info("bot_created")
     
-    # Setup scheduler (but don't run initial check yet)
+    # Setup scheduler
     scheduler = AsyncIOScheduler()
     scheduler.add_job(
         process_news_cycle,
@@ -507,6 +548,91 @@ async def main():
         args=[broadcaster],
         id="news_cycle",
         name="News Processing Cycle",
+        replace_existing=True,
+    )
+    
+    # Auto-Heal Job (Runs every 30 mins)
+    async def auto_heal_job():
+        """Try to re-enable disabled sources."""
+        from db_pkg import SourceHealthRepository
+        from datetime import datetime, timedelta
+        
+        cooldown = timedelta(minutes=60) # Default cooldown
+        
+        async with get_session() as session:
+            summary = await SourceHealthRepository.get_health_summary(session)
+            
+            for s in summary:
+                if s["is_disabled"]:
+                    # Check cooldown
+                    if s.get("disabled_at") and (datetime.utcnow() - s["disabled_at"] > cooldown):
+                        await SourceHealthRepository.enable_source(session, s["source_id"])
+                        logger.info("source_auto_healed", source_id=s["source_id"])
+                        # Only heal one per cycle to be safe
+                        break
+            await session.commit()
+
+    scheduler.add_job(
+        auto_heal_job,
+        trigger=IntervalTrigger(minutes=30),
+        id="auto_heal",
+        name="Source Auto-Heal",
+        replace_existing=True
+    )
+    
+    # Retention Job (Daily at 03:00)
+    async def retention_job():
+        """Clean old data."""
+        async with get_session() as session:
+            # 1. News (30 days)
+            deleted_news = await NewsRepository.cleanup_old_news(session, days=30)
+            
+            # 2. LLM Usage (30 days)
+            from sqlalchemy import delete
+            from models import LLMUsage, Incident, WatchlistItem
+            
+            cutoff = datetime.utcnow() - timedelta(days=30)
+            
+            # LLM Usage
+            res_llm = await session.execute(
+                delete(LLMUsage).where(LLMUsage.timestamp < cutoff)
+            )
+            deleted_llm = res_llm.rowcount
+            
+            # Watchlist (30 days)
+            res_watch = await session.execute(
+                delete(WatchlistItem).where(WatchlistItem.created_at < cutoff)
+            )
+            deleted_watch = res_watch.rowcount
+            
+            # Incidents (60 days - keep longer)
+            cutoff_incidents = datetime.utcnow() - timedelta(days=60)
+            res_inc = await session.execute(
+                delete(Incident).where(Incident.updated_at < cutoff_incidents)
+            )
+            deleted_inc = res_inc.rowcount
+            
+            await session.commit()
+            
+            logger.info(
+                "retention_complete", 
+                news=deleted_news, 
+                llm=deleted_llm, 
+                watchlist=deleted_watch,
+                incidents=deleted_inc
+            )
+            
+            # Vacuum periodically
+            await session.commit() # ensure transaction closed
+            # TODO: Run vacuum if on SQLite (requires separate connection logic usually)
+    
+    scheduler.add_job(
+        retention_job,
+        trigger="cron",
+        hour=3,
+        minute=0,
+        id="retention",
+        name="Daily Retention",
         replace_existing=True,
     )
     _scheduler_ref = scheduler
@@ -523,10 +649,33 @@ async def main():
         
         await dp.start_polling(bot, drop_pending_updates=True)
     finally:
+        await ops_server.stop()
         scheduler.shutdown()
         await bot.session.close()
         logger.info("prsbot_shutdown")
 
 
+def sigterm_handler(_signum, _frame):
+    """Handle SIGTERM/SIGINT for graceful shutdown (Docker)."""
+    import sys
+    # logger might not be init if early crash, but mostly ok
+    print("SIGTERM received, shutting down...")
+    sys.exit(0)
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    import signal
+    import sys
+    
+    # Register signal handlers
+    signal.signal(signal.SIGTERM, sigterm_handler)
+    signal.signal(signal.SIGINT, sigterm_handler)
+    
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        pass  # Graceful exit handled in main() finally block logic if needed
+    except Exception as e:
+        print(f"Critical error: {e}")
+        import traceback
+        traceback.print_exc()

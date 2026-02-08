@@ -1,4 +1,4 @@
-"""Environment settings with pydantic-settings."""
+from pathlib import Path
 from pydantic_settings import BaseSettings
 from pydantic import Field
 from functools import lru_cache
@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     # Telegram
     telegram_bot_token: str = Field(..., description="Telegram Bot API token")
     admin_chat_id: int = Field(..., description="Admin Telegram chat ID")
+    allowed_user_ids: list[int] = Field(default=[], description="List of user IDs allowed to access UI")
     
     # OpenRouter LLM
     openrouter_api_key: str = Field(..., description="OpenRouter API key")
@@ -31,7 +32,7 @@ class Settings(BaseSettings):
     log_level: str = Field(default="INFO", description="Logging level")
     
     model_config = {
-        "env_file": ".env",
+        "env_file": str(Path(__file__).parent / ".env"),
         "env_file_encoding": "utf-8",
         "case_sensitive": False,
     }

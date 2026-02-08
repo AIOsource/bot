@@ -2,7 +2,7 @@
 from typing import Optional
 from dataclasses import dataclass
 
-from llm import LLMResponse, EVENT_TYPE_RU, OBJECT_TYPE_RU
+from llm import LLMResponse
 from logging_setup import get_logger
 
 logger = get_logger("pipeline.decision")

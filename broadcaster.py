@@ -107,11 +107,17 @@ class Broadcaster:
     async def send_signal(
         self,
         message_text: str,
+        signal_id: Optional[int] = None,
         exclude_chat_ids: Optional[List[int]] = None
     ) -> int:
         """
         Send signal to all active subscribers.
         
+        Args:
+            message_text: Signal text
+            signal_id: Signal ID for feedback buttons (admin only)
+            exclude_chat_ids: List of chat IDs to exclude
+            
         Returns:
             Number of recipients
         """
@@ -128,8 +134,9 @@ class Broadcaster:
         sent, _ = await self._send_to_list(
             recipients,
             message_text,
+            signal_id=signal_id,
             parse_mode="HTML",
-            disable_web_page_preview=False  # Show link preview for signals
+            disable_web_page_preview=False
         )
         
         return sent
@@ -138,24 +145,43 @@ class Broadcaster:
         self,
         subscribers: List[Subscriber],
         text: str,
+        signal_id: Optional[int] = None,
         parse_mode: str = "HTML",
         disable_web_page_preview: bool = True
     ) -> tuple[int, int]:
         """Send to specific list of subscribers."""
+        from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+        from settings import get_settings
+        
+        settings = get_settings()
+        admin_id = settings.admin_chat_id
+        
+        # Prepare admin keyboard
+        admin_kb = None
+        if signal_id:
+            admin_kb = InlineKeyboardMarkup(inline_keyboard=[[
+                InlineKeyboardButton(text="👍", callback_data=f"fb1:good:{signal_id}"),
+                InlineKeyboardButton(text="👎", callback_data=f"fb1:bad:{signal_id}")
+            ]])
+            
         sent = 0
         failed = 0
         deactivated = []
         
         for subscriber in subscribers:
             try:
+                # Attach keyboard only for admin
+                reply_markup = admin_kb if subscriber.chat_id == admin_id else None
+                
                 await self.bot.send_message(
                     chat_id=subscriber.chat_id,
                     text=text,
                     parse_mode=parse_mode,
-                    disable_web_page_preview=disable_web_page_preview
+                    disable_web_page_preview=disable_web_page_preview,
+                    reply_markup=reply_markup
                 )
                 sent += 1
-                
+
             except TelegramForbiddenError:
                 deactivated.append(subscriber.chat_id)
                 failed += 1

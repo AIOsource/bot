@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  prsbot:
+    build: .
+    container_name: prsbot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - TZ=Europe/Moscow
+      - DATABASE_URL=sqlite+aiosqlite:///data/prsbot.db
+    volumes:
+      - prsbot_data:/app/data
+      - ./config:/app/config:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import main; print('ok')"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  prsbot_data:
+    driver: local

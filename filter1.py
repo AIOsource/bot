@@ -107,6 +107,8 @@ class KeywordFilter:
         require_combo: bool = False,
         event_categories: List[str] = None,
         object_categories: List[str] = None,
+        strong_event_override_enabled: bool = False,
+        strong_event_override_phrases: List[str] = None,
         trace_id: str = ""
     ) -> Tuple[bool, FilterResult, str]:
         """
@@ -118,6 +120,8 @@ class KeywordFilter:
             require_combo: If True, require both event and object categories
             event_categories: List of event categories (accident, repair)
             object_categories: List of object categories (infrastructure, industrial)
+            strong_event_override_enabled: If True, bypass combo if strong phrase found
+            strong_event_override_phrases: List of phrases that bypass combo rule
             trace_id: Trace ID for logging
         
         Returns:
@@ -138,6 +142,20 @@ class KeywordFilter:
             has_object = any(cat in result.categories_matched for cat in object_categories)
             
             if not (has_event and has_object):
+                # Check for strong event override BEFORE failing
+                if strong_event_override_enabled and strong_event_override_phrases:
+                    combined_lower = combined.lower()
+                    for phrase in strong_event_override_phrases:
+                        if phrase.lower() in combined_lower:
+                            logger.info(
+                                "filter1_strong_override",
+                                trace_id=trace_id,
+                                matched_phrase=phrase,
+                                categories_matched=result.categories_matched
+                            )
+                            decision_code = "STRONG_OVERRIDE"
+                            return True, result, decision_code
+                
                 decision_code = "COMBO_RULE_FAILED"
                 logger.info(
                     "combo_rule_failed",

@@ -9,7 +9,9 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 
 from db_pkg import get_session, SubscriberRepository
+from settings import get_settings
 from logging_setup import get_logger
+from ui_callbacks import show_panel
 
 logger = get_logger("bot.user")
 router = Router(name="user")
@@ -25,7 +27,10 @@ def mask_chat_id(chat_id: int) -> str:
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    """Handle /start command - subscribe user and trigger first search."""
+    """Handle /start command - subscribe user and show welcome."""
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    from ui_keyboards import cb
+    
     chat_id = message.chat.id
     
     async with get_session() as session:
@@ -46,61 +51,38 @@ async def cmd_start(message: Message):
         "user_command",
         chat_id=mask_chat_id(chat_id),
         command="/start",
-        result="subscribed" if created else "already_subscribed",
-        is_admin=False
+        result="subscribed" if created else "already_subscribed"
     )
     
-    # Check if this is the first /start that triggers search
-    from ..main import trigger_first_search, is_first_search_done
-    
-    if not is_first_search_done():
-        # Notify about search time
-        await message.answer(
-            "Привет. Вы подписаны на сигналы.\n\n"
-            "⏳ Запускаю первичный поиск новостей...\n"
-            "Это займёт от 2 до 8 минут.\n"
-            "Я пришлю уведомление, когда закончу."
-        )
-        
-        # Trigger first search in background
-        asyncio.create_task(_run_first_search_and_notify(message))
-    else:
-        if created:
-            # New subscriber after first search already done
-            text = (
-                "Привет. Вы подписаны на сигналы.\n"
-                "Я мониторю открытые новости по РФ и присылаю только значимые события "
-                "по ЖКХ/промышленности (аварии/остановки/ремонты).\n"
-                "Лимит: до 5 сигналов в сутки.\n\n"
-                "Команды: /status /stop /help /privacy"
-            )
-        else:
-            text = (
-                "Подписка уже активна.\n"
-                "Команды: /status /stop /help /privacy"
-            )
-        await message.answer(text)
+    # Show welcome
+    await message.answer(
+        "👋 <b>Добро пожаловать в PRSBOT</b>\n\n"
+        "Система мониторинга инфраструктурных событий.\n"
+        "✅ Подписка активирована.\n"
+        "📩 Лимит: 5 сигналов в сутки.",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="▶️ Продолжить", callback_data=cb("main"))]
+        ]),
+        parse_mode="HTML"
+    )
 
 
-async def _run_first_search_and_notify(message: Message):
-    """Run first search and notify user when done."""
-    from ..main import trigger_first_search
+@router.message(Command("menu"))
+async def cmd_menu(message: Message):
+    """Show inline menu panel."""
+    from ui_callbacks import is_allowed
     
-    try:
-        await trigger_first_search()
-        await message.answer(
-            "✅ Первичный поиск завершён!\n\n"
-            "Теперь бот работает в автоматическом режиме.\n"
-            "Проверка источников: каждые 30 минут.\n"
-            "Лимит сигналов: 5/сутки.\n\n"
-            "Команды: /status /stop /help /privacy"
-        )
-    except Exception as e:
-        logger.error("first_search_failed", error=str(e))
-        await message.answer(
-            "⚠️ Ошибка при первичном поиске.\n"
-            "Бот продолжит работу в автоматическом режиме."
-        )
+    # Check permissions in groups
+    if message.chat.type in ("group", "supergroup"):
+        if not is_allowed(message.from_user.id):
+            # Silent ignore or minimal notice
+            return
+
+    logger.info("user_command", chat_id=mask_chat_id(message.chat.id), command="/menu")
+    await show_panel(message)
+
+
+
 
 
 @router.message(Command("stop"))

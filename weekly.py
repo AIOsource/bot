@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 from collections import Counter
 
 from db_pkg import get_session, NewsRepository, SignalRepository
-from db_pkg.models import Signal
+from models import Signal, News
 from logging_setup import get_logger
 
 logger = get_logger("reports.weekly")
@@ -25,7 +25,6 @@ async def generate_weekly_report() -> str:
         Formatted report text
     """
     from sqlalchemy import select, func
-    from db_pkg.models import News
     
     async with get_session() as session:
         cutoff = datetime.utcnow() - timedelta(days=7)

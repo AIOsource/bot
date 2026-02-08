@@ -66,7 +66,11 @@ class RSSFetcher:
             ) as client:
                 response = await client.get(
                     source.url,
-                    headers={"User-Agent": get_user_agent(hash(source.id) % len(USER_AGENTS))}
+                    headers={
+                        "User-Agent": get_user_agent(hash(source.id) % len(USER_AGENTS)),
+                        "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+                        "Accept": "application/rss+xml, application/xml, text/xml, */*"
+                    }
                 )
                 
                 if response.status_code != 200:
