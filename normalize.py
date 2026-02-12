@@ -40,13 +40,19 @@ def normalize_news_item(
     if len(text) < 50:
         text = title
     
+    # Strip timezone from published_at — RSS feeds return tz-aware dates
+    # but SQLite/internal code uses naive UTC datetimes
+    pub_at = item.get("published_at")
+    if pub_at is not None and hasattr(pub_at, 'tzinfo') and pub_at.tzinfo is not None:
+        pub_at = pub_at.replace(tzinfo=None)
+
     return {
         "title": title[:1000],  # Limit title length
         "text": text,
         "source": item.get("source_name", "unknown"),
         "url": url,
         "url_normalized": url_normalized,
-        "published_at": item.get("published_at"),
+        "published_at": pub_at,
         "region": item.get("region_hint"),  # Initial region from source
         "status": "raw",
     }

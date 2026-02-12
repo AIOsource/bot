@@ -1,0 +1,1075 @@
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T18:53:17.195751Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T18:53:17.228524Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T18:53:17.441485Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T18:53:17.542403Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T18:53:17.978471Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T18:53:17.978471Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T18:53:17.996561Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T18:53:17.996561Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T18:53:18.005383Z"}
+Start polling
+Polling stopped
+{"event": "prsbot_shutdown", "level": "info", "timestamp": "2026-02-12T18:53:29.395391Z"}
+Critical error: HTTP Client says - ClientConnectorDNSError: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1562, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1178, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 40, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 905, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\aiohttp.py", line 167, in make_request
+    async with session.post(
+               ^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1510, in __aenter__
+    self._resp: _RetType = await self._coro
+                           ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 779, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 734, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 672, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1239, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1568, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Desktop\Project\main.py", line 704, in <module>
+    asyncio.run(main())
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\Project\main.py", line 679, in main
+    await dp.start_polling(bot, drop_pending_updates=True)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 621, in start_polling
+    await asyncio.gather(*done)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 377, in _polling
+    user: User = await bot.me()
+                 ^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 358, in me
+    self._me = await self.get_me()
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 1794, in get_me
+    return await self(call, request_timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 484, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 259, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\aiohttp.py", line 176, in make_request
+    raise TelegramNetworkError(method=method, message=f"{type(e).__name__}: {e}")
+aiogram.exceptions.TelegramNetworkError: HTTP Client says - ClientConnectorDNSError: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T18:53:46.280322Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T18:53:46.322564Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T18:53:46.369418Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T18:53:46.453053Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T18:53:46.910121Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T18:53:46.910121Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T18:53:46.920043Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T18:53:46.920043Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T18:53:46.922651Z"}
+Start polling
+Run polling for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T18:53:51.154469Z"}
+Update id=441558243 is handled. Duration 547 ms by bot id=7709887569
+Update id=441558244 is handled. Duration 467 ms by bot id=7709887569
+Update id=441558245 is not handled. Duration 3047 ms by bot id=7709887569
+Cause exception while process update id=441558245 by bot id=7709887569
+TelegramBadRequest: Telegram server says - Bad Request: can't parse entities: Unsupported start tag "url" at byte offset 332
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 320, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 164, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\fsm\middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 283, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 189, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 181, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\Project\admin.py", line 29, in cmd_admin
+    await message.answer(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\methods\base.py", line 82, in emit
+    return await bot(self)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 484, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 259, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\aiohttp.py", line 177, in make_request
+    response = self.check_response(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 121, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: can't parse entities: Unsupported start tag "url" at byte offset 332
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T18:54:12.424440Z"}
+Update id=441558246 is handled. Duration 250 ms by bot id=7709887569
+{"chat_id": "...6595", "command": "/status", "result": "active", "is_admin": false, "event": "user_command", "level": "info", "timestamp": "2026-02-12T18:54:17.961547Z"}
+Update id=441558247 is handled. Duration 405 ms by bot id=7709887569
+{"action": "stats", "admin_id": 5413256595, "event": "admin_action", "level": "info", "timestamp": "2026-02-12T18:54:23.651510Z"}
+Update id=441558248 is handled. Duration 375 ms by bot id=7709887569
+SIGTERM received, shutting down...
+Polling stopped
+Polling stopped for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"event": "prsbot_shutdown", "level": "info", "timestamp": "2026-02-12T18:54:33.825909Z"}
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T18:59:32.883421Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T18:59:32.922027Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T18:59:32.970497Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T18:59:33.048577Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T18:59:33.481572Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T18:59:33.481572Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T18:59:33.490780Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T18:59:33.492382Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T18:59:33.493383Z"}
+Start polling
+Run polling for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"action": "stats", "admin_id": 5413256595, "event": "admin_action", "level": "info", "timestamp": "2026-02-12T18:59:34.033415Z"}
+Update id=441558249 is handled. Duration 905 ms by bot id=7709887569
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T18:59:43.640988Z"}
+Update id=441558250 is handled. Duration 562 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "main", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T18:59:46.742619Z"}
+Update id=441558251 is handled. Duration 702 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "refresh", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T18:59:51.284848Z"}
+Update id=441558252 is handled. Duration 77 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "refresh", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T18:59:53.265233Z"}
+Update id=441558253 is handled. Duration 422 ms by bot id=7709887569
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T19:02:42.462428Z"}
+Update id=441558254 is handled. Duration 155 ms by bot id=7709887569
+SIGTERM received, shutting down...
+Polling stopped for bot @MyCopyXbot id=7709887569 - 'БОТ'
+Polling stopped
+{"event": "prsbot_shutdown", "level": "info", "timestamp": "2026-02-12T19:02:45.348463Z"}
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T19:02:52.377012Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T19:02:52.413200Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T19:02:52.457319Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T19:02:52.530678Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T19:02:52.967748Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T19:02:52.967748Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T19:02:52.976876Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T19:02:52.976876Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T19:02:52.978712Z"}
+Start polling
+Run polling for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T19:02:55.348212Z"}
+Update id=441558255 is handled. Duration 407 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "main", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:00.368844Z"}
+{"user_id": 5413256595, "screen": "main", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:16.368884Z"}
+Update id=441558257 is handled. Duration 1140 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "about", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:22.781921Z"}
+Update id=441558258 is handled. Duration 718 ms by bot id=7709887569
+Update id=441558256 is not handled. Duration 26625 ms by bot id=7709887569
+Cause exception while process update id=441558256 by bot id=7709887569
+TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 320, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 164, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\fsm\middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 283, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 189, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 181, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 120, in handle_ui_callback
+    await edit_panel(callback, text, main_menu_kb(admin))
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 63, in edit_panel
+    await callback.answer()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\methods\base.py", line 82, in emit
+    return await bot(self)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 484, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 259, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\aiohttp.py", line 177, in make_request
+    response = self.check_response(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 121, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+{"user_id": 5413256595, "screen": "main", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:32.759290Z"}
+Update id=441558259 is handled. Duration 1156 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "stats", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:34.034778Z"}
+Update id=441558260 is handled. Duration 593 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "stats", "action": "period", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:37.255065Z"}
+Update id=441558261 is handled. Duration 281 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "stats", "action": "period", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:39.028443Z"}
+Update id=441558262 is handled. Duration 1094 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "stats_sources", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:03:40.984347Z"}
+Update id=441558263 is handled. Duration 515 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "main", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:04:02.760480Z"}
+Update id=441558264 is handled. Duration 953 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "health", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:04:05.149573Z"}
+Update id=441558265 is handled. Duration 188 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "health", "action": "refresh", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:04:07.457734Z"}
+Update id=441558266 is handled. Duration 296 ms by bot id=7709887569
+{"user_id": 5413256595, "screen": "main", "action": "nav", "is_admin": true, "is_allowed": true, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:04:11.432853Z"}
+Update id=441558267 is handled. Duration 202 ms by bot id=7709887569
+SIGTERM received, shutting down...
+Polling stopped
+Polling stopped for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"event": "prsbot_shutdown", "level": "info", "timestamp": "2026-02-12T19:04:15.830439Z"}
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T19:08:40.879967Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T19:08:40.916258Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T19:08:40.963447Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T19:08:41.043186Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T19:08:41.491500Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T19:08:41.491500Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T19:08:41.499751Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T19:08:41.499751Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T19:08:41.500759Z"}
+Start polling
+Run polling for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T19:08:44.788886Z"}
+Update id=441558268 is handled. Duration 406 ms by bot id=7709887569
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:08:47.808758Z"}
+Update id=441558269 is handled. Duration 312 ms by bot id=7709887569
+{"screen": "check", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:08:51.184514Z"}
+Update id=441558270 is handled. Duration 1077 ms by bot id=7709887569
+{"screen": "check", "action": "refresh", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:08:55.518636Z"}
+Update id=441558271 is handled. Duration 891 ms by bot id=7709887569
+{"screen": "check", "action": "refresh", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:08:57.185567Z"}
+Update id=441558272 is handled. Duration 609 ms by bot id=7709887569
+SIGTERM received, shutting down...
+Polling stopped for bot @MyCopyXbot id=7709887569 - 'БОТ'
+Polling stopped
+{"event": "prsbot_shutdown", "level": "info", "timestamp": "2026-02-12T19:13:16.096356Z"}
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T19:13:23.038793Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T19:13:23.074501Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T19:13:23.117548Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T19:13:23.195950Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T19:13:23.625449Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T19:13:23.625449Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T19:13:23.634790Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T19:13:23.635011Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T19:13:23.636173Z"}
+Start polling
+Run polling for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T19:13:25.609618Z"}
+Update id=441558273 is handled. Duration 390 ms by bot id=7709887569
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:13:27.123688Z"}
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T19:13:39.767545Z"}
+Update id=441558275 is handled. Duration 1172 ms by bot id=7709887569
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:13:42.677467Z"}
+Update id=441558274 is not handled. Duration 19640 ms by bot id=7709887569
+Cause exception while process update id=441558274 by bot id=7709887569
+TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 320, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 164, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\fsm\middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 283, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 189, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 181, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 116, in handle_ui_callback
+    await edit_panel(callback, text, main_menu_kb(admin))
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 68, in edit_panel
+    await callback.answer()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\methods\base.py", line 82, in emit
+    return await bot(self)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 484, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 259, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\aiohttp.py", line 177, in make_request
+    response = self.check_response(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 121, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+SIGTERM received, shutting down...
+Polling stopped
+Update id=441558276 is not handled. Duration 16015 ms by bot id=7709887569
+Polling stopped for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"event": "prsbot_shutdown", "level": "info", "timestamp": "2026-02-12T19:13:58.951833Z"}
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T19:14:06.267500Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T19:14:06.302461Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T19:14:06.347437Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T19:14:06.419641Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T19:14:06.851249Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T19:14:06.851249Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T19:14:06.861825Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T19:14:06.861825Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T19:14:06.863839Z"}
+Start polling
+Run polling for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T19:14:12.635664Z"}
+Update id=441558277 is handled. Duration 500 ms by bot id=7709887569
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:14:15.150812Z"}
+Update id=441558278 is not handled. Duration 19844 ms by bot id=7709887569
+Cause exception while process update id=441558278 by bot id=7709887569
+TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 320, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 164, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\fsm\middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 283, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 189, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 181, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 116, in handle_ui_callback
+    await edit_panel(callback, text, main_menu_kb(admin))
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 68, in edit_panel
+    await callback.answer()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\methods\base.py", line 82, in emit
+    return await bot(self)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 484, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 259, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\aiohttp.py", line 177, in make_request
+    response = self.check_response(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 121, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+SIGTERM received, shutting down...
+Polling stopped for bot @MyCopyXbot id=7709887569 - 'БОТ'
+Polling stopped
+{"event": "prsbot_shutdown", "level": "info", "timestamp": "2026-02-12T19:14:37.840912Z"}
+PS C:\Users\user\Desktop\Project> python main.py
+{"version": "2.0.0", "event": "prsbot_starting", "level": "info", "timestamp": "2026-02-12T19:14:46.557830Z"}
+{"sources": 35, "event": "config_loaded", "level": "info", "timestamp": "2026-02-12T19:14:46.597056Z"}
+{"event": "database_initialized", "level": "info", "timestamp": "2026-02-12T19:14:46.641154Z"}
+{"host": "0.0.0.0", "port": 8080, "event": "ops_server_started", "level": "info", "timestamp": "2026-02-12T19:14:46.726985Z"}
+{"routers": ["admin", "ui", "user"], "event": "bot_routers_setup", "level": "info", "timestamp": "2026-02-12T19:14:47.254581Z"}
+{"event": "bot_created", "level": "info", "timestamp": "2026-02-12T19:14:47.255588Z"}
+{"message": "Bot ready, waiting for first /start command", "event": "waiting_for_first_start", "level": "info", "timestamp": "2026-02-12T19:14:47.266779Z"}
+{"event": "bot_polling_start", "level": "info", "timestamp": "2026-02-12T19:14:47.266779Z"}
+{"interval_minutes": 30, "event": "scheduler_started", "level": "info", "timestamp": "2026-02-12T19:14:47.267789Z"}
+Start polling
+Run polling for bot @MyCopyXbot id=7709887569 - 'БОТ'
+{"chat_id": "...6595", "command": "/start", "result": "already_subscribed", "event": "user_command", "level": "info", "timestamp": "2026-02-12T19:14:48.695578Z"}
+Update id=441558279 is handled. Duration 515 ms by bot id=7709887569
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:14:49.910885Z"}
+Update id=441558280 is handled. Duration 233 ms by bot id=7709887569
+{"screen": "check", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:14:53.318443Z"}
+Update id=441558281 is handled. Duration 219 ms by bot id=7709887569
+{"screen": "check", "action": "run", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:14:54.778015Z"}
+{"sources_count": 33, "event": "fetch_start", "level": "info", "timestamp": "2026-02-12T19:14:55.017540Z"}
+{"source": "Google News - \u043f\u0440\u043e\u043c\u044b\u0448\u043b\u0435\u043d\u043d\u0430\u044f \u0430\u0432\u0430\u0440\u0438\u044f", "items": 47, "duration_ms": 8187, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:06.173104Z"}
+{"source": "E1.RU \u0415\u043a\u0430\u0442\u0435\u0440\u0438\u043d\u0431\u0443\u0440\u0433", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:06.173657Z"}
+{"source": "Mos.ru \u041d\u043e\u0432\u043e\u0441\u0442\u0438", "items": 10, "duration_ms": 5477, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:07.387036Z"}
+{"source": "\u041c\u0438\u043d\u0441\u0442\u0440\u043e\u0439 \u0420\u0424", "status_code": 401, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:07.396763Z"}
+{"source": "\u0411\u0438\u0437\u043d\u0435\u0441 Online", "status_code": 404, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:07.397309Z"}
+{"source": "\u041a\u041f \u0421\u041f\u0431", "status_code": 404, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:07.397309Z"}
+{"source": "Google News - \u043f\u0440\u043e\u0440\u044b\u0432 \u0442\u0440\u0443\u0431\u044b", "items": 100, "duration_ms": 11862, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:07.479989Z"}
+{"source": "NN.RU", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:07.480993Z"}
+{"source": "74.ru \u0427\u0435\u043b\u044f\u0431\u0438\u043d\u0441\u043a", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:07.480993Z"}
+{"source": "Google News - \u041a\u041d\u0421 \u0412\u041d\u0421 \u0430\u0432\u0430\u0440\u0438\u044f", "items": 75, "duration_ms": 9025, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:07.539427Z"}
+{"source": "Google News - \u043f\u0440\u043e\u0440\u044b\u0432 \u0442\u0435\u043f\u043b\u043e\u0442\u0440\u0430\u0441\u0441\u044b", "items": 68, "duration_ms": 13643, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:11.200073Z"}
+{"source": "Google News - \u0430\u0432\u0430\u0440\u0438\u044f \u0422\u042d\u0426", "items": 76, "duration_ms": 14643, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:11.293436Z"}
+{"source": "Google News - \u043a\u043e\u0442\u0435\u043b\u044c\u043d\u0430\u044f \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0430", "items": 76, "duration_ms": 12383, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:11.379481Z"}
+{"source": "Google News - \u0430\u0432\u0430\u0440\u0438\u044f \u043a\u043e\u0442\u0435\u043b\u044c\u043d\u043e\u0439", "items": 100, "duration_ms": 15375, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:11.464376Z"}
+{"source": "Google News - \u0430\u0432\u0430\u0440\u0438\u044f \u041a\u041d\u0421", "items": 61, "duration_ms": 14383, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:11.513458Z"}
+{"source": "Google News - \u043e\u0447\u0438\u0441\u0442\u043d\u044b\u0435 \u0441\u043e\u043e\u0440\u0443\u0436\u0435\u043d\u0438\u044f", "items": 63, "duration_ms": 12189, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:11.627430Z"}
+{"source": "Google News - \u0430\u0432\u0430\u0440\u0438\u044f \u0432\u043e\u0434\u043e\u043a\u0430\u043d\u0430\u043b\u0430", "items": 100, "duration_ms": 16704, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:11.724751Z"}
+{"source": "URA.RU", "items": 170, "duration_ms": 12386, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:13.222213Z"}
+{"source": "NGS \u041d\u043e\u0432\u043e\u0441\u0438\u0431\u0438\u0440\u0441\u043a", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:13.831097Z"}
+{"source": "161.ru \u0420\u043e\u0441\u0442\u043e\u0432", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:13.980030Z"}
+{"source": "59.ru \u041f\u0435\u0440\u043c\u044c", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.010495Z"}
+{"source": "\u041e\u0431\u043b\u0430\u0441\u0442\u043d\u0430\u044f \u0433\u0430\u0437\u0435\u0442\u0430", "items": 10, "duration_ms": 12664, "event": "fetch_rss_ok", "level": "info", "timestamp": "2026-02-12T19:15:14.055507Z"}
+{"source": "63.ru \u0421\u0430\u043c\u0430\u0440\u0430", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.058672Z"}
+{"source": "76.ru \u042f\u0440\u043e\u0441\u043b\u0430\u0432\u043b\u044c", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.061316Z"}
+{"source": "Sakhalin.info", "status_code": 403, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.137270Z"}
+{"source": "72.ru \u0422\u044e\u043c\u0435\u043d\u044c", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.140292Z"}
+{"source": "36on.ru", "status_code": 404, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.180044Z"}
+{"source": "\u0411\u0430\u0448\u0418\u043d\u0444\u043e\u0440\u043c", "status_code": 404, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.287527Z"}
+{"source": "NGS \u041e\u043c\u0441\u043a", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.888243Z"}
+{"source": "NGS \u041a\u0440\u0430\u0441\u043d\u043e\u044f\u0440\u0441\u043a", "status_code": 428, "event": "fetch_rss_error", "level": "warning", "timestamp": "2026-02-12T19:15:14.946302Z"}
+{"source": "\u0424\u043e\u043d\u0442\u0430\u043d\u043a\u0430.\u0440\u0443", "event": "fetch_rss_timeout", "level": "warning", "timestamp": "2026-02-12T19:15:20.244113Z"}
+{"source": "\u041a\u0443\u0431\u0430\u043d\u044c 24", "event": "fetch_rss_timeout", "level": "warning", "timestamp": "2026-02-12T19:15:28.224684Z"}
+{"source": "V1.ru \u0412\u043e\u043b\u0433\u043e\u0433\u0440\u0430\u0434", "event": "fetch_rss_timeout", "level": "warning", "timestamp": "2026-02-12T19:15:28.256300Z"}
+{"sources": 33, "items": 956, "duration_ms": 33239, "event": "fetch_all_complete", "level": "info", "timestamp": "2026-02-12T19:15:28.256921Z"}
+{"source": "\u041c\u0427\u0421 \u0420\u043e\u0441\u0441\u0438\u0438", "error": "", "event": "fetch_web_error", "level": "error", "timestamp": "2026-02-12T19:15:43.802666Z"}
+{"source": "\u0420\u043e\u0441\u0442\u0435\u0445\u043d\u0430\u0434\u0437\u043e\u0440", "items": 0, "event": "fetch_web_ok", "level": "info", "timestamp": "2026-02-12T19:15:45.606075Z"}
+{"items": 956, "event": "fetch_complete", "level": "info", "timestamp": "2026-02-12T19:15:45.607085Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1XaE9NdFlqTDBPaW1tRkh6YlFEMHlHd1c5WXZRT1JkZzBJdUhaNUhSZmdqSUdHZ2U4MmdvWDJJTjVZMkVuYUxSZlVuTERmQVh6cUZONjNmb2c?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.616968Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE93RXBIZHFCMXlMN2hTcFpSMlNvQ3FrVFcwWi1PLWpkc05EeEZTRVRCb1RlNWg3LWZTNk5aMzZ5RnZSc3dzUUhCTUxRZFR6V2Vu0gFWQVVfeXFMTmxpMzdMTGpuQUFoMjBJQk9jaEtPalFQZHYyanJEWV9qbHkyekRUUkVxWkViSzlHMjI5aXpZSGlleXFwaG5CdnVBN2ppR0ZMVnZPajBNbEE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.618619Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE11TzdodVYyNVJXSmJmVFNkR0ViVHhhY2hRc1pCcHp2aE1UNmRycDJJSVNTd05ISFN6WUVxc2VwanpxUjFG?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.620638Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOaVVGTncxeXhVYS1uWmZGLW1iMEY4NnlFWGlGcF82WnR3ejc3SW1OQjE3S0g5bVJ0bURUa3VaeHhlVXdmcmZIM0d5ZlVxN2ZvWkRzUGhSZ0swVFl4WWgyUVVnUTB4STJDRDlrdVVFOUFrNTVrT19uTlpIZUFIeDdLZFBRcVhNVjBGNldYLWNTZnV0ZzRvSnJBRUhtSll4THo5SERrUA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.622759Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBER214R05pdkxVSnY4ZWl5Yk1UaGptTW9BblBKdmJ2d05CQXU1X1VZTzRjY2NqN3R1UHJPaFhLWlh0VHM1bWpESXloZWREUmc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.624951Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPQkExNjQwSEFLTkNQY2xGT1JrQ3RlT1VZU0p6aDZtdmQ3N0xUa1RSdEhVOXZtdDFsSmJ4anJreEQ5S1VMUGZONUh4OU1EbmpocTFlTnpMQWtVN0IzMmpWX0hTSWxPeVdNLWhPeEJNVE4yOW9TZTl1bEJHV0FMa1NidHNycDZWN3ZaVkpGei11V1J1ck9rU2M4QzlOVUxzNGJvYjdINGlWeXViUVZvamdiUVdkRXRuNnFyVnc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.626962Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBQUHF5WG5ISWJzM0NoOGlydGJNYkwxQ21kak85b0U3ZVNlOC02R0QxQlFYblBLb3hCUThtVldYck9yZ3RBUTdjRmZHaF9JRjQ2aXc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.628466Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFA0Rl9uRHlpR0pjMjd1UDFjZTBWZVFlTTAxZTNqQ0tMVjNLYndTSFJaSkg3S0IxeWR1Vy1wVE1wNy10aElXakFQUWt2eGhsTGt3cXc4Z2RWZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.631681Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOOElJMkdfWlFQaE83WG9OMTk0aFRHRnBnUmI2YWY3LTR0bEg2eDBwYUJXamNZVXRLdWVXSHBvdFcyUEViYmVNT0I5TnZGME43eldSeDNWYnZ6T1NMd0p3LW1ORHltX2pTSHVxNWNWckdwVW15SnVGaExKekxmb2lOd3pjOFhma3BNSk5acU5Ia09Vbk92aEF6dS1OLVZSVzVpOUwzWXZBcXQzWkF6ZWROUDY4NFJlTG1rTHdrQ0ItQ055UUNZbFRQaTVn?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.633731Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQc1JqcGRzb2pmUE0tRFh4RTRJM1VjUGRzTVA1d2RHVWVCcXpwMjZvZVhqZDJHb1hiWDFRQ1JGbzNzZHJyUURNMGJ0alJrWm5ydFpvQmQ0bVVzYUZZTXV6c1ZrbW9rTzBuWVhudXE1TGJsdW1tcFhiYndsRHc4dmJPV2E1TlVUYTZrQ0FCWk4xWmFwVzM1ZTc0d1N0Y1RjRmxfMVRIMktHSEVoWEtTSnlGbmRZMEI?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.635742Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPbjY5ZkFWeGdwc2dvZjhtTGZVRkRWX1ZOUVl5QnBSTGYyWVhyQzdRMElnWW1jUUxZOGlWeWE5Ul9BYmVIeFVGallodVp6RE1aVDJmSi1hZTQwdTM2bzN1S3NXR3BvU24zdV9RVmF1LWVCUVYwRDBlcUMxNlVVNlFHQ0pyS202TFp2NExMbEVGamRxTTF3d2t2UA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.637310Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBsdFNMd1UwejJUNm9xOENDbm9lUmJLX0RybTFCcVRIYXVyczZKREJROGdGckVNUXRNMWJQYXBhX1BTT2FDaEx1UUdBVzRaLVpROHc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.661460Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQcDB0VXhNTWVfMHV0ZUVxN0dMS2V2SFRsYXdKRk5mZ0lNTHAydzdNcXZTN1hQLWZCblJEUGVHYVRWaGVfd1JkaXNDTnFUckZnU3JMa2dfZ3BvbGVtNWJXd3NSMzdsQW5ONkgxZmpZN0c2VEI3eEViNDk0bEszSjBVcVYtTXpPb05ZOUluXy1xUUhzc2s1ZEtENXluODYxakhNaERTdFNYMXppdzlvaUdvZllWcFlsSW0xWUxYc1lURTlLQnlRSUxmN0FsSElsWXZqd3l0ZA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.663541Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPZDRaYXRaX3ZZZHN2UkpFaEY3cTl6MVkyUzgyMmNxTEptbE9zVVllMHg5RjB6eWFsWF82Vk93VE12NWJmcnZfX09LOU5rc0NCRldINll3cUR3WHJlZlVGVENoclBsd1poVWxvOC03QW1NUm0zcmluX2VBMUg2clE4VkJLOGJ4NVJHclHSAY8BQVVfeXFMUFd0X293T2EzX1lGdjBIZnJqbzBYNkU5b0V2M3p4OEhRclRxeGVVQ1pOU1pXQTI4ZUdGOVhNcXhHNFdnRjdrM2VlVFV2dTRuZmxKQXJSVnBUZ05QcTY2aTQyR0JEbHJEVndkUEJIOGx4RVZ3c1YzbnEwM3BmMnZpQ3laa0ZrbTU3NDdnTGVmelE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.669735Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNVUZwYzJFc1hhb3JRcjQzcWFENXhkWXUtN3NwLS1pQ3F5dmpxTmtiMVZ0R2RuclZFYjdHdk5JSmUxeVJ1c0xIY2ZVc1VKTUJfUERYYUVnQzVKYVZxYTVKNWhUdzFBOHQ3WEFoTGNPdmRuNDBINXZoeUNZWFJ6X205bjNmRWV2c2J4MnU0cnRDM3FOUQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.672243Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOVDJkdVJFRm1SU1pvUFBDUkhYWEJhSHFzajBPV3JUVmFQQVpIRGVHNVhCM2dxdkNDbV9BR2htQm1ORE5qdW1ZMUxlSm5VQ3MtRGFkRW92QlNDb1FXMTlwS2RjVlZjYXVFa1RVbkV6VkNSMFpxOHBiVXhJQzJLRmNGU2NRVkpRTVNoUnM2bkpsUXphNHg0NFZ4UDMtNEg4YUZQdVBVcklpREJVQ3Bua1Fv?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.684808Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQaWJGY0JYMEw4SVFuTXpwZU1WZXU4elZUOEJjZllPSHQwZ3FFSjYzTC1vZGtiN3psdFN0YnpvQTlrYzNETkpjSFJ0WUJiYThTcUNQeXJlNVlsRFdMNXF0MkhGV0pKbFd2VkxlYWRLd0xyMlprTElqMkk5Njg1MFlFZFdrTnQwZE93ODh0WmZGNW9SX2ZrOWc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.712786Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPT0d0UVIxaklORzIwRFJuMGRhMlA0X25nVVk1cFZJVTBZV1kyYTNPQjlTdDZkeUR6TnoyR2Y2RzUzZkFnN3ItZWNULXoyaGpzUV9jOUhEUVJCX1dpbGVIcGpUZ0p5RU43bkM1dWtDbTBUa3hXR1lROUl3U01BaG9ISjE1VjBFaVRPMHBMRG41Rk1PaGJLYVpodG1PWVluekR2bWdzeWFR0gFLQVVfeXFMTmRsRDkwMVZCVHFaQ1YxWDNmeW5mcGhCOTRXU1BEZTlLNTJQcExpT0llTHdPYUY4ektqX3VCaE44cjhDc24wMXcydmtj?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.715561Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiPEFVX3lxTE9HWFdZUS1jcVVPeVVGQVNvV3VDWHZWQ2NmaFBNdVhWREVsTHBPUVdzSFgzSjJxWDN4aUppMA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.719120Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE8tYVV4b3dzZVY3Y2RJVm5wM1BuQ2h2aDA4b1NnbFhpQkpJaVZLdDNOYS12S2NUS0g2dkN3c1Z6TUp4XzhnVm1icWlQWHc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.728345Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE05M0NZYWIxVGRpR1RNYW81WldqeFoyMGNnaTd1UjVuYkhWODBtYm1neUxZNDBZRG5ycHRqWk90UExibkZZbEJiS0k0SUZaQQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.737350Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNZ3FWOWptYlBLX181QjJvSFZnNmxQbHJhVmp2ZGxGN21CcEkwV0VOaERBbi03aEM0b0tNRVNrZXRlNlRrNHdzZ3diMG96ZzNDMnJxRV9UdUpybWhwQXVNdnU2YzZqUjRyY0MtOVM4VlVwMHhpc05YY3pGMDFmaHEzWDZJNW5xRzVfM2VmVThqa2hhYUZVUWcyVHN3ZHQwZ1VmWDlGY1lfc1Z3c1E?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.741267Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPcVRmcGJoZVdpTllMTHBwOEh0NFdNN3pFVjZ6V01udlhtQXIyeDNpcHhDaUFEZ19Hbzc1Q0NpYlRndzRoNEZkSFNib0ttQXYwRDI4WGdsZl9La01UQnZpX1Qtb0pDeVl6TXZVRUV4NkEyUno4a3E4dnNGUEs3YmVXVnpPT0Zmc2d6SDJtaC1jU01feFdlZkwzd1VRS0pfOW1Gb3d4aGhZVXVqeWtFbHdQeUNNdFY?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.758730Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQbV90MnhOMmJTNnlKNmUtQzNnQzJlS1djX1I2NEdjZFh6UkdjNW5yRDVNeHZFcW1LZVlIenpINkp2Z1NCYXE2N1RHb21KWXFjc2JGeF9qSF96QVdsbndLYWZGN0lDVTBLWm43bFpfaHc5ZFRlM2pNbWZaUHZ5TGpjcHVSUTdYR3VRbU9mMW5mejFpbk9tOThoZHh6eGo?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.776921Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNLTEyc2xZelZjWG5Jdk5FV1lkRlAwdV83UVdyN29qWEpQVG84ZnA1SkJUWWxWSzk2S1M2NnpLd19GTklEVkNNRUZtai0xN1Nod0luQ3pUYTY2Q3FlX1pkX05GZ2ZHRHVDem8yR19aX1BWS0tIejhrREU1WnpvOHMza05TTWFIaW5VMFFrRGYzakVHb3RNVndB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.785658Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQOXZTZEVkUHJhb1NjUnl0RW1zazhpRVowRThscEFJUzRYdGNIYXRaTDFhZUxheU01Nlp0c05YT3g4dWdLWDVGM0w3R0tIR2lOZENRdVdKeGhYZnNDOXZRbXdieE00U1J1R1RPWFd6SHRSd2NmWU5hdU1qMGZDM3BEeWZlckU1OW9pcXFrQkdVLV91cXh3bjZKNFZZZUNIZFdpWkpnQ2ZOMnBoR1VXUDBRWkNSWU9OdDhOZ2NLbFZWRURNdw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.788669Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQdGJYQ2RRMF9Ob2RFWW44VFVCb2VaUy1yOEFpSnVycmlWa19KVzd5dVhmMjQ0NDlYWGxhN0hlOFo2SlA3X20ydXVBbGd4bG1IS0U0b2hLMG5pd2cwY0M5dXlmaUJ2OXlmajJrdm5Ib01fOWpWWDF0MEFfSk9fVFpGYmFSSDg2czg4ZExsVFVFUVBFOC1jUjJUaldQVHBWS05nVXJ5czNjdFdvcWxoRUHSAbMBQVVfeXFMT0pIU21qdTRFa2U2Z3kyRDBIc1FVeVBReGhiOU9CaXU4eXRXRWJud3liTzdKVUo1eUxfVUJlektzektFbEZMZ295Uy1ScXBHWGhiNzZTRzBTbGh0NUtyVk5CQ3dUUWNmY2V6ZUtVd2VfanBsVS1KQlE5Z0RMWmhZY3Q5M0hzZms2TnJqVjVXM2hxMFhjdFlFWjhVUjFsamlYSVBnUHhjLTJWMUpJOGh4UHI3aDg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.796002Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOU0d5OTM2VXJRV3EtaE1OX2h4TEpXZ2pNaDVDbl9XemRLMFk5S1hJOFdrdW03Q3o2bzJLbF95cVR1LVpnSTAtNHgtdGZ3cGhJZlVnTk53Zmx6Rlg3eGxXRnU5M1RwYkFaMWhTY1lib0dlSEx2M0RhS2haSHdvU0JJZjUyZkJzeWM?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.800384Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPSUJCei1FYU9JWnJQZ1BkZWpvUDhjQ2xVWk5renBibDZaTDhZbkNkX0ZxVjQza3Vwa0xiQmY2YXBmTnFiUnhBMzREMXJNbzdaYXVoc25sWEJidHl1OGc4T2N2b3VVV0JneFYyOVVyRHgyaUYwTU05eTJ2Y3dwSnJoUnJacE1ueEY3THA4cWpITnBqMVFKSFlDWVdnSDd6M2Q0azRiNUFrRmRtSkxxNGxfcFdoOGVMWG8?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.802550Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1HZ3pyNFVYbkhkTXQ4NWR1QzdMcnBMMk5rZnA1cVZscUJ0di1Gd1RWYjBNMlRWVWZnaUkyT0J1YnlJdzFLTFNkMExWQzk4eTV2RzhFdmZpS2pJbnNNLXUyRm5ybmJQSmxzSE1QdnV2bnBpVy1jSFZF0gF3QVVfeXFMTUdnenI0VVhuSGRNdDg1ZHVDN0xycEwyTmtmcDVxVmxxQnR2LUZ3VFZiME0yVFZVZmdpSTJPQnVieUl3MUtMU2QwTFZDOTh5NXZHOEV2ZmlLakluc00tdTJGbnJuYlBKbHNITVB2dXZucGlXLWNIVkU?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.807621Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNODc0aHBWRURIVERUay1kTVNvNlF1TTRZSmJUclBKemw2N2FUVDBocjlHb1I4b3NvdmpIYTZtTkFlWFFFQlE4ejh6V05wZUg2OGdrUlh5ekpEUXl6Z1JZQVRobUxyV3N6RkhUMFlZYVc0UVA0STlxLWx1UWpSS2RrMkl0dkQ4b1NnZjFOSFpkQ2Y1T2VDSmFaRg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.809462Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9SbjRXVzFKbVQ3VUZYLUhGSEFSM2hZZVlUeFBDWk5nOUxEdDNCajZiemxZVjFGNjk3ajcyX3Job3hLRElwOFpZQUYtcnJweDJYN3VmMDFKV1kwTF9rN093?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.811478Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFA0Rl9uRHlpR0pjMjd1UDFjZTBWZVFlTTAxZTNqQ0tMVjNLYndTSFJaSkg3S0IxeWR1Vy1wVE1wNy10aElXakFQUWt2eGhsTGt3cXc4Z2RWZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.812482Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9BOEFjMFFPRjRQczk3R2twNEs5dGo0eVY5RUs2NkJSbFBLTm04elROaTI2OTZ4M2VaZnk3Zms3U2dvaVlpY2MtS1hmVll3RVY4ZXExUUlFNA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.815507Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQUk1MeVBlN2EtbE5UYURYWlZsdHJfWWxqYm40MTU4SWVMTUVEa09vSG9FdlRUb0d3N0NxVldSbDVZNE9BN1oyMlFyRlNnZzJ5TjdQa0ZIQlpWWmw0aHZHbTVPelFUUE85cjFSQmVZLVJ6bGRoeVNSTjAtOHJPcExLdWQtNkh5Q3lJZHBhd09nckg5d18xQ2hyZlA1eXU3dk93Wk42eg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.818520Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPZGVucjY4eDJUQkxQMERvR3VyeEViVVNJSS1tdmJCcWNDUTBvZW00X0tONUNhaW1EV1Q2eHYxMFFIQXZTTGRfWDJMUVBZNklLN3pMM1ZpX1IyMFBQMXZuNWZZc3dwWnpwRjMzQjJ4TWxoVHNCR2NnQUNyamQyajdLSmhHRUVoQzB6Rm41aWxqWk9YekVLblF5LThMREZ4akd4aWdMYjhaSGV3NmhiM3Z1MlFGQS1LWHBRVGphdThoaU5uaTF6?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.820622Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE0yZWlRQ21rblVVYjhLc2dOU08zbm5VbDdFX0NNVWRna09aeUFiUW5VSkVZMktidVFWM3d1QmJROXk0MmNzZlZlVmJIXzhJRlJucFJ6bGl1dU5lRDZ6Z0pva2M4YnQtemVveWYwZXJleXhyRWc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.825289Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9nT284WGZjU3VKcmNuaXJhblc1ZGdMdkJwZzZIeVQwcjQyalVydXpGM2RSeXY5UFVXQWhoZEFlQktJY1JTUHJ1TXl4Tk9OSGVnQ2RPNWdXMTNCektheGc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.826297Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1PbGd1ZHc3M1NMSTc3UGRqQlBEMkwyc2hxTGRZN2FxYXRVWDVqU1dVcDRPS1AzNWVMZDZhSUdwdVM4QWhLRzVZSEdqNXQ1ZEliV3c?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.834911Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOd0ZoV1hEU3pxZFhyazVkV0l4ZF9YR0RxUWdWYVVwTmp5MU5FOTIzamVEMF9QZVoxVHVDNXR5VlBxUWRXcnJQVFJNNXZwcDd0UVFDY1FSVGRjR3lBV3VyeDkyc1loNGdOSjkwVmRmVHE3dFNRY1RQQTZqYy13aTRQclRn?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.841756Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9DNmpXX2FyU1otcGVqU1MxcTBNVVhERW5nOV9oR1U4QzNidTBCRUtFVHVtM1drS0NqWHBhQlJOZFNWbUppLU1QaEY0V1JrTWMwUXc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.843274Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNc3h5c1lRUGloSjdyZHhaRUNTcUxrWi1vVG1BS3hXNE9wcmVSZGl2RmJHQ0Y1YVhmLTRQSWY0OVZrMjQ0ajBDWUR6d2xHUmVVdmh5UXBSbkFnSGlILXpGZE5MWlhzWnhBMk5mN3RCYWtwZDRWa2taLTZTd3lmWkphTi14ODZCd3p4eUxrV3Ewcjd4alE0WVBXMmlQVFJQd01HTFZwVEhqUkpudnVGaU50a0Fad1NQbGlfTjZQWTNJNWhzUQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.848397Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOR0NhcDlBanZmRk5sZ3JKOGZVbVUxNDd1NGJpdkp4ZDJFMTI4NmktRGJIUVpMNE91MXZaWGx1M0FKZGFzVzZ5SmdqLUNGMmFMRFo0TGEwak5DRHRDbWVCNkRzVnVCLVdrZGc0VlJiR2lPRHRDYWloOHJNX21VSkR3d05IZEpmcE10cjFEcUM1MFBIYWF6UUlHeHR3bDJrbmhNMndlYTJzTHlockdpTFVLTHoxeFd5QThtanFVR3R6OA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.851678Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOcEZqOUdJamdUWkxJckdrOGFXOHpVckx0MGxnaGtXNUtSbFM4R0hTWWNxZnZ3Y1pjVzZFT2NsMFJKVjlJTWdnVzEybVRiNmtwbXdFazlLcDBQZmN6M3VjcWpOR2FNa2JZTmxjeEFvdEFTZ01ZVUJ1QkNLQzh0NlJTSUtrU1gyQUcxdDFB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.860380Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPUDdlbFRtZ2t1MHFHRXM1a01scW1mempVQVoydzl2S1JMNG91QlVPc3FSZjBQalFobzBRZ2IyYnVhZWhjaVE0UDJtb3R6bnpiUDU2WldyNl9UeHBfTXZNRjR1LTR3LTRYbnhyQTh0cUVSdzdzT3A5SVJGRE5jd1N3SUJLbXA4Qzd5Y1dGNk5ULXlZM2tDVVVxaHpzZ0tHcGUybS01dnBCYVlfWXJrMUHSAbMBQVVfeXFMUC11SXRjZ2VCa203SndIeFhzbk1DeDdtTnlTVmZoVV9nR2N3YWJ1dndHQ3FyUWdwTURtZzVab3ZqeWs0QTY3MnJMTUtMMnFjTXNxeTE0TF9PWHNZcUViaFF4dENaWFpnQ2FES2hzLXUxVHQ3WGVaamRjN3FJbDJGdWcwZFFZNGRtVzQxZnFkUnJfS2FmakpvTVZMT1Z2XzZGODZwaTRmOTBISVJxbUY4Qm5keUU?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.886442Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPNUlIV2c1V0YyUXNjWmwzbGlmOW93YmJFbE1ibXF5SS04dUk3OVV4LVVXS2lEdU9PLUtTWl81SVhoWDd4ckQ3aHF0Q2tnaVJuMWVkd29oMlNSTHBiUEpNbVBRUHo4eVB2T0FCekYwSjdJZ25PZjNFUjdPLV9udTZaUF8wTGU4ejVaRmRmejY3MWlTUXI3YmlKTExoTXpYVnJCWno0VURQUFdMYmVJckN5eTNLOWpQZGZBVENJOHNBRnBoNjV0NTJsSEZxa2Y?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.887445Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE0tWm5GSGFUdW5XSmpmY2dzREVKM3V0SldCTWxZRTkyeUZiSXJiTWRESHN0amQzRGMtOExpS1dvZ0tXLUl3d05MVzlQVkh5NDZs0gFWQVVfeXFMT0JtbWQ3Q3F6amo0Nlk5YjhrMkYzZW5UX2wtREhTUmFsU25ZOGZLYUxINzdqY2tBV2ppaktMcUp3QWhZUG5NN085WS1DLVFpZnZrV1RyaHc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.893210Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBEYVNhZk03aFR1MDNsYnRGX19LZW9tLVg2czViTkJFOElHdUJ1UGZxZTM5OVo3Sm9iak0tSkRENlo3b3g0Wlpmb1FpY9IBUEFVX3lxTE9YZ3oxdzNIZHk1aGVrUTJyNU5zYmNIa1NsaE1fc3V2OXk5ZGxQaUFKLXdXTTE3MHlLbHBqZTN2cGt2eW5SLVBiOGFxdDhzcmM0?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.896390Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPTnZuaDR6UWJMZWUwbFhjVEY5RENvZVYtSUFwenkybEF1OFBUcmRJdFBKSC1FMGVIdDhNUUxDOThaMG5TS0N2dWtQMk1XTEFMVDlnSXZxWUV4NFpwV0JBMlJFSEpvNlNkS0dfZFAtY3V4VWhLUGs3Rk54a0g4WDhtTy1GOEV6UklLaTlkUXc2SzJTdzNINk5aa2xsU2w0ZU1EV3VnS3lKZXp5cDl0bFZVTU53OXNlRGF4OE44elp6Zw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.906425Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE4xbU5Lb29yd19PMFZSaW5NNXkxd2F4b3VsUko4SXhvZXNuLTZYVXp3Z0JNYWE1ZThTM2RUOWlxTERHX0xsTzJYMU9mMWYtbUxvUEE5RU53dm40bDNOX2Zr?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.911447Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFB0NkRrM1h3bEUwZkFhRW56cHg4ZHRnMEJnNFhGY2tpcVl6aGxiazZIdFJZZ05XTTNLcVBVVVAwNW1EMWVjVkhmN2FMeGJtUQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.913541Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNOTNKMmFKLXJXTDVBeWIyQ3prbV9PMWM3MFk3eHRrbTZMN2QxQ25RQ0dYUzhUSmZ2bzl3RTNVWkdocFBQLU82ZU5pN0xYbno3Y3Mzcm9aY2NZU1hDelZPMzdWODkyQlFrbk1pT2MzblV6a1NwLXhkenpQTExEMmY5VVdGMHgtOUp3NEpqcExEajhER0FSQWhybUZWdVZ4VHhJM0drN2RuVDZOYXVtQ1RQeDk0VkdIR2NVTjBMUnI4RnFsZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.920058Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5yVzh3UzFpOG9EWTNUcTFDTHhPVG1SZUZuWjRTOG5QNGI0U1B0djZBQlNSRXEybHh1bVUzSnRUNVZ4Qnh3YjlQLXhsMA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.943484Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNZ2kyWWtjR0F4RGZGTkl5SWdiSGUzOEZUa1RIYlNSWHZLaWNTNDZnS3Y1OGg2aHRYUGpQZmhtLXV3V2tNdGJRVk5ocmh5bEx5VUx2OHZiT0lZSzVnTEZyUzRseklCdEhoQ2RVWlRQU25hN2YzQXRKck9mQnNLY2xEN2pFNm1uWkdzZFVHQXpPVzI2Q1g5c3FwcVI1UUN5ajJZQjItZGVJTzBkTzhGRVBVVDVSS3I5eENpLVNIdVpsQXp1cVdabmIxSXFYcnQ2Zw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.945212Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBJRi1HeFJGYklJeXhjNHgtVHVLZ280ZnptRmlWbDVuaV81ZG8xX1N6YWVWb2lkTDM3UzRIajF4Nm9kcmRVTXZLSHZSaGdDbnFsV1NKTGZiWF8?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.952066Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE03WjNLT29YU1lXNC1XM0RyeFZ1bHl3VFlxM1ZQQVZVSVl5SkVtT1ZiMG5oMDgyU05OT3NGSWNIeElNODB1ZEhiNm1pOTV1ZUZrOThobFpGZ0liZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.957716Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1WQ2NPTDkzTTJBZ0x0c254UXU3U3NIVEY3MjlzdDVPNE00aXk5cHRUcGhSdnVpX3BXS2dlMWRVbnBBb3M1RF94SkRpeGtRV1pNVHQ3UFpkZHc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.962114Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9EQkxHRzhpQ3Q1OGYwRE9VbG51QUJRUmhKXzF2QTNCQ1BFS19iMS1WeVB6cGthX0RHX1NDMlJJNW1qb2dnOUhNOExRYm5feURhSG9hbjg2U2xpRDkwQnc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.964572Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBtZGJVM1dLVHItdlVEdEZ5RkdkM0s5YzRJdzJaY1AyZnFoOHNXM1VaLUtmaU45UThrU2lxRkV2QTFLejdJUGU3OTRPTTh4Z1VOZllUbE85R0o?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.973399Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE4wUkljcVJBWVlCOVhtaGE0a2NrakhfaVJ2TVAxa1BibnEyQW9LYU9tUmV4bFhmUlQ3Q3pDeC1IdW9WZlJNSkZwbXdIZTJkVnJ6MTJjZ1dLWQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.979681Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBObXljZ1Zrb1lrNmNOZ0lKSEFJMlNabi1EbzhTZ251TU16NGZmZDVPVlJLQnI3VGF3dWpVZlJ4OHBySVhBMUJidmNRSFNtUVpYRmtlRHQ4NA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.983421Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNUmNCc2J4eXI5SnJpNkVLQmNucHhUaHN5RVEweS1OTlIzZHdnYUpfb2g3clA3Qzk0R2xWWWUzTmN0eVgxNmhZeHZiY1hmb1dhQkprZjEyY2tsSkhUV05uNWJUaFhQM3JaenNnVTlXZEpGVUt0RnAzYmc5bmRKVjU0UXpKcHVINDlIZlRfaU5Qa1BWZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.986488Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBXYjFpYWRxOTIzVFFMdExTLVk1YWFVUEVpcE01aGd1bC1aZkw5b1JMV05wLWdmWWpqb1Vqa1h2Q240U3NyZjctZVhiS0RoYmpMLWc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.988994Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTE5EMngxUWs0ZW1aWDN2N3VvSlNiRjg1dXhCdHpQaUo3VjQxdkNxMnJKdU5BRTI2SVplWTM5ZFo1TjBKNXdsQkFhQw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.990134Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9QMDE2QWg3T3lMMHZCX2NnNWJ4bWpOVnludE1CaFRMM052ajVtWDFJcVlrLUN0elZTQ0RzVkxUY25sbHRadVZxNzVCZDNRdXlSYlYxU0J2U1M4eXNsQTE3U3EyMmltX01lOGpZNG5kd9IBdEFVX3lxTE1CZzRmNWxiQVdlV1lwSFhvM2hwNTdwd0hFT2szajVVMmlzek14N1l5UzVHRGFNeG5TSzBXbUlxTEVISlhPSlk0ekJ1SWhqQVcxY1pVeUs3aHBHMUhPZjhCbmNsb2padnlWSzVoNFB6b3pvMzhp?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.992181Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE55aVVLRlVmM2xiUkNkSmNPZ3FBT1dMSTB1VHM1anVVR0lhZXAtS0NGTGFHcVpDemNiTVFOMFc5Z1l2dlh4VDZTWVVjaFhFTmItaHFITVBheUw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.994251Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9ta3JiUjUwMjVoVDF0bXhITXlESnU4SE9peWJPRkpsTWRmM0ZiWlRsSmIwUllvN05paFc5cG5LOG9JaWN5d0pQNEJqdGxFQdIBU0FVX3lxTE4xdXBfQ29WcjlrWVVZVHBwcnNtdlQ5R2FrblFSMjZxZlJPMG9PNENCLVVjLTVLUjBwLTJfY21IYVk2ZW02eXlwdFdDcVR2QnB4dnVF?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.995487Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNYk4yNWV6Q2M0S1dqaVlNZTlQc0FyX2h0UFFkVzBNVkFUVGNvbmx0dFlvbGxEXzZhSWVLcjZtb1pTbVQ1QkFUNUtXUlR2cEwzNEpxdl8tUHlrZFhZb1c3WXM1aFVoQnV6a3ZGcDAzZUo1TEZMeDM0NG55M0lMbUNfOFZPdHZpb1htNXJWcEd4dUYxclQxVEwzeGNiZ2Zab1cxWDNOUDZ5NHVRcEFRR0MyMklQSFJ1bDUwQUxF?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:45.998159Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE9zNW9vWmhzb2RSb3VVa1RfZFk0RF9IWmVkZEFZeEtSNldOR2xGdkdyVHUtdjFtM3FfWlNzUTl6Znc4czRFR1ZN?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.001181Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNamZ5NVE1cTVnQWxRUUFldThObXF5enhCblNhZEQ3SllVOEZVZ1daX0k3YnB6MEZaUGh4ek9fSUItT1ljOTgzM1JRR0Vuc0hvUWpfVXJ1eGVFTEcwTHJyeG9Xa25nMlNaQlNtd21URUtnX0xQQUpHTEVyTHEyT0V5TmtyZWZRRFdZN2tMZ3dnUlk5ZWpsN3ZLU0MtZUdsUFhiX1BnRklyV3p0V0xEWlVpelpkR0VWTlJTLWlQTtIBwgFBVV95cUxPWDdqSVlxYUdPUDVORVFrMTRuemk1ODllZjR6MzVMMDlHOE0yRF94ZlB0Qk44VkdJUEhrSmY2cU5ZOFBiaVpydnYtWFp5NXpGR19xS3hCaHVabWZvTXN2WlFmY1NtZmR1ckxKWHZEQlFvLUVwMXpzTkFkOGxQNmR1aGdSLWZLTWowaEdnQWlQaUlicmVKaVU3bU5Xcm52R1Y3UFBrX2oweTFOUWRMUWpiS1ptdUVsdHNwcWw0T1c1bm1Hdw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.004059Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNUzNYU1NkWUp3b2VFWUthTXh4RUQ5QlhXLWl5WHNvZmdaRWlsbzFXb1dVZUE2dktPSUFGOEIxb3JzVGptM3N2bzBGMTd1RnV3dkM4eXI2ODM2bFlxU1pneEd5T09EUmVURFhadDhOMzVfRmloeXJDZ09kYVA2VXB1X0NpRUY3QnI1QTM5SVR2bzJBX3F6Rms00gGcAUFVX3lxTE4ybkVOWnJXVDBVcm5EangxUU1NUGtwNHdhQ29tWU1CZVdRUUVZYVhaNjJuWlZwS18tZW82SVpZYVBobFFHaUtiMm9DdHJzMTBfVnRuclhBY1Z4WlBrSTdIOW1UWDMzNGRudTc2NEdfQ0pHNFpVdmphQnJQdzFYaUhJVGFoWEpmaGdCSDJLRHpaYTJwN3YyaTczTVRxeQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.005751Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5aeXVWbVQzbGVxU3Y2ZXBOYk5uT1FyeVpzUm13amF6cjNsWjMxRmUwbTRrSHVvTTl4ODgyZ05pQWFuZDRHS2ZHR2R4VjNYU0HSAVRBVV95cUxOckx5ZlRTNkVwVFhEeElIdVpJNUUxREdJVHU3UzBwU2tTNXdPdW0xMzBPU2tOdjhUVmFEaFRySkhMS2pMX0xTb2RCNm1fZWw5TTRUOTM?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.008765Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1JamE5TkNHa0RrWUY2MnlxVUg4ajhEWlVKc3lPcExVUW9maTg2b2oxS0M3Z1Bxd0NPbjhyOVpKZGRWVXlKM0d3SnFlVWthV25EZVE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.010794Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE54eE9FajJNaC1pVUpWNjA4dUwyYlNkOEN5OXVzSExGNU1UU2Qxb0lHMERJeE9PYnM1bjRKOE5IZTN6MEZqckt4XzZ3QzZCZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.012804Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQd20xZnBJYkQxTmt0azVfYnR4VWNFLWRIZUpZdm9tUGlubWY4bGk2ekdlS3lyT0I1WVhYU0ZYREx0NUNCVURSbGVwd1NtQzMxZWU0b09veDVnWG14TG1PNGlJUmFLTmhwT0FQbWs3dWY3UVE3SVhJRndXbU1Oc0JKdUQtU19yN29PQWVhZXUtNS04Q0E3TWttbW5lMTB5eE9XX01McGY5TDJYRkR3YmRVQml3?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.035241Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE93MU9ETWxCOG5zNktyTVFIaWRjMWh4aXg1eXp6Ulhhcng0Z2xnNmtjX3EwRnptYnAwT1BNbnU3REt1UXNzWVVXR1FBYlJCMVk?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.037250Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE95QmxnTE8xVVRKbmJVam1FNjhmT0huUDI1OWgwY2RBTVJLeGhnd0xWd0xEU2xzRTd5UHczR1JzV0kyVWZ3SURqVE1oQjdnYXdaQUJSUg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.042421Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQeW9WQm5hbk1CeUQ3QVBNZk9aTVVTdENkdTBfSy1tbDVQeHJ5R3o4S0p0dUp0d00yellxSUh3bWZTeVpObWVOdDdBZGJ0b0RuQzhTX0RGYUVEVWJmZ0ZlMXF3YnZhNTlNb1pGaEtRdVRXSl9BdkZjMGdXY25kdDRfcXVVT0d5cjlkUG1hU1FtakV3Y0ZNSS1sQzRQclNNWjlMTHc0NEJJdHU?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.052463Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTFBYaGswTzh1cWtKRDNiV2VwcUdFMUtuM3NkdkJ4LXRDaWViRVlCZThhWlRid19qdnppdzM0c3B0cmNtRVUzM0tF?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.059507Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5mZnljVndzNnFYRGxHR0JsVFR5RldSRnN6Q2lGemJfbjFOa0RacjVlRzAyMVVvVUJfUGVoYS13MF9RUjJLdjBlRHRpUjI5RE5lSERnZg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.061094Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE8wdUJiZWtYbkU0X0ZYSEZ4bUhhZ19oU1JtVjdMNmpRSkdlalVhOGZNQ3ZIYlp3cEZCN3p2a29hZXk4UjJKbFNjX0U1TVhxQdIBU0FVX3lxTFBFUHdud3dvakVvOFdrV194d2ZMSmxLQUktYVEzVThqZ1pNSE0wWlptVkhJYWM2MnFyanlJMFZaYlJncVN2WHBEUkZfMTNBRWxERGVR?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.066213Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQeDdkVjBtdmQ1N2xKNnhwUFJIU2I0NE92aTZnbEtLV2h5M1ZjUkhObHlSb0JqaFRJZGVOQ0lHV28wU1JMZDNLXy1OZlhTd1RmYWtJSnc4OVRKRVNqdzN2dFNmTjFhcUQtejRvWWpDcWVRZzVVRDdOWGpxb2I1aEhYMmc5MU9YbnpQQXZiRU1wa0oyYWVMOHRXTGlSMnJqcDZuYVNoRFdR0gGrAUFVX3lxTE1uSXBfX01LZUVTdDZ0VTFDTnFOLXNIdEV5QW5lQU9fdXdaRThNSVV1VDdFMGFuclpPempGTTVnckt6OTJtXzVTbXYwOHVKMVlUb1hUWnhORmQ2elZmQW9aNlZKdXJ2dVRiSUZPazBIazM1UlpmVFBKczI2SDBHNTNvWmlBVE1ZUDZvTXhQbDBZLXFmTGhXRndFZ1BzV0ZMZ0I1ZTQ2cVpXd0toUQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.070148Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE0xZkxuZi13QU9ONzctU2pMUUhrYm5uNHJmWXpzN0R4THZRZUIxamFjQ0pDdXFPb3R0aVhoNDMyVlVWeFdERWFEMERSR2RfQdIBU0FVX3lxTE9FMS1YU2piOGdaTXlQZkp4M2czOGpNa2l6RHk1LWJCcVRReF9zQ1FMNUNfM1p5RjQxbzhfRVNTNzNUMjVlSlg4Sy00S3RVRm5DV2NN?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.074754Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBrSTY1d25fSXZYZE5NNk5DeVZXR3hnczNnd1o2X2JVTEROTXBCTmc2VExUeVl5enR2WU9vUDBfVVd1Ykw1M05ZZjB4MjhRdUFDUVZLbm5Naw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.084847Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNVHhub1VXNHBWMUgtanJubVhCVWppdzZWczRJaFg4NjdTdTVwUzNOUEllRGJWSnFUWHZINU5DQU5na2l2cXJwQ014X1VxRWd3YVpoTXM0UEk4a0IxcC1PRThnRVF2UkNIeFNidHhDeEhBMjBDQXM4TFZKWVFCZE1qLVFZQ0QzV0UzR19uT0NHb2dQWkdpUWRfX3V6RHZLbjZFYmNZSHBURWo4RzA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.087031Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQclhmVHRPcWdZWi1uTXdEbEtmMUNFMUtPU29tdHFEdjFCQ3AzTnkyZ2MyUjdFekNRNk1zZThHZTJEbERuODh0MjZyTVgzdmtCN0FTaDNhR3pQOGlSQmoxc3BNem9YRVRBRXZXal9zYTM2dUZ5b1FEdzYzQkllQjUxZjhBMFR0X1dITndQR0RCV3ZIMUdnR3lSRU4zVldtMkx4d0d3enYwS3Y4OVh2aVBtdnN0eDVBTXZLM0NKQ0M0b2ZaSEE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.099174Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1uNm55Szl0dm4yanc1b00wN21ST3pleHJIVFJMQnNVVURzV2s0WEV2U3VNa1hnOFIyU092OGpub1FpT3p2bjVjV09PcXNpcEF3QnRULXluV0w?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.106946Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE45bExoeG9jWldGbEw3VnVaTzAxdVJfem5wZW43WklZMEt4LVplLXNEMXlaM00zVzNuR3poQXRGdXhxZUoxU2xZcjJLY1ctRW_SAUtBVV95cUxQdU9ZVkYyWkdmX1V6b0dfYS1JdU9qZGRWUDRycFkyWnFvUTEzalVBMjR5UWZvYk12SDJ5VmNKdkhyTTFVeWhtYS1XeWM?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.116061Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE54dmxrVlpfYmFkQ0pDSHo4dE5UTENJOVd0Z1NUczF6eGV0ZEQySm5FUHN5MXUwYmpjbUlwUGRTb0o3YmJwZnBXVlJXMURpT2h2TkRBX01fanhVc19nX0dMN29BYzhlWXM2?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.124186Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOcDVPc3ZGcEJHc3RjcTVaXzNFSkpxNTZ6Z2JJeF92TlpuV0cyb3RSNkdfb0tOVEwtak51ZVhNOHdUTlJsSS1Fd0diMlRtRUZWMEU5NU5QcC16UzZiTGthMk1oVjVSVXRhTUFuU1E1UFY3WmhYQjBTLTNacml6dmJVY3dnVmptWklULVJ5bWtNUmd5RE9XT2xvcGZ3?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.157429Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1iclA4TmVDZGgtb3RuS1RHcE02cUZqdWRGOHU2MERWb0VTQ2xpemZKN21mVzhFRC03ZER5NnRMc3hLLXlVTjk1WVlkekNvUQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.185766Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNMHNsTFRuWEFaNDZPZWE3U2dydkRidzh4RUhYbU9lMldBNW1FZzdzX29QVko3VzJGVHZWSWNvTVZGSkJKcWpCVHZDZmZXVXgtT005LU5xcWVMd1VmOFoxekhoeUdzdjQ5MFcyTlV3T0NFU3JUNUc1N0k3TFhkejJNdXFmaDUxaGsxdGt3WjEyMlJES2V6Z2lIU2xVLWZJeE1aNEZB0gGrAUFVX3lxTE9PNTRIUWtRak9rdV85U2FMSUxLWFVsU3lKMzU5WFFNVVdVeUFCUlEwUjdzN1M1cFNRVWJYa25xRlFpLVIzU0tSbmRKeEJ2cmJxS0F4NnoyREZKWFdyaGNlRy1mVXZqRWJfdGRKT0NfYVlDcHNwZTRzQUpYVW1rbEdiOWdHMmJWeFRfN2JnMU9uWWpHcmlBVWJCWElVMDljT3hnamM2NUlxNi1Ddw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.188852Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPQVBleEN0YXhTQ3JhRHh3LXRwMzk4ZEFNalo2eUlSbzBTZ3JZc1o2ZnhHUFBtY2R0Q1ZHZHVjdnJuYVZUMzVwQTczVWRvQ1pZaUNabENGRlk4R0NFZzlCZWJsVVc1ZTkxWWFmdC1vRXpCMkVMdElod2Q5RmdCTVBUT0hpcGRGbzlzUWl0OGo1Ynlwal8ySjI3eVVZNE1tVmtVV2lv?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.191001Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1mc2RMNnh4Tk9yajVPNFlINE1uOG90X0lHUDV3LUN6cVRxaGJkcGluNVpwNDR3cGQwMXBkb0FDaTl1SFh5aW15Y3J5VEk?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.213016Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9zWTFRNURTLUtPclpWbFc4T0hZeEVkNU15STlRZkZCUDJIbllUaU9aQ09rTGZYc3E0Z2ViQV9nQ1EyUThJMDlkSWhNVVFtWWRUaE41SlBocEJlQkE1eFE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.215258Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOLUpFNEY5RUFYQnpQZklPOVhxcVIxWHFvNGdGdTd3STFNM3dRb3pEZXUwQlYtdXRkdlhNZVY4M1JRaDl1T0paRm1KTFRTa0EzQnV2M0l2WWR2TW02TVdzQm1lbDRvSFUwMjJIS3JjTGhyVFpSaERkalRtb2ZSblVWVjRySlBkMmk2N3ZYNE5NLUFTbm1ZaTJaWWtkWHdXcW55bWpHdHhsc05Fdjg3UU5xWW5tZEhiUmJ2VDgzQzhoWjROMkoxcUgyWWl4WjFldnpUOFE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.218867Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNWDF3TngxLUw4blRrc3lRYzYzUUJVN0xkbXdMbFkwM1NEcHRBcEhHM1ZzcWhzYzBtaVpJY1hGLVJpYVZFRkRmcDVDYmtaWGdSX1c4OUtLWGxUdE9JeWJ5dkxvV25oSS1FN01WM1pNM3ktalhHTGpnQ0V4V1F3MzBBMzZMSEFkeHZMbk1sMXdzTE5aVUNiVDFGWGpNSHI4dGVUd1VBZUgySnVNQ3VSQmNTRw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.232621Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPd0VER1pNN2FGYnFmZlhIb1hxYTNkd0d6SkhxRWpWTjV4MzRCVVdlX3VsTU5VaFcwNHQ4YXF2UkRPR2R6VHlkNk0zZkRoN3lyTFUyZUcwZ2Zrbnd4WnVLUDZfMF9VdUJmSEZNRGIxdlNQMUI0MWJaNU9welkyLW9PTA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.236247Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNNk9ZNm9JX2VUWEF1T2tVZkZOTVRJLTBrR2VvTmpRNmV5UWFDV1NhQmZxWVNzVGxFRl9NUWRKZU4xeWQ5TnAtd3RCZG5UNWR2cDdObHo1UmlXN1J4bWUxMlFOc29USldRbFQwMTVzb2pMcW9JZExjV0M4MWVJT0ZzNExfYWh6V1N6bzI5dlVTSWhvTlI4eTBlNlZnUjZwcS1BVEZiZm9ZSnVzVWg4UlBMM1gzaU9CUE9f?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.251538Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE8xTVV3aTZWb2JVcFBqVUJsc2JYWWV3RVRublktNjdESWNMTlM5MlpvS2Z1Wk1aZUlHRkhEWnZZOE5HbnZTeHBLc2RuQmI5U1JqQmhualpoRE40cERqa2lReGtOVWgtR2g20gFuQVVfeXFMTzh1SmV4YVhMUWh3NUxIZ0Y5eC1RcWVoS2dPQ185WFFuOFI0U2RVbHZzazd6X2Jra0huY0VaWFotcUVqbXJCY3kzR1hNOGllTjVCWlN3bXhLaS01M28zbkdZWkdMMkZic0pUZEhjWkE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.252842Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9BX3FFdVdna3dYVElsTUJnVmpTVnBFRkF4MmFDWlJjam1WclBSLVNGSGdZT0xlaEJSS2VpZS1TV05ibUJfUFlCZFhrLTBpeHhtbk5SWmxkNkJJRWRFdTgyV3BCSUdveFJ5RG94WUtQRjhMV2VhVmkw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.267163Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQMV9Wc3c3OUs0MkVCakJLQUZVeGhKTWJlcWhEd0RTZFdXemNNX0RXWm02RkxPaWxmMW5HTWJ2b2NuS280UnNHNVc3eXZRUFJROUpwT2t2MnhCY2FLcnhxQ0FRNVltUmVyTjA1eWh5RnBrODU3Z3ozOVhRbzg4ZWg0ZUJZODZRTDhJMGRiZGdSdm4wUG14cjNINVVWZ1NEZDFS?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.278766Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxONC0tX2ozdmhxNVhmQU5IZkNIZzJjaGcxaHhBYmJlREpTbV84WHg4RERYdW5KRkJ4dE80V1hwOThQQUZBN2MtaS03T3llYjF5UG5hR215czlFQ0xNSHloenhpR0lWN21kVVBIamcycEhTT1ZuN0FRQnlwc0l3bHZfY29WeU9NR3BNbGYtaDRTcFo5bUHSAZgBQVVfeXFMUENTYW9uVmJNdjJYUFE3MzRGRmNPS3FqczNDWHRyeGZLYy1jQl9pX2VNOHpBaU9kME01VTlCOW9YZmlSMWRZdTZTU3JvMTJpSElqTlRCazMxNEpQY2xrTElyYWoyOGpBUjk1Mzg0V1hUaXV6UlhLWVVnN29wQkpYM2xkeFUwUDI4TkhUVjhOc1gtNTM0dEtySWo?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.284196Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNaENzbGNwTTJMZVNUdEo1YmI2RWIwWlJrUWZ3R2lqVjhPQWdpM2hEcm9jLWNuN3dXeWRKLTVBMG9BXzI5akRsckRsY3BnOWFNSzdFTmxFLXVPa1FSUFlkT2t2eWNxTmtZWmhvZC1xdGhLX1FTLWJhZVZNYklLaHRHT2o3Z296bmZhZjZwbVJRRWc5dXFRYlFuYldn?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.286211Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPdEdUNUZLbUpmeDFNbUtITUNpcnZhSGw3eHNydUw3eWlaMTFwRlQ5TXRkNmEwQTRUQXdUaTdfN2Q4RWh3X1lfRFAzQ2d1VXh4ek03cXFucG5EOVRxY2xFaEtjd0lfYUhyRWQ2YU5YYmpaUEd6MmZEQmxWdkt1MnB1a3Vzc25vMjB4ekxIb012M0dYY05vaXVKU1dQMjkwM1RVZ2tmQdIBqgFBVV95cUxQVkZZTWdud294dFJ1VHFraDY3UTdjQXJvZ2sxRHkzSmMtVXd0SGF1ZXNxZ3ZfTWMwRDRzX2JaM2VsdFRaajZJTGZiNWVjb2g5Yk52RFM2aWpGZk9pZDUxMXo5MlNSV1VwSjRLR3pWbFR3Sm1hVFlYdDFkX1dEd3NKME1nQ3huc2tQVll3cnFSNWMyajN1dUxUWkdtU1NjMksyeEdLU2hHdVl6dw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.296101Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxONUNZZm9xMnA3TS1SOTU3VlNzclU5aE5GZmhpV05HSG8xU1N5QjF1dFdnQk43TFBJRWpEaXhKYnNidTdtSkJJa2MtT2NnX3hROTRuaS11dFRxUXlVMDZpbFNUR2xjZHk2Ym9SYTRpYnFPd3dxd0JmZ1RfM3ZxTEl6cXlPaUxtSW9LeUMxcQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.301222Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNYjRkMGRKLUhYcHVkWFYwdGxxZ1B5MGZxd090aGZhYnVCMk82TkZoVXphcTA1QWx6UkhQdjJYUUlPZTNfV2tQbDZWbXp0MEZhUWpNV2NaNFVFZ2ZXSkU4SHYxSF91dnR3bXdXRkhmVlVZSTB4amxJVFNubkNERHpGU0JSbzlNQnQ3VVNiekU1U183UjZxa0JzWFZWT2VPZFpvVlo3SUl3Y2htYW1FRVJxNkROVk1BbUlxZUdF?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.303230Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPd2ZmVVd3d1JEZHkyY2NKcmlyNGcwUDVoa0xvY0o5RFVoQXdobEF3bXNRanN0SlU1RnJBbEZKZVBVdW5TSUNmd0kyWDJQY25ScmdVbUlKZFRaRVUtdlVYdDZnX2lxRHlVRlMyZnlYRjIwbkZqcm5KZmkxLVJMTVNSOVYyOUMwaHRM?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.304229Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFA3NXp3SFBsd0tQMUNWN200ODE3Q1pqVWFYbFhxYUk1STR3MFpLRFRsNWwyZkhKQW15VnBZbDVrZTVJblVKUm5rblZ3a1o5SENxNkJscXdB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.322410Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5PZFJrTjRMQmV3emMyZjFPUTU4YW1IdVExal9DYTFJS2c2aUNEQ0F3YV9ZR09OOWdwM0R3RHduTk5STXhXdV9vZG5xeXdJUDFKMjdLSmdNVk0?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.328251Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOV1ZLbnpMekRWbXh4VmxjZ3Q1RjAyWEtpLXNpMVhlMFA3RTZHMGQ1WXpSSjVjYkJSdU9Ec0dTdGFqSGxvTDl4TktMLWJET3Z6cW5sWGRCa09hbXpWMmVBakM4N21INmpKUGUwQXVhTnhrWWZybzBtQnRUX1YwZ2N5LWhtUUUwUDBRZ0ZWSklXa3VrVGQxbndPUHBZVHhqcnpPQ0ZQdjBXaw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.334652Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1hZEo4RDN0OTk4UElTM0FzOUxrRnAycEFUZ2xEZmRDazlUeGhLbFJ1WTI1MHhFdXl6cUVSUEk0djl4UFlpMjU3ZUZ4a2VUQdIBU0FVX3lxTE5wTHRzWXBaeWZnLWFycmNQWktEZUhoajFkV2huQXQ1eDRFcTJBamRXVERCbVBmNHZ2NkxtS1dvWkFEbE9LdkJnMUQwUGVjbS1XQ1Y0?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.344478Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE5NOEV3UUJkR0pTQUIxU2M0ZkVBd0FmV3UzaS05STJVS0tjQXRoNUd0aFBFMGdwVzF6ZzZYdHdqY2VDclpLN1BSZy04QWhVYXY1WUd0UEhTZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.366328Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQeDlOME4xNUtnTXF3U2hXLUMyQnhRWDRVcVZ2R3ViRUNnczdEc2hLRWVycE9heTJubXkxWmdaUExLbkFibm5zWEtKOE12dVZ1S1Byc1lfaVVJV2NlLUgyU3l1emRUc1FfekdsMUFSY3hRb2hySVRSZkZ4TGJDZ3BpeThKOXJZZjNnd1FySEQxaGJjRWNuSFNEbmgxbWtjZ2VKWTNCag?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.374026Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNUDFTTmVIR1FSckIzTHNlUnY4UU1PN1BHdFdnLW9MaW5IUHlsRk1FZ1lEQjNjNDVObGliWFdCeldzN285T2hScVktZzNYeVFmOGFhcUJreFlfSnRja01zcU5hcHBPVzhyTVJaMHc0dzdvVU5sZGJRWFRXMEVlOVJ2RWM2b0FqUkdnT1JPZlRZNG9kM1pOYUhEMWh0ZGNIV1dxZS15Y1lmdURlWmNhX2NNbUdZWDA3Y0QxWEYzUkZ6bzdvZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.375264Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQd0R1ckpFQWhVMXkzdUhBNlB0WndzQ3oybERXeUxGeVRCUmJNYUNvUEx4OHVOQzQtcW5PMmI0cDRJXzdlOHpYNUt0dDNwLXNTQnZyN0ZvUEZ2RC13amFGRDhISHhfUVRYOUlrUzlhdThEWmxpRGFwcFYtcy1VQm1Vb0xDalJDM0lYOE1DQTRJRE9tUFk3bEpWRkRPd1JnRUhURko4NEJqOEUyUVY1TE01UzBSQXVXM2pnWllF0gHAAUFVX3lxTE9zNTQwc1BQMHFoOGZuc1BVX1Z0SmIxaHhkcnJuZXVRbFY4X2EzUVBBc3RtcTc2MHQ4MjRSV0JOQlBnNGpjU1JlS1QzazlLRVVEaVg4V1FtRFJGMGpqMC1uTzNRX2dPVF80Q2ZtRmxkNGZnWUxLRW45cDBOMWJBZ0RyMWZDRXpRaFBJRjFBanhYaDNDY3JwVVdBNnM2d05ORjBUNXNmcVZ1VFNwbDFUZTNDRXQ4YUl2TW1sQjVNMnR1ZA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.386221Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNa2FMamZ5bkJIV3ZWMGFPWTJVVS14YU5JLWE5cjBwSFdkVEFQX19VbkFhZ3hpb1BZZlF3bDdVaF9pel9oZFA3VV90UnBpcE5qWDdzTDk4SU5uQVdIRTdLMnJmdklUWGJ5dmM5X01ueHlyd0RVZ21Qb2ZzUlM0X1BtaGg0SG5UZzI0OFJMNHpBTGEyYXZhMXpLMzdtV0VaT1ljcEpVb3VWRGk3SHlsOFkwLTQtMVdHdDJNTXlEV2xFUE9DbTlySDQ5VGt3?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.390977Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPdzZGRU5wb1pqRElIbDdWQ2RNd2RyYzFCdEZsRVROT21tTXVkdkdFbzM1Zk82WGF1NjY1UFVCc2tnNjdHVW8yeUVjMXJpSWNvZndVVzkwSWVrUmlnNmFqbEFqczAxT3JSQ2c1V2pubzBuZFZsc0dpN2FKVHFLazI0MUswNWVVLVJRUmJlMnhHWGJyVmdSUEZudlBYdlpWMDY2SEtCT05Hc29Sa1dJZEE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.400924Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5CckVZaUs1aVlpSldfT0NxMFE2eVVuLVNrOUpuUm51YnpDaW9jYW9SQ2FtYXE3cVNZOUJuemExclk2N1g5S0FmTThFNThMMTJHZnRKbFVR?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.406644Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNd1BCSW52NzZKYXNab212cEJSci1JdXAyT1N5eTdBbkM2TlBzaDBWSm1UZjBmWU1yNE1TYmtVMHZKRVBwSkRQbmNPa2FmT3o1Q0xhVkJPN3F6cDJRc3pkd0pTRk82U2hKVzhQMUlfTGlBTW83WmxsU3lQNG1Pa0htOGdidzd5U3d3bXc1WC1TZzNISW8zVXVOLUVxUjE3dmJaZUhSRUNLNXl6Zw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.409721Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQcnV5b0RWT1Z6MUV1Tms2dUticDhXY0ZiUm5Tb05lVlpubUsyMVVoMGZJUEdMelhrZ0IzcVNYdGtIS2lTU3JQWkdnQ2dJUXFkWkZUeENQdnAxQ2hnQUFMRzJ6aDFQWExqSEJuMmZHcVBKdWNNMWxNVDhnTVQtSmF3UFh4Yml2NndLWjdyQkxxR0ZDc2Nha3oxcEswQ2dMVV9ROWpqdkhkWVFTRFVuWXBkejYza2RZT2F2c21IcmVvdVlyLTJES3JN?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.411740Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5LOWdOU1h6VWRCaC1yTGZDVDBwNTdjUS1ZNVU0N0twd2l3SHJRMnQ5TWRicXRYSkNCTnlGYlA3eE1MSWJSWEVMcVVlSXcxMTdRazE5UkVmTlNueElB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.423956Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBtYnQ2WTVkRGpsYVpIS1dlX0RSdVV6YV9ieUdFbXdLaEpRU2ZKUVFMQUVTS3o3V0JaSVVrQjlHaVZvOWlpRXBrSFBtMG9PRERwZzZqWlA0RzFtTTd5eUY4?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.459537Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQZW9vWk9jcWk4OXNvRGdySkVhU3BSMC1XOENsTnpmZGMzZ0dveEZmLTEwWUt6SEtFNzJaRXA2LThMQ1dSYVl2MWR6cTQxY2FFbnJLY204MWRzeHR5ZGJNa1o0Vm9mVV9xWVFqbExvUTRoVFJxOEE2UzRCazl3VTk4aUtqZXdoUkZUc29nSmo0WGFlZ3l4N2tlc3JYc24zX3lSTnFQODM4QXIxMEwxU1p6b0p4V01mR1kwU1FGdFlEa9IBxAFBVV95cUxNSFRabmJTd1Y2TzNKMTRkLVZxejRiOHMwTkNwUHFPWVdrVU9aeWhXTmVzTTdVUTd6eVhGTUlJa2pxMmdMb3V6MnFSRnFKX0RiVTc0VHJyQnBPb2k1bXo3WVh4SnpMZTdXby1YV3pxWU1KRFNfeEtHcW1PUGdVaHc0YnJSNnpxX2dreEJ0TWdHQlI4aTRab2NVOENVZndpd2xvenc0akdmcGxyS3RoY0lpUlRkalYxVUtjVzlnYnZaWG8xMzFF?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.460679Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE1oeWNRR2tRN3d3cXZ4UnpoLUxSNGM2MjhPQS1TVzhEc0swRDFRbWlNZ2txSW5YbUIzZkZvVFBJbHNHd0JaVXFzU180bEtuNi02U3dDaFp1RQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.467418Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5tUV9Odmp6TnBfX2h2UWpNb1pSWFo2dzduQTFBbTRrQ1VmUzlBd1JxTXRpRUFCemZGREc1RnJjOThWbzZ3eThTQlVYeGdsaTNXWFE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.475350Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQQUNnNWhrNmFFUGQyRzJ0cGlRbUlKN05IampfUFhqbTlSaDNSeHJmQ2Ntbk9qOFRfNVpWbUJoR25PTW14VXJmRWEyOGNoV3lKVGxQMklGTmEyeEFSUGhJR2xQUkNYbkZLQW1ldC1vRXF3WlFtTUVSSjNqbVVodEpvX2tUTlViblZMTzMwclEwbmNSMC1XcnNvVUZzQ2pUTmw1OTQ1X3FVaXU5YmMxZXlPNG1GMlNNVDhQQlZaRk9rR2JzZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.481494Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPeUhiaDE4X0pDdWs0MDVyZWdkNFc0U2UzZTQ1Nk5vQkxrT1FidE5KbjZLalk3NGFNYzJHMHBlcXFfdm1keDk0cnYzXy0ySTd1dHg3YXBTSGlpa1NqVEtoRjhGZzJYclZ0MTAzTHpLRGJxQ3lBaXRaRDVhQktSU2Z3VGlxeFJTOHdIT1JtTjZqMWZtQkgtbkM4Q0l3RGx5M3FsZVNmSjcxTjlOcElxdXlKd1BDSzM5YW4wc0xrRmdsRGpmUdIBxwFBVV95cUxQMnVZTmhiLXRnZmhwV1ROVFBwR21HVXpzR2xGcGdDWC1VbnhzSFJBSThzdlZiNnJ5VDVsTU0zbUtoU2w2R3FVSWlaWndzQWNWWlhvRndaSnV4X2xDbFFldGdZNTFBQnVpMFhGcE1nTXZlY3Iwb3VtejhLMTQ5aXZPR3hfb0VYUUljS0hVTlIxWUpHRkhlcGtFZmNSMzB4VzZ6ZzhFZ0Vpb01RQzlSMGsyVnJndnV5QjRfY0FvbzRielQ5c1ZjRVZF?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.488764Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE54UEgxTzRReU1SZXBNUTREb0FGbFlNaWFEZFZfaFRlSmFEVl9mclNSUlhqaUF5RF9XOUdFd2locU90UHF1ak1yTzBZNFVEaFNyNnk4MGdyWllEaVNYVXQwYTRWRlFZazZLUHBwdm5mc3RFenPSAX5BVV95cUxPYjVPS1JNUEo2Mng5MXVlSVFIZFJPSGViNnRHWllTdnY5XzN4WENlRHc5dFVMTFhmdWowNm85TmhvaHN4WTRQQnVsdXpITEN0WW16WFVyX0ZTOUJvSXR5cEFLRVZMcWxRbEh2bHg1T0xFbC0yV0ZQYVNvVnRDV3c?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.490853Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE9EYjV5QzdoTUF1b0hZRjhVZTB3Z01VeGp3OVpSaVo1bThPNERYQjF6a1V0MExTRXM2RE9sVzZZUUdpY1g5dFBEdHRhVkQ0ak1fQmdCbl9POA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.494459Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOY25VTEF1eGh6SlVUM0hwYkxOUXRyQVpDREJGNWpWZ2FtcDlZaGo1M3ZwMVVOWVl3LVowd0tKeTkyMHdzR0pBREdvUlFBSXNIeVpZQVZHLWFrVUMtVWxNY3M3T09RNFBpMVpyX3hFejVDY2ROMk9pRE0zeHhWZnk2ZEY4M0JEQlRmWXh2bW1LSjBkX1VPV0duSlhPVURobi1NanBFRVJQY0luSFA4T3l1ONIBtgFBVV95cUxNZm9aV1pVSnhNX183dktMZU1icjNzMGc4Z01Od0NfMGJHazJDbXpKclktUnhPMDdHdEp4X2ZEV2tYVnIzRkg2QU43S1JCbS0yd1BvX1FKZXo0Sm9hcFZabVJKZmFtWDlVOUpZV1ZWak9OdkZfXzNOeHR5QU5qWGo5R0xaazZBMXowSGQ3alVCaDJXNGZiZVRNQS1rSmptclZjRjZsT1lVbEhVR0daOFpJalBNUGtKQQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.496588Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1DUlh0TGhIbEV6ZWUzOGFERzVqUjRfM09Hd0cydjFDR1RzT1ViZ1YzUFdqZ3VEY1BFNVF3RmlDZWZCNmE5VGxrM25JbjdscDlvb2hpOXVR?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.499728Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTFB3R21jQllaSmtuLU41ejRKc1hNSVVtcUtyb0c3eDhsd0JZbEtoaVFfSnkycjVMb0NhOXRyMVF5ekxLUlpMVktGN2VMcm0xQmh4amZ0d2ctNVdTUnRnMXpLUWR6YUc1RXptb0trM3dPaEVVby1jQXJuRkNkZGnSAX9BVV95cUxNUU0zZXNpSnh0c0J1Q09YQ3hTVTQtd203R2NVZUZvWE1rOUlXNElXTWM5djl5dmQzQ3M2SzFRUVM3Y1BtVjBqZWRFTUN6cGk2TzZQbzRrQmFobEM2alRLa3FvSkJma1BOdDd2cGZnT3pUNXpWTWExM0d5OS0xQ080?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.502755Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPdXRLd1JBZW9GaVFGZFo3VjlJUnRVVnVNSFhCdDVLVnpwOE5TcWJrWDNyMEo0UEhaX3lfS0dLWi1VMXVlaURCdGUtSUVuUUNiNk1RM3dPS1dCcm1ua0p6bjZHTWdvX24xRjVxdXU5Y0NHOGkyUWpLT0FpNENNbk44NnY1Mkp2UFgySHR2ZXBFaGNudzV4MGVpc2ZyaFMzcE51T29ZNHhnaDc2SWpmWHBqenFLbklYcWdqLTFVWWlqdEJmODRy?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.505266Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBuajdYUlVqZjBuY3B0Z1lkWFB1YVotTXNkcUR1NXdmUnRnckUwaVFKbHVMUFd5Y01XVW1WWEdfR3dCd2lQdDJMVm9KMm5xNmg5S2c?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.508354Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBCRXZQaVpPcUplWThWNE1VQnpiLXVNcnlEM1dMSzF0MXNCTmJZeVFrRFIzdWU5SEFIODF2M1ZPblI4cDFpaC1KUTdFRGdDRkYzX3dyMG5uM3dtREZtU2c?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.517040Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOR0NhcDlBanZmRk5sZ3JKOGZVbVUxNDd1NGJpdkp4ZDJFMTI4NmktRGJIUVpMNE91MXZaWGx1M0FKZGFzVzZ5SmdqLUNGMmFMRFo0TGEwak5DRHRDbWVCNkRzVnVCLVdrZGc0VlJiR2lPRHRDYWloOHJNX21VSkR3d05IZEpmcE10cjFEcUM1MFBIYWF6UUlHeHR3bDJrbmhNMndlYTJzTHlockdpTFVLTHoxeFd5QThtanFVR3R6OA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.518050Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOdmh5UWtQUUNzcXYteEtZWG4yemNOLV82S0NSSThFWWZUcDV4TVprTkZlTVI0bTFjUkRqVFVHdlhSZVRITEhkZ09uT0xVbHVDZVluWmZsYkFsV3JQUjFHUFpoVFdtY3hQYkFrQzByRVFmNHZSRXAzWGFLdWRJdmw0azNaRDR0SDQwcWRORXotcTNhUG1QX1Y0NTNiOEJmTWVGZ2FCUHRmZDBkaUJ2SlVMS1A5LVR1YVBod2p5TkxuU05iblZrZE5CdVVoQQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.523732Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBOaU9FUG1aQ1VURzdEWkdJN2ZMR1dLR2lodFNBZ0tTVWZFRDgxenhDYllZMV9IQUI4bDAtdXR1aU1TcTdKYlF3a1pwVkg3Z1pqeW5veW9tbFgxSkZDdlHSAWZBVV95cUxQdElvTnZBOUc3SG5Xa2s5VTdqdmpGQjFMQ1l0ZldGS0VyeElqajg0dFN3VnJBeHdNc0FUaWYxUG5ROU9MOTNNS1JzclpfbmFtSEZORHZDYUJybmxlUHpqZHEwNjZjdVE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.526743Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOckxKNUdTNExTdjcyVDQxY0I3VllWSTlOSjRlNzRzSUV6d3ZHZGhXZzRmdzRrQnhrNDNmNnNfWHRwZWV2SjlWZFhXUlBGOGsyT0hSbGtZVGl1WVNnRGpkdlBhSEtxSklmaHVfcWEyM2hneWRFVUpva2pibGhENmxRS2ktOXdhR1psTlJVVFh5WUpSN0c3SWxxaWc5d3BUU21mb3JGYl9SeWRhajR3NXhpQWYzaEpOZFZ2QXZsbkJ0VE1lUHpw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.530530Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPMGxycjYtT3NFLWRiRnc0UjZYeU8zeHlFWFM4YXZmR05wS3hVLXhPUnhVcnhUQjFxNHlpQzRMRGFBRm1wdHdGSzdnTWVDUGRwZG9fZ1NFcUFIQ1cxeEdBbHh4YkFiZVVaMV85em1pdWM2X0NqVWJQb0REOFV0clVPY0ZyYldHOEY2dGhRaEdYcjNFbkljX0RFMmRaS0hXZmlhOEJWaTNXTE1CVGs?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.532841Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPbXdrT1hxMlYxSE9zTHNWc0FwSHlFdFhKVVRRLTV4Rnl3WHE4WW85d0FxcnRkc0VWZktkVTZiZ0N2R2F0ZnFzNm10UDBtV0NqQ3duOEY1Wi1YQmEzZG40SXNiRWJrNjRPdWtUM0xMT1IwU0FLRHQ3Y3czd3ZkcXIxYTUwcHE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.534851Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPVUZKdGFmSGRXaDNRLUNfbXJBRnU0UFVSN1MyUWhmcGRVbVBFQmVzMHd4V0JqWHhqMllzcm1mNTJaRUN1ZTljZjZLeENmYk9GWUdjYkdtamxJSDVjRTVVQ09BdXFDT25zNEVJMUMtWHRCbzRSRnhpcnhiWjJZNHNqaVZFMW1UZ3RMMFZDb3VtTW5Ta1BtWkE4YVpmaGthN08tWjJBUzNQSU4wQnc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.538862Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9FV2RqcjBhcDlLNkdMcjhQZWZQQW9Za0dERDJBbF84dmJtS05Wd0xtTzhLRkhpcnJRQk1NVXhfcDRlYkVYQkhDRmo1MA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.548544Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQd0RuUldSVEZNdl9DTUlhRHplMlY1T1o1cHI2RzN6UjZqdm1yYUNBcVRrOTVNS0VIMURUM05NRjBCVVFDOFBEREU1R3VvSDBXWHBDSGxSeG5nYjB3QjBmNks5RnBzemk0UGJIbHJsZ213bW9fYldoTjY2WEM1dlpWRzZub0htbVdJMjFZdUhRTVBPWXRhNTJDeHA0LW5wcF9iWGdzMFR1TjdqWTRa?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.556465Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBWWTMtWW5CeWJJQnRGZllZYmhMdE1EVXIwb00xNGMzMlMwUUEwb3lTcFNXLTVTR2VISE1wRnJpRjh3UVJlMGFIMzYtNmJIVEVvZG8wLXlQbw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.562121Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOMHE2cXR4R1ROQ25wVWg5OWlQRzhVaU5tY2JKZ20xdUYtUkVXc1o1aHZ4QXd4UWd2U3hjUGNWdFI4UkFXQlNvUG9MMGdiUGs2aUI2LVBXcVc2WXRvRnJ1QnR1cEc5dE9LQ3RNVzNuQ0F1TkV1Ri1WUGxQYjVNTkU3ZTY4UWZ2VG96?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.566084Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUjRTbXE5MjZmclBZN2hEa2xNVnBMakE5a3BfOWRQb0lGVjhaVWczaU9vd2ZHcTRITVZYbXJBOGJfUnJQRW1VcmxhUEM1TVBzVzFtc2VWVmZ2WnZaOUtqUFhzcUY3Unp6YWc1emhReU8yeHFkZGhPRUF6TUlkNkFCRnZ6ek03OTVSZHdGeVRMS2YyUGlFYUJoZXlyQzRsZEVZalFGUnhwM3NnOTNpOHpYUA?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.569166Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQZGxQWGs1c3RodGNBOTc5ejZOaGIyUVMxd2ZsSnF4LUJPZE4wMDFaS2FVN0p2VDhXSUlKNXQ5UXBhdEJSZmhmSHRGYktXejhKVTc2amtUNjUzb2lMZ2ZpM19nWExJNWxwV2l2R1hEQ1lmd0ZWTGlTMlhzZjN2bEdPdGUwUE8zYWZ0bndaTTl2bVlTOUliLXRlOXcwSnNFOGJWdjFQWk1Nc2ZrSU1kY3Z0RV9LWVFtdFpUSFhObkNncG8xTmlUWXQyOQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.571168Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQT3c3VnBOc2hWUGc1c3FBSExaOUJ2eEYtSmpJQWJKNHVqN2hjejFwV1dOM25TeEl3cEZjNm5PZlNmWFpkQ3k4RDNfTjlNU0VsNTZ6dHdZNldreVVZakt2R201enRMX2JLSjZ3dl9USXF2enU3dDhlU2toZTJMWVVoR19vVERHMjBqNlZVSjNmSmZYRDd4Z3VkQnNORG1lZGh2ZThYT3lBQlNuUHNWRzRrOXZFR2ppQQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.574317Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9WUmpnQk9vaFpsOWRPbDFfMDRiQjRxZ3NscTNoRHdiWkpnU2ZJR3ptTWlUUlZEbHZsaHMzMWl5cEtqTzhGLUx5WVY0MjN4b0UweTNNUVRMSmx6YzVkNWfSAVdBVV95cUxON0FxVmlQVFZnel9jLVhHZnAzeXJMMnB2c3JrUmNCVTNIZ0hpNHllMWFONEVHcmw5bEhxcF84RnZPa3NWbjEwdWV0bUI4dXZpSWVWSW9wLWs?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.578459Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPQmNWQ3VIWXA5Z3JJbFBETlBRQkliMGhlMzRtY2c2X0s2Q0JzRnRBb0JxUV9xVEVNLTZtTWFYYnk4SVZmRW1ldU1rZkJfNVY5OElzRWljcVpOTFhwN05jZEVfU3ZJTEtGcTJWc2p3UVB5Sk1NRDdsM09SYlBWcTUzWnAtejZnaF9hcHhMUmlLNkFPT2NrYmVvb1luU0dFT1ZjSjRuVWpQZ20?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.579981Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE15dHltUjN4TnNIY1U5Ym55OHFtdWJXek5SdHJxVzU0Y1Jha2xSQk1vYnpYMC1nUUdqNGFkQVZGU3c5c2lZRFpxRUloTmJYQVB6MndJdDY2enpISUIwc2hncTdBWUcxRnByLVowbmdMNWpiQ0tNalUtSHNuM0U?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.596741Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMihgNBVV95cUxORUVyb2pqZWMwbUFBa2V4VmJpSkNoRWpxdi1GbTRSMk8tWXhKdUJSNGdKXzZnbVVSUWlld1pPVWJKTkl1Qlp2VkFSbFpHaUlOYTVJZWVVYXViTmtPZHNEdXlZMnRic0hfREtlMmozejBYZEJZclN2SjluX014SUdhNDlKSU94V1p4WVRTSF9jWEFHczBpZUtYTE0zRU1sakpLeXlfb0dQSDdOSFkwV29vbmFRNFJha2FRcDhXcmNXWVY4a2dPam01SkFGQWNMRHhNYllpd1VDSDVVSW0zUmhzVkg1eVhMRXEyTEI1eFZMRlI2YmpnVWlGaGJTTTNib3pSWTl4UW1ncUU2ODhlc1MyRHdtMzlKcjVqZThWdkY5eUZaVkJTUVJsSTg5VW40MEhBTWJVckRldExuWWNKLVhHektpV1J5dENDWl9tM2F6YkFBRzlCY19wLXo4QkNXUm9yZWxzem9RRmpuNFFuMVNTVVRPdllkT3FoNEs4cHB2aUgzUlZIMGfSAYYDQVVfeXFMUDFBRGZpZzBsbkN4bnNYNk1qS0g1dDEtZ3BZanZ0UGpMNk9VeS05OXF1aFZCRlBmWDdLSmRBSWlOSHVhbldEYzVLR0RGcHo4SDBvRklDcmFmUllWN0lMTk1Vb191R3JIZ2I1WFd3S1haN3BIYWpWNmJkTHpWcEh5elFlUkRnRFp5VHdBMXdiWnNIOHllOEt1dC02aXc5RDI5Rld4a0s0OE0wMmVBcTFkYzlzWk4yanFucl9jSW5fWEFEQlVVZEZ5bjlYUHptT2RFblREdGttR2JTQ0FjdGVBMDJVWWM2dnJyUE0wSWptTUZXcWxfQmhCUGtuMXpZclZfTEhVUmVmTkNQal9rWnc5OFBpVmxfUVdsMUZZb1A1MXV1OTBpaTBod2hUa2xjWG9pZkV6MVNPZ3ZQSVFZQlg2bWZUczBwNWZGNXdOcU8zZWZuTEhsNGo4THh5cHFITW83SlowRmh2UVdGMDNiR1l3cjg0ZlEwLTRvRV9JZUZXY2tSUjdjZ2ZR?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.603267Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOT3dOSXhQM09oTFBaWTRTdDllUUg4bVJGb0xiNUxRR3M1SU00ZTAwMWVIRE5lSWJQcllmVEx4UU1YalI2U1RjR2NHV21PYmFtOXdKUnRDajVQQjJZbWhTaDE3YWJRcWM4Wk9TeWxreWc1ckw2ZkZDZ09QbHM2MlZLMVFnNXNrNTN1blZMYXZjOGQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.609250Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5pSW1HVjhUVk1ydlRHT2pHa2VhM2RBbGRndlhMUVF0WVdSeEV1NEtZTy13bXpDamJGT2NpUUkyS3NYdTB0STVHWnNQMzTSAUhBVV95cUxQVmtDdkkzcWMzZnphV3Vqa0dUSFZrcDkwa1VxLUVlR1hEZnh6QS1HQXJzUWhrMm81V3JHTl9pNHRzNGszanZxeUo?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.611382Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNdlNrNnRCLTNJZk50eVlJYnI2ZVRmTGhPN1ppTVJTWGZhSG5fTFRqM1Foa3Y2aUFhOXBJdFJYaVYtVER0SnZXRHpYRllhNjQzbmp0VlY2eGlWakVRVVNiblpyMXhIeE1mc2F4Uno0T1B6Mk9tblRINTBaVU5VYmNGdnJtWFQ1ZWJpaHRnTy03YUVWTFJ0N2lXVDM3U1VscE5pa0Z3bHBXZGI1RUFSYTJwd1EtOXBkTHJ3TTczVDgzb2RjWkU?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.620875Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBQUHF5WG5ISWJzM0NoOGlydGJNYkwxQ21kak85b0U3ZVNlOC02R0QxQlFYblBLb3hCUThtVldYck9yZ3RBUTdjRmZHaF9JRjQ2aXc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.622378Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQREtGN1F4aUQ3eUtxN2JZWXFvUUhVSWptTVhGQkw1eWdCWEthM1A5dHk5M1RtQlpYZlBOVHBDTm5scFpMb0pmM1p0V0QyM3FtaUVVWWttNmxNVTE0MHE1MjVVM3JSTUE0T0hwZmpVaWdzLUhWNG1INzByR3A4WjhDbnpYdlIycTd3VjAwcDJTSFluajV3Zml1OWFWQTBaMnlwSWtnMlNCcHp4VEV5?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.624606Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQcGJzTkltYjRvMmlEYjN5NVJSLUxieU9JZ3V1NUNKUktGaUZndk5Ja3lFclh6RGhxS3dCXzlGWEZ1ZjZkZXZQZTdHN3BQWlMweFpEeExOeWRXMGx5ZlI3b3M5TEhESkQ3U3RBaV90a00ycEtFa2hpcmhUTFJoWjBET3VoNm1FZmFHcUxENE1kbUdSQmpNRmR0NVB3eU1oOUt1dTJIMWxkV3M4Z19ESklpQi1HV3BwUzlmenhuRXBGbkw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.636657Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPdTY2TWttMzZ2MldSX1RWSmRVU0F3Z3VBV252ZXNrZTNhQzg5Nm43ZHhlU2t0Rk10cHNWMWxmVUo4dWNLaGJKSU5hSHo4LTFDcExyWVkxZ1ZtaG5SXzNkVjdDTW1ucTdwWW15aTVkTnJPZzg1QVdnbEw5bkU5R2ROM2lrUGpmTHZWNi14ZkVpWVZYYnY4NWRMaFNDVjNkZ0JpUHBkUEFZX1RyU01zWTNXUXpIajdOTFZ6UjBPclhCdEhmU1V5UGpz?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.640756Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPOTRoVk5HTGhncUVhdUp1cTcwOWVVQTc5OV9GcFZCcTV4OC1FM1lBcmFXcTVwdHlOTkgxV3F0THFaSTE3c25oT1hTbkF2TU5fWEtzemJPcHhXeVZwVk9BR2NsZ0EzajQwTE5WS1A2SHMwM0NPMFExYjM5ajRxUFFjUDlCenA3cmZ3cDVKeTBiWVpkMEJOQXVWV0w5cmFjd1JLT2xCS1o0YklaNU1BcUQycnJrV2lRUTUxSUE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.644559Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxORGVVQ1Zab2NWeXFjWFNqT0tIVVo2alVwOG50RjBxVk1BRXZCWWxWMXE0Uk1NLUZVSkZLWS11dVExNzFMTTNzNFh0TmlTQzd2Qm5mNmpfNUdrMWJTSkgxeHllRTBlMGJ0Y0MtYTN5Tm1lWDlfNmM1RWtKNXNQTE1qMzBEWGtzZUtSWExMRWpBUzFKV3lyY3ZUNGVCQzRRTTJvc0taNWNhWjd6dUdHdWZRanRSdDJPSHFNRFk4Z2h2QmVtQW81MEtOb3VQWW1aYkk?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.655500Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBRb19mZHg5T1o5T1pqV1NBQ3NMd3RPLUUtclZYT2tvU0NEMFUwblV3Tm42MjJPaU5JUElTMUJiTERtdkhFdlNPVEhOQkNpWk3SAUtBVV95cUxNS1MzLUlZOEdXUW9pdUlUSEt3WU1QNnJDN0RWZWNGOXJkeFo5WW9XNE9sUm9kX2VzVm9USFVPV1hRam1ZUUtBZ2dBbHc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.666989Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiSEFVX3lxTE9acDZhdURVdFFRcEZtWFlTc1VpOEVDcTcyYXR0WWowQzg0NW1icDVuQ2ZvcDhPNm5JdlJKYTkwc2pFemFOXzZQTQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.669104Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1hZEo4RDN0OTk4UElTM0FzOUxrRnAycEFUZ2xEZmRDazlUeGhLbFJ1WTI1MHhFdXl6cUVSUEk0djl4UFlpMjU3ZUZ4a2VUQdIBU0FVX3lxTE5wTHRzWXBaeWZnLWFycmNQWktEZUhoajFkV2huQXQ1eDRFcTJBamRXVERCbVBmNHZ2NkxtS1dvWkFEbE9LdkJnMUQwUGVjbS1XQ1Y0?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.672716Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFA3NXp3SFBsd0tQMUNWN200ODE3Q1pqVWFYbFhxYUk1STR3MFpLRFRsNWwyZkhKQW15VnBZbDVrZTVJblVKUm5rblZ3a1o5SENxNkJscXdB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.687050Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQSEVPQ0RjVE5WWTBnZklRNVNSbHNOdUo4cVBIWUFQSUFycWI3RjV4NGU0YnRKcV9nVEZtYkJIYzR1MFZ5TXBBS0czQkhfSjBCdDEyM3Y5UjFKdFVZMzdNUTBWOXVCNktlaXUxSmVwVjZCdzdEcjQwb0JpUm9TWmpMMDc4ZDRKLXFYTVZhdHdCaEFrZmczZS1PQTR3dy1BVzM4TnR1V2RxYW92SGxVV3ItWHR2Y1c2RHk1SnpVU2JFWTdrZDY5OVpzZVRubElLNnRD?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.700846Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE4zTHJqMnZKUXY2amdDdUdoZlVScTNFMHItUXVScjJILUVOd1NrT3FXUVlCMFpwS0V4OG52YmlWV18zTmd2dVZJX2JpTGQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.707706Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE4wX2FCTWZwSDRJMXNneHJaMGE5dGdHWUhOVEw2eExCa1g0dk9PZGxCeVMxOUhzYUxiaUc1ZG9QdkxUNmhzUWh1SlZ1SS1BV2NoQzFCX0JNSVV1Q3BrdjNKVlRyLWgyY3V0NzI1aWNPV1NjNHhIcEVYWXVfNkJNMXM?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.724055Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE02eXFfN2txT1g1S2RLOXZDOVVMS1JkUkFITEY5ejg0ckNTY2pxdlNXd1drS0NLbUxrdWRUTDBmQTg0enlIVl80Qm0yVzZHM0I2REluNEdvdWU1YXdablE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.732903Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOYXg2bFFYNXQtbjluZGpUQ3Bwam5nR1hEX1ZUMkNXc1BvY0NKMkU2SFg0Vk5jYTE5ek1HMFVBQzJQTHVDUWRLSk0zZGJ5Y1ZGR1d2MmhVT0ctZFMwRmZmM3ZoOVJyWkFPMnJ1Q1k3NTFPR0dLZUdnUVBhVzVpVXQxTE5hbmlzSDcyMG52b1hCRGROckJGQ0JvdUtOaW9qeVU?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.734442Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNeTREUlQwcVhnMmxlLW8tRzEtUDMzVTB4WTRZVUZLTkc1T2Z4Tm9Mbzk4enF3Si1ZUU12OHQtSGdhTjFBQUN5LTA2eWhzRlVrSDFIMXV4c0xXZW9sSmZJVW9YeFZ1d3pVYVZqc1RVTlNTTEhoSUZBUEtUdlNacFdKS3VEMnV0OUtpQS1jSVh1QzZZRXlBbGUtMFVUM29MMXhfSlg5V2sySHluTE1SZ1ZrdTJudXgwbjJJekc0REhkbWt6Ylk?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.737580Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOUWR4MzhLelV2QUZic3FYZTcyb21CME1vYkU0cGU2ZlhCakV3MHpWSFdwVzVDYVdZWFBVa1ZOX3YtZkh3Mi1XSzY3clhnSGxjVEw0WVVBZzBUVTJERkhWS2lJUF9rNEE4THhyTS1xMkNMdVhydEFGYThtMWdDSk8zZFR5MVVTeFZqa1BIeEhsa2_SAZYBQVVfeXFMUFIxdlJNNVI3VkVHOUtnb0s0YXg4enpiaDVxMUYtU01jQW5WX25DSTZQYm9vTE1rTmxvQlVUNjhWTXNnaVlzRkZnRGhfWklMbXFQaV83ZHdsMEc4dmlBcmVMZjlaXzFTVFc4Z1JhZG5aUDNCV2x4bXFkRDRmZ2FwTHR0TGpaV3VxTWJxeEZGajFlMEhDT1RR?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.753108Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPc2FMTGF2VEdnTjZGYUhFNk1GenJ4QkhhMWd3R0RTbDU2eS1pT3B2UDg2OTd6OHY5QXlHTDZPblplNmJUWmpBWmNrWjhRT3B4ZnU3bDRHMlQ2Vi1JWkR4NVZaTDVZTmNBY1Vhc3d1SU5QSnRkRzdSWWFtOVRERDNhSUh2UEh5UXdJd2JqQVpPM1ZBS01O?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.757772Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQT1NUd3UwV1MxbEV4NjFsQXJNNzk4cU5GeHpqMWVLY2RVZnEwV1Q4NFNhbndXaENSNXkwNlh6eS1QRVN0OUJRaTlBLWRRaU1uRlJwc3J0cmx4MkpMVUctckpCcDFhTi15VFpVRnZOV29ObnhQcWhadS1oNXc3ZjlCbjhrbldaYVBsUXRwMjdqMXU1VmUxMVdMcnREdnc3SlI3UFktYjh4ekZaWjRYcjAw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.759792Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE9zNW9vWmhzb2RSb3VVa1RfZFk0RF9IWmVkZEFZeEtSNldOR2xGdkdyVHUtdjFtM3FfWlNzUTl6Znc4czRFR1ZN?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.760797Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPdzVPMFFsUXFGelAwSkpHOXYxVjN0SlJTdDFqUlpmbGV4WWxlS2pLUDVLc3VWMlNSUTk2V1Q4dTY0dE1aU0NGSFFsdENiZFItbmhGTUpNcl90RHhGSnlYdTE4dGs5bkdWTXlySldJLWJkQWljNEwzWGZVamp6anY4YUtmQUVLbnk3LW0xeGcyY3FOZTdoeExoS1oyVDhpem1HWVNMXzFB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.762816Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQRHlVRHFKM1FnTFlsSE1MaXN4ZjZ6Ui1GUUFtZTM5T0R3Wi0yaDl2Ujdmb2dHTGFoRGktZ3lFSVRRa0pRYlNmQ2FBS1RSbV95dDNUZWtiek1QQ1ZYV3VIbnJSbUtWVnJOVUZFRG5ZQlFpeEVfVHhEOWo3eGNfMmhYTWx5TkF6VkFnRzNHWjJlb9IBlAFBVV95cUxOZTlyUy1uRUNiZnJhUmkzQXJrQmVua3J1eDZnd19sZGoxNk9ONGhna2drYmY3dFFseHpnbjk5cEh6ZmJra0pkbTh1Yl9KTXZRaEcxWjNvN3VIcTRUa1p6UUJ1RnkxTE9CSlhHRnYyQ1RsdURVTXo4d3pnZ0k4dm9iTmZGSUtwWEdEX2RuZUkxZ1Bmclc5?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.783615Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE94VmZGSzJLbkFMczNkX3d2bHRONkduV3lfcnY5N25PcXJ0MEZUN0tiZnRYTG1GOXNvQkFOamxQR3BQNGpyMkhEV3o4VzdUSGt20gFWQVVfeXFMTkEyYVRYVjRnVmJzUUdSa0MzZ2VPS1hHWW9nY3RBbjBCWG0xN2w1Y3hiRFl0NFl5bE1Cem5hdk54eGFELVZMems0c1Fab3g5aEdMN2NVbFE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.787479Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNdnhQc0lERXVaemRKQWRUVFFwdU5iaktCMFotRkJ3dFhIZ245NHpuaTk5NTdKTnhVUy1PQ1FVeGJhUkxxUFRaa3FDbU9UODlSeldVb2hycGZJNzYyeWZQOWphRE9WUENuS1h0eS1IR1pxMVlxb3ZRVUZfbmExbzRKUmhsbFJWRjdZUTZSdEhWdWtNUkFoNXdzZGFidUg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.806157Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE5UUGJQN2U5VG9hb1JSdGs5NkhaamVwcW9tREp2Szg4cjRuSGNrVW5HR21wc3VCMmNtQ204TF9fc1F2c0RZNmNV?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.812045Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9QZU1zMFhhTmRnWmpETDRRanlOUmQ5LWV1ZFRBMEJmNW1ndFdHTUpTX1RUWVp5UW9xWnE2RW1pOC0xWm9wRlp6bmdFMkppQQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.823709Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBrSTY1d25fSXZYZE5NNk5DeVZXR3hnczNnd1o2X2JVTEROTXBCTmc2VExUeVl5enR2WU9vUDBfVVd1Ykw1M05ZZjB4MjhRdUFDUVZLbm5Naw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.836817Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE5kVUdST3lzSlBqRV83XzRvTnZ5R1JMSVBzUldNNGh0UDdlX0lQQjJhVUtEcm5XWkNOVWVGRWgyRGEwZ3l1NTVB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.841017Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxONDhFdGlhQ2RTMFVMTzBmX2tzMjdNZUxmRHdkNEd2UnQtaXdiQ0NsN0pveDdPVk1IZmpyeG5EMFJ5R1NWSFloTnJOTUozTjhzZkpadS05ZVVUVWFNRjdSd0J5LW1sSXF4SWtWVXlLYm5zMUJmcFBEQVpYNHdaLVk4V2FvU2o4VzdIZmVNOTdBSVFMbFB3cDlvd1hpNVdUdndRSV9oZk9FN082azBhbWZQWG9STlB4blpxdGhHTk4xQ0FyRFZqNFUzaExETEEyQQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.843999Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5YNnR6RG1EaDZwTnRRaWFlRkR0ajlkU1NpT3VuZzdmNGdkMWcwS3ZkRDNIaUVKTmdReFpxQXJEbC1BeTB5U3FlY2NPZkRPdzg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.847293Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNbUpGTUpYNVpUQm80QlpLb3pmM18wbUgwWU5KaTBhYUlDamcwMlBUWGwxWGdUN281RURtSk1iNWpuUXRfZlRET05XenVtck9saDQ2NEFMSVBBXzE4RDRidWoyWHJjc1pDSUFxY1FzWk5sR3BwQ2laMmNZSGlENjk3WkVySHp5Tk95a3R1SmhtQTgyQU90OVZIeHFhUTdHZw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.852744Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNdVVHUktpeHg3N1ZPR3JzRW16VHcyMEVyUVRqTDgxa0NWOTBRaVhka0tRVGhBTmdzVUllaHdnTnA4SHRKeUFUVmlGLWtYWU1SaUE0bDNMaldTcDVjZGJiVDRkaUFTdVhOTGwwdEpoNGRnbDN6QXJXdHBnOXZ3em5VZm9lUEZiWFhBUy1Xdm1hRENYY2p5VkV4V1dKLXhLeGkxekROT0E0UFhJSVE3eEpKY3hEczlsdEdoVS1pbEd1SWZHTVBIVTFPQWIwd3N6d9IBzAFBVV95cUxNVXZfT3p3UnI4NGRMbXdMZC1sendMVUU5VV9ROHFySEtTUngwVG1BTlhPWG1nVWdVQUZCUkhVaUxONGNNTkVaRlQ4ZERiQjJDd0xjd2YzRU52Q05nRUl5NXZwRUFzWG94Sm13bGxzTFJCVllhUHNxT2g0SlpJSG9xVlo1OWhLdWFSTWNJc01XU1ZYdnF5bnRWY3lKeW1ubmY1a0VtSTBIakEzNmtSdEIyaDh5Q0dmcE5xQzBOdnkxUGdYNkRHLXZISVByQk4?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.856365Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9WVFlIRXE4V0E2N0ZJSkIxVmNtOFU1OHZZSVlYNnlfRFplaVhSNF90R0d0dEE5OXZZYmhmMGlaVFJnRTlZTjJOMmVmMm1BOXplNnZkTktjRXlyRjdtd3hIaGRoeVhvVVdrZ0tUbXNscw?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.860056Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOTGU4c3M3ZldPeGx1Y285S041b0VHX0hFb3JFakdIWlprUnRnT2FvN0tpNlNkOTJ3cHpSYWFOLWNSbUpwU2VWYTdUdTlaM3ZiQXlBY2tZeDRSSVlWTXdyQ0Q5a1g0WklwbWR2VVJWTmpBMjRjSGJnNEg3TjlPcHo3aGdkVndVeVpGRjJWUGY0V1l5S3phZTBjdENuSXc2X0JWNlZyaEVobzNST0hBRDl2bUpRbC1MYkk4ZVB6cE9tV2tvaTg0RkhJRGh30gHMAUFVX3lxTFBqM0p1aFlJd2p2V2NKTlJ1TWM4VEo1QmpCMDdxOV9YVDBEM3Eyb0JqeEd1Y0hHVUtnWmRNdkNHdDQwbEI0MzFTNk1yc09CTXpfbGRUUE1fc1hkakFQd1AzT0JIZGhjTlJYN0FsRVBNOEJkQ3B2N1otYm52cy1mV0hlWlR4WVVYOFh6eGU3LUJWcmZWTlROblRzbElrOFI0VUpJNUd3VXp1ZjNTZmxOT2xVSUxfZk5ISFh6Z2RkaUlJWU1UN3VIdEhsamt4LQ?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.872708Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPcmk2ZnlDdlhSNTl6ZWgtOFFMT1ZpRzAwbF8xZlVMdlh4bDktZEVoTmMzMnA1U05EYUJhbzdNbERza2FXSVdaLVpKanlHYTlzVUlHZTZhcTVNdFVySjU4RThtcXh0WkI1Ni1UVXVuQ1VLcWc3WkpJNWZFYjBvbWxfWW0tNmM2cGRUMVlpUTlhQjJvaXpsVW5DVFlRbjVXWjZqSnhtc3JobGhkd21xX3RteHUyVm81UHFIeUdsVUFieFpqbndWZzlZcE1QMzBtY09xajFB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.874791Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBVaTVtSmFuUkllNzNBcG54R00zX3ZybmFFUlNiejVDV3VWTFRzRDBtM3BOR3FTM01VNTlGNzY0NWNBY0p6SUdVVnU5ZDYxZzVkbjVwOHRiT0J6QTIwNFVOakFmeW1WWWZp?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.881144Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQNU1qa1pUeWFRUVd5d1M4czFsNXMtOTJmSDZyOVBaZUxEbklrNnVFVGhHb3pTQ1NjWTNTaFJHdHVOa3hWazJEQjJpZURjZ2ZvcHRJSVVKbHZ1YnNNT3h6UU5jT1M5MTdydThxU3pkU1lXV3ljbVpmUHJZRndqWGpxRXBSTTVpR3hkMm1Ic2JuczVkMU9mS1VmQXFqOVBwSzVEdjk3WUE5MTdnVmt5ck90WmlJWEpnWmdHbzdKaHFRdFBTUEQwZ3hLWkI2TkLSAVBBVV95cUxPOEJiZG9iM2VBbTVnSEgxdmVaMkJKMThsLXFpbkhvd3E4aGxsTXd0b19wdUV5NDJ4YUdkbEk5bVJnSHAxRm1nWGQ5UXotb1E4dg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.902939Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQRzBaSmNVM29zMzRjSjdMMGd2UngzdVNtTmdTRHhCMmVJc2tXY1VQbmxiS2JqQjlpWE9kMlhNOXJGSmJBTGtMM1dlNmxwM3Zld2NIMUlGTEs5N2JyZkxkVlMtN0xMUWhDR3RKY1NQTnlOeGdPSjgxcTd1UG1rUVhxbWE2TEd2YXRlLW9fdmdmM1JRRDQ3TWwtcUNLUlVyU3NHRmc?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.918420Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1GdVFMRjVUVXdCSHRTSlA0UzBXMkphdmhoMXRPZjJNZGN3OG9CRWN3cXduMDZ6cVZYRDQ2Q1MtYXZ3ZkFSbWtZRC1Dc0t1R0RQazQ3OWd5bThfLVExWnpSNW5LYkExZmI2SlE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.933736Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQM2pweUc3Q0Z1QkZGQTBmTzE4cjQ4MUs0ZEZoVWg1STlvZS1kY2Z4Z0c1c1pCRmFnbTFkWmdIOGZxRV9wX0Z4M1VqZ3p6bExYMGdIZTRTWkdUNVBXQ1hlWlVod21JT3lSN3c0Q2ozcEl5V1RWYkh3Y2Q1YXExaTFoWmdaZUpNODV0djlUaElsdUVPVEE0clNJQW5USUl2LS1PalE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.937075Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNelRQbUpic2xlaHB3Tkp0QmFzUVMzYmQ2N1JDQkJQdTJ1MlU3YnRzdWgyWmwzYVVna2ZmS2xEYnEwWk5zNWNYZk84UllJVEU2aFpzM0g2Z3hkWEVIVkZXTV80dVhJeWFrV25SU3FmTFV1UWFNM0RVTTdiOFBtZ3M0RG1mRFVUa0RwTHotRXJYUnFPb3MxLUpKc0VJWjZ3VzRUY3pVd054RHI1ZFFGY2RrVGVJSW1iVW9zalE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.939653Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPS3owalRWSFN0cXhtYUFRdFNMMW1ZM1E0N3N6N3dyN2k3MWMtUmhzdThsTjg0aU1pbzBaY1Y3c1hPMm54OTVnNTlXYlN4M2F2UXJoWXVlbDZNT0Ezb1l1ampxaEhoYnYwTnVwZzA3V0RPUmtsVkd4eXpSQlhmY0s0N1JQd1pxMDJnWHhzdkp4Y0VQY3ZWamMyV2szYi10N0pyYlZwVXdxY2LSAa4BQVVfeXFMT0k2aWszbGFYcGhNU1ZpZGdObmNQQnR0dXZTQWoyQ0pNRzVwRi1ublVfT1M0NDNrQTB1al9JRU1pMF84QzZBbk80QmtNelF3MEZ3RE85Z0FNSWd3ekxwaElRWkZ5OUhQNFUydUQ5aVFNZFI4Q2JFNjBYTHVmc2NKS1RqMlpqYXltYm1SMDI4LURqQ0tFR0FNNjhJeEhsdDlBOFA1SUcyYUs2aW81QTJB?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.960855Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNTW5hX1UzWGJVbVhoY1NCNndsdjJnZzlxQWI0NmlCX2NwelRwYmdDVURxcWtNaUNQS3owaDlQc3Y1UVo1Sm03dm1ucVJIUUpnMnY2dXlndVB0SXhWZ2VtSG9BSm5fUGt3dHc4ZWlRQV94SDNCZnQwS1EtRUZ1LXF4bnJXd3V5aUktd3BzT094SHVfQTlqVVFMendQa21RM2hCVUUtR1pQWGFoaElOUFFYeVVOaWg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.964918Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPTXRnWDhYbnVreGlDa2d2UTRYQmZmNzd1Tzc2eVBoaGpIblUta1JMdnFCVms5SHcwbkNhdzEwYlVfbWViVy1rNjBjanR6MUd1VlphcS14dGxqWE13dGdqcENRa0ZDcHJEQ3NjZzJ6YWNZc05xRzQtV0s2RVNneDNmWHBud0s?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.966926Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQV0RucFBad285cnR2bFJ2VU9tSjBXelpXZjQ2NkduaXVWTGNKYmV5WUQ0aDRGSkFMd0d6MVZqRzFEam9RTnhYcDVFMXFIVVNBc0FIMTVSRlFzNUwwdGdWRGlWREViTHBQRFhQY0xEWDh2TEM1TmhPNW1ZWktOcmdTVjJtVWZKQmQ4SHdXYmg0QmYxREpsZHpN?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.969503Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9xRW93QXRPeGVvNXRqQURHOFAwV3REX0lhcVRQcnBNajFtS3NQdzdVeDZiZEh5dFdITVhaVzQ4NVlNdFBuU1hvNktLTU5aOTjSAVRBVV95cUxNSnRTVDVXdk5vTzJZTGJLLXhyZFZGeWdkRlZ0VDI0VV9JM1N6cXJ3V0pVV0hOd2IyRnBkWWVybzdPMXFZVTV5TmV0RllNaFFqYUpMS2k?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.976114Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOWGFSaVY2bGdMMldndTdPYXQ4SDlfRHMzQkk2ODAxTGtGNGlGeHdDZm9CdzF3a2tQYWU5NWlyaGpacVhCT2FwdEpaUU9kTmtHZHRuSkttRURXUzQzdnQ2TEc2YnpyOW9mM2VLZkpQWXkwMlRlbkhQQmdLQ2JhTVhudWVBRFNaRDZUaEQ1VGtoTHVtTnlzdFNBLU1wSHNyMUlaYTdRSVpOYWd0VVoxOGttc1NVQmY5cXRobV8yUDlsQdIBxAFBVV95cUxNS2Q0TzlYcXV5T2lUM2hTeTM5OHVrcENRMm8wX2g5ZFlydmtramxvbm90RExQNlpQUnZRbmlYTlFvNDhwQzg3STFrUkloSTFORVhxZ1NHbVRZcUU0bGlVbC1weDNQZmhmWUhYQWxhQ3ZKNXBCQlA5Yy1WajF5UzRmbnY0ZW9xTG1iYlp6OXNmc0FQWEVTMzBZa2lneTBrd2ZyX1BJZmdqc1VpQ3ZPY0o2YUJQU3RacGtka2k4M0ZWb2JzM3li?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.978623Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE9mQWh3M1A0Q2lVX1JLdUlZcWJYZUNYQ1IxNEtVVmw0ZlhHVHYybFpHMGhUNVMyWm5iWEtwaTB3bl80RnlNcUtKNENsNzA5R3p4SEFEb3FKb3Fiazdp0gFiQVVfeXFMTnlMSHJhekpod2R6cGYxV2JoQ20yaXFVZE05Ykd4OS15OF85ZDJocllfRHZvOWcwb0JEajlhVDliRkhCeTBtUGZUNUtSOVFDNDRhU3JkVVgyMzFSUHYzQ2lIWEE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.979699Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQRHBNLUQ3REhOak9vTnhzeHJxaDh6ZHk3eUNNeE9OYmNydEUtdjd3Qk5KOWxJc2lOLWJzcElvczZvTzdXWlFzSDdkRm5mQWJxVll2SGs1ODRvd3lCSllVQldubFpCME9MZDVyVUZ1LV9rWjRRQ2l6bm8tQmgzaTgwaVVIaWVzSDQxdWtVUkxKc2taZllsZUxQTg?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.983403Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBNdHNZSTJ1Y3VWY2diaDdKZ0VrM2tROUtpMVpOODV5bmRGMnoyZDZUY1gwX1hFSWZUSEF5cExkcjlwWVNqMVNGeWtSWUROVG1DVmpBRENLV3VaZ0Vp?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.985471Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQLVNVT2tReFNqTjVkM0FudXplbG52QTBSQjNBQVBLNHBTeVctM2d5T1ktNDdyVTJnallBWHhWaTZEOFVzT0R3OVdMemVWWDhuSWhLaDdvXzhkSkp4M0RnUElKM3lJamJhOUozaFB1UFRsU1ZNazVaZDlENmN2T0tBWmFzZkp5MVlvc29Ca0oxRl9FUFZYMDlPTFh2VUZvbXNlamg5TGxJRmt0UVk4ZXlRUHRyNmF4LVNDWkE?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.991044Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://news.google.com/rss/articles/CBMiwgJBVV95cUxOTEhzWWR3OGowMW5YeEdfTFRtZ1llbGZWNTFEMDR5ZFlHOXZ3YVVFWkNqTXR6UDVZUG9JWWN0Rm9mcW0wc0pZSWRTNEVfZGFFTTJZeEhGSW04NXY4WENLZlMwQVN4cTFfYUJELWZGalJ0TE96enk1Y2tyOWJtTDVrUjVsQ0dWeGdzNEUybkFFa0dYMHR2U2xpUUw4REJuMURTRFB0eElHeWZZOXA3OFdEWmJYWGh4UWVIbzhuamthTDdQZ1MyamxKN0FGcnFCLU80X0RQbm8wak5mcUFYb2NZU0xPYXBJUVpWYVFQeXlXSXRTVG9mYUtkNzJKSkw1NWZNWTJVaTc5Q2pYNnRScFNnMUNMUWRQeXdLb3pWbkFBTkFRb2FtRHp3QTl3ZllKbFgyMmJ5ajJJZXFxN215OU8tLWp3?oc=5", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:46.999931Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068638", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.002946Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068636", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.005459Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068635", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.006515Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068633", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.008525Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068634", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.009530Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068631", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.010828Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068632", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.012878Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068630", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.015574Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068616", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.017584Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068627", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.019604Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068629", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.020607Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068626", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.022682Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068613", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.024766Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068625", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.025774Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068623", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.026878Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068624", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.029426Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068621", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.031475Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068622", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.032479Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068620", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.034500Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068619", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.036528Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068618", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.037542Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068617", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.039045Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068615", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.041048Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068610", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.042588Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068614", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.044408Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068608", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.045983Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068611", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.047049Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068503", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.049101Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068609", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.051112Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068403", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.052117Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068605", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.054100Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068604", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.055670Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068594", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.056677Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068600", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.058688Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068597", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.059722Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068606", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.062274Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068564", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.064332Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068603", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.066416Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1053068591", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.068429Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068573", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.069434Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068601", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.070438Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068602", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.072573Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068551", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.074081Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068584", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.076097Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068599", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.077650Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068595", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.080174Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068588", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.082529Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068598", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.083533Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068592", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.085551Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068553", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.087021Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068593", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.088524Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068452", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.089596Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068589", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.091100Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068567", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.093811Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068587", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.095837Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068580", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.098031Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068583", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.100062Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068586", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.102137Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068585", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.104129Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068544", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.105700Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068579", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.106707Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068582", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.108784Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068581", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.110364Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068565", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.112728Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068578", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.114745Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068569", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.116776Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068577", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.118788Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068572", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.119871Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068560", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.121877Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068575", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.123466Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068570", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.125280Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068574", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.126283Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068563", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.128288Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068568", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.130539Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068530", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.131963Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068566", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.133979Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068490", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.135993Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068522", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.136998Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068558", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.139001Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068562", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.141019Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068561", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.142620Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068559", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.144183Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068557", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.145467Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068549", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.147480Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068554", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.149574Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068552", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.150593Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068533", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.152653Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068454", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.154782Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068476", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.156297Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068548", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.157301Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068517", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.159308Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068531", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.160322Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068538", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.162342Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068547", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.164348Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068543", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.166526Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068541", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.168534Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068540", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.170169Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068542", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.172177Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068539", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.172780Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068536", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.175298Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068534", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.176301Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068537", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.178303Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068535", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.180326Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068532", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.182579Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068491", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.183660Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068527", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.186249Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068516", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.187261Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068519", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.188764Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068528", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.190829Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068529", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.192412Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068524", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.193425Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068526", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.195534Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068513", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.197821Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068512", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.199523Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068523", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.201444Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068525", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.202455Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068518", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.204463Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068494", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.206482Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068521", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.207487Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068520", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.209494Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068515", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.210508Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068509", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.212519Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068514", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.214539Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068500", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.215696Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068390", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.217265Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068507", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.219279Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068511", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.220283Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068505", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.222338Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068510", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.223448Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068343", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.225527Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068506", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.226531Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068508", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.228537Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068416", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.230738Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068504", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.231744Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068495", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.234320Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068502", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.235327Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068497", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.237340Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068501", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.238846Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068496", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.240933Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068498", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.242892Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068499", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.243472Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068359", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.245587Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068445", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.247835Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068400", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.250407Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068448", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.252415Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068493", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.254417Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068488", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.255993Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068320", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.258003Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068480", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.259009Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068486", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.261017Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/news/1053068482", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.262020Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1036290634", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.266007Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1036290635", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.268018Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1053068211", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.269026Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1036288235", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.271049Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1053065728", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.272605Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1053067500", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.274113Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://ura.news/articles/1053066790", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.276130Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/society/governor/2026/02/135227/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.298878Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/society/governor/2026/02/135223/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.301006Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/society/governor/2026/02/135218/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.303029Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/infrastructure-and-construction/communal-services/2026/02/135212/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.304029Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/culture-and-sports/sport/2026/02/135209/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.306970Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/culture-and-sports/volleyball/2026/02/135204/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.307973Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/society/social-politics/2026/02/135195/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.309989Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/society/governor/2026/02/135196/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.311572Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/society/social-politics/2026/02/135180/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.312917Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://oblgazeta.ru/culture-and-sports/hockey/2026/02/135190/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.315984Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/mayor/themes/14199050/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.317997Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/news/item/166020073/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.320004Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/news/item/166019073/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.321021Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/news/item/165983073/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.322512Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/news/item/166016073/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.324599Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/news/item/166013073/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.326150Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/news/item/166011073/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.327160Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/mayor/themes/14198050/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.328664Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/afisha/event/386750257/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.330727Z"}
+{"error": "can't subtract offset-naive and offset-aware datetimes", "url": "https://www.mos.ru/afisha/event/386749257/", "event": "item_processing_error_pre", "level": "error", "timestamp": "2026-02-12T19:15:47.333231Z"}
+{"new_items": 0, "raw_items": 956, "event": "dedup_complete", "level": "info", "timestamp": "2026-02-12T19:15:47.333231Z"}
+{"new_items": 0, "signals": 0, "event": "processing_complete", "level": "info", "timestamp": "2026-02-12T19:15:47.333231Z"}
+Update id=441558282 is not handled. Duration 52875 ms by bot id=7709887569
+Cause exception while process update id=441558282 by bot id=7709887569
+TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 320, in _process_update
+    response = await self.feed_update(bot, update, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 164, in feed_update
+    response = await self.update.wrap_outer_middleware(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\error.py", line 27, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\middlewares\user_context.py", line 58, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\fsm\middleware.py", line 43, in __call__
+    return await handler(event, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\dispatcher.py", line 283, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 189, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 161, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 153, in _wrapped
+    return await self._propagate_event(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\router.py", line 181, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\telegram.py", line 126, in trigger
+    return await wrapped_inner(event, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\dispatcher\event\handler.py", line 71, in call
+    return await wrapped()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 139, in handle_ui_callback
+    "⏳ Загрузка RSS → дедупликация → фильтры → LLM...\n"
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\Desktop\Project\ui_callbacks.py", line 68, in edit_panel
+    try:
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\methods\base.py", line 82, in emit
+    return await bot(self)
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\bot.py", line 484, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 259, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\aiohttp.py", line 177, in make_request
+    response = self.check_response(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiogram\client\session\base.py", line 121, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: query is too old and response timeout expired or query ID is invalid
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:15:54.123222Z"}
+Update id=441558283 is handled. Duration 234 ms by bot id=7709887569
+{"screen": "stats", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:15:56.550506Z"}
+Update id=441558284 is handled. Duration 515 ms by bot id=7709887569
+{"screen": "stats", "action": "period", "param": "7d", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:16:01.384675Z"}
+Update id=441558285 is handled. Duration 219 ms by bot id=7709887569
+{"screen": "stats", "action": "period", "param": "24h", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:16:04.014588Z"}
+Update id=441558286 is handled. Duration 328 ms by bot id=7709887569
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:16:06.111965Z"}
+Update id=441558287 is handled. Duration 202 ms by bot id=7709887569
+{"screen": "about", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:16:08.702748Z"}
+Update id=441558288 is handled. Duration 219 ms by bot id=7709887569
+{"screen": "menu", "action": "open", "param": "", "admin": true, "user_id": 5413256595, "event": "ui_callback", "level": "info", "timestamp": "2026-02-12T19:16:18.084714Z"}
+Update id=441558289 is handled. Duration 218 ms by bot id=7709887569

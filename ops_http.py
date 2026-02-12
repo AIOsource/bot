@@ -4,6 +4,9 @@ from typing import Any
 from aiohttp import web
 from llm_monitor import CircuitBreaker, LLMUsageRepository
 from db_pkg import get_session, SourceHealthRepository
+from logging_setup import get_logger
+
+logger = get_logger("ops.http")
 
 class OpsServer:
     """Simple health check server."""
@@ -23,7 +26,7 @@ class OpsServer:
         await self.runner.setup()
         self.site = web.TCPSite(self.runner, self.host, self.port)
         await self.site.start()
-        print(f"Ops Server running on http://{self.host}:{self.port}")
+        logger.info("ops_server_started", host=self.host, port=self.port)
 
     async def stop(self):
         """Stop the server."""

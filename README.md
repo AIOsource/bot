@@ -100,6 +100,42 @@ Sources → Fetch → Normalize → Dedup → Filter1 → LLM → Decision → S
 pytest tests/ -v
 ```
 
+## Production Deployment
+
+### Docker Compose (Recommended)
+
+1. **Prepare Environment**:
+   ```bash
+   cp .env.example .env
+   # Set secure passwords and API keys
+   ```
+
+2. **Build and Run**:
+   ```bash
+   docker-compose build
+   docker-compose up -d
+   ```
+
+3. **Verify Health**:
+   ```bash
+   curl http://localhost:8080/health
+   # Returns: {"status": "OK", "details": {...}}
+   ```
+
+### Security Notes
+
+- **Non-root user**: Container runs as `appuser`.
+- **Healthcheck**: Configured in `docker-compose.yml` via `curl`.
+- **Logs**: JSON formatted for Splunk/ELK.
+
+## Testing
+
+Run offline tests (mocks only):
+
+```bash
+docker-compose run --rm prsbot pytest tests/ -v
+```
+
 ## License
 
 Private/Internal use only.

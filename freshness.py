@@ -22,7 +22,7 @@ class FreshnessResult:
 def check_freshness(
     published_at: Optional[datetime],
     collected_at: datetime,
-    max_age_days: int = 21,
+    max_age_days: int = 2,
     allow_missing_published_at: bool = True,
     fallback_to_collected_at: bool = True,
     trace_id: str = ""
@@ -73,7 +73,10 @@ def check_freshness(
         # Fallback: assume it's fresh if we can't determine
         return FreshnessResult(passed=True, decision_code="PASSED", age_days=0)
     
-    # Calculate age
+    # Calculate age — strip timezone to avoid naive/aware mismatch
+    # RSS feeds return tz-aware dates, but we use naive UTC internally
+    if check_date.tzinfo is not None:
+        check_date = check_date.replace(tzinfo=None)
     age = now - check_date
     age_days = age.total_seconds() / 86400
     

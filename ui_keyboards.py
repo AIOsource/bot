@@ -1,256 +1,323 @@
-"""Keyboards for UI specific interactions."""
+"""Keyboards for UI — per UI spec."""
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-def cb(screen: str, action: str = "nav", param: str = "", page: int = 0) -> str:
+def cb(screen: str, action: str = "open", param: str = "", page: int = 0) -> str:
     """Build callback data string."""
     return f"ui1:{screen}:{action}:{param}:{page}"
 
 
-def nav_row(back_to: str = "admin") -> list[InlineKeyboardButton]:
-    """Standard navigation row: Home | Refresh | Back."""
+def nav_row(back_to: str = "menu") -> list[InlineKeyboardButton]:
+    """Standard back row."""
     return [
-        InlineKeyboardButton(text="🏠 Домой", callback_data=cb("main")),
-        InlineKeyboardButton(text="↻ Обновить", callback_data=cb("refresh")), # handled generally or contextually
-        InlineKeyboardButton(text="↩️ Назад", callback_data=cb(back_to))
+        InlineKeyboardButton(text="⬅ Назад", callback_data=cb(back_to))
     ]
 
 
+# ──────────────────────────────────────
+# PUBLIC MENU
+# ──────────────────────────────────────
+
 def main_menu_kb(is_admin: bool = False) -> InlineKeyboardMarkup:
-    """Main menu keyboard."""
+    """Main menu — одинаковый layout, админ-ряд только для админов."""
     buttons = [
         [
-            InlineKeyboardButton(text="❤️ Проверка", callback_data=cb("health")),
+            InlineKeyboardButton(text="✅ Проверить", callback_data=cb("check")),
             InlineKeyboardButton(text="📊 Статистика", callback_data=cb("stats")),
         ],
         [
             InlineKeyboardButton(text="⚙️ Настройки", callback_data=cb("settings")),
-            InlineKeyboardButton(text="ℹ️ О боте", callback_data=cb("about")),
-        ]
+            InlineKeyboardButton(text="ℹ️ Об авторе", callback_data=cb("about")),
+        ],
     ]
-    
     if is_admin:
         buttons.append([
-            InlineKeyboardButton(text="🔐 Админка", callback_data=cb("admin"))
+            InlineKeyboardButton(text="🔐 Админка", callback_data=cb("admin")),
+            InlineKeyboardButton(text="🧠 LLM Center", callback_data=cb("llm")),
         ])
-    
-    # Refresh button for main menu (no back button needed here)
-    buttons.append([InlineKeyboardButton(text="↻ Обновить", callback_data=cb("refresh"))])
-        
+    buttons.append([
+        InlineKeyboardButton(text="✖ Закрыть", callback_data=cb("close"))
+    ])
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
-def health_kb() -> InlineKeyboardMarkup:
-    """Health check actions."""
-    buttons = [
-        [InlineKeyboardButton(text="🔄 Проверить снова", callback_data=cb("health", "refresh"))],
-        [InlineKeyboardButton(text="🏠 На главную", callback_data=cb("main"))]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+# ──────────────────────────────────────
+# CHECK (Public Health)
+# ──────────────────────────────────────
+
+def check_kb() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔍 Запустить проверку", callback_data=cb("check", "run"))],
+        [InlineKeyboardButton(text="↻ Обновить статус", callback_data=cb("check", "refresh"))],
+        nav_row("menu"),
+    ])
 
 
-def stats_kb() -> InlineKeyboardMarkup:
-    """Stats actions."""
-    buttons = [
-        [InlineKeyboardButton(text="📋 Источники", callback_data=cb("stats_sources"))],
-        [InlineKeyboardButton(text="🏠 На главную", callback_data=cb("main"))]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+# ──────────────────────────────────────
+# STATS
+# ──────────────────────────────────────
 
-
-def settings_kb(current_tz: str) -> InlineKeyboardMarkup:
-    """Settings actions."""
-    buttons = [
+def stats_kb(period: str = "24h") -> InlineKeyboardMarkup:
+    periods = [("24ч", "24h"), ("7д", "7d")]
+    period_btns = []
+    for label, p in periods:
+        marker = "▪️" if p == period else "▫️"
+        period_btns.append(
+            InlineKeyboardButton(text=f"{marker} {label}", callback_data=cb("stats", "period", p))
+        )
+    return InlineKeyboardMarkup(inline_keyboard=[
+        period_btns,
         [
-            InlineKeyboardButton(text="🕑 Часовой пояс", callback_data=cb("settings", "tz")),
-            InlineKeyboardButton(text="🇷🇺 Язык (RU)", callback_data="noop"),
+            InlineKeyboardButton(text="Топ источники", callback_data=cb("stats", "top_sources")),
+            InlineKeyboardButton(text="По регионам", callback_data=cb("stats", "regions")),
         ],
-        [InlineKeyboardButton(text="🏠 На главную", callback_data=cb("main"))]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+        nav_row("menu"),
+    ])
 
+
+# ──────────────────────────────────────
+# SETTINGS  (public, per-user)
+# ──────────────────────────────────────
+
+def settings_kb() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="🌐 Язык", callback_data=cb("settings", "lang")),
+            InlineKeyboardButton(text="🕑 Время (TZ)", callback_data=cb("settings", "tz")),
+        ],
+        [
+            InlineKeyboardButton(text="📋 Вид /status", callback_data=cb("settings", "status_view")),
+            InlineKeyboardButton(text="📨 /last по умолч.", callback_data=cb("settings", "last_default")),
+        ],
+        nav_row("menu"),
+    ])
+
+
+def settings_lang_kb(current: str = "ru") -> InlineKeyboardMarkup:
+    ru_mark = " ✅" if current == "ru" else ""
+    en_mark = " ✅" if current == "en" else ""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text=f"RU{ru_mark}", callback_data=cb("settings", "set_lang", "ru")),
+            InlineKeyboardButton(text=f"EN{en_mark}", callback_data=cb("settings", "set_lang", "en")),
+        ],
+        nav_row("settings"),
+    ])
+
+
+def settings_tz_kb(current: str = "msk") -> InlineKeyboardMarkup:
+    msk_mark = " ✅" if current == "msk" else ""
+    utc_mark = " ✅" if current == "utc" else ""
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text=f"MSK{msk_mark}", callback_data=cb("settings", "set_tz", "msk")),
+            InlineKeyboardButton(text=f"UTC{utc_mark}", callback_data=cb("settings", "set_tz", "utc")),
+        ],
+        [InlineKeyboardButton(text="Показать текущее время", callback_data=cb("settings", "tz_now"))],
+        nav_row("settings"),
+    ])
+
+
+def settings_last_kb(n: int = 5) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="➖", callback_data=cb("settings", "last_minus")),
+            InlineKeyboardButton(text=f"/last = {n}", callback_data="noop"),
+            InlineKeyboardButton(text="➕", callback_data=cb("settings", "last_plus")),
+        ],
+        [InlineKeyboardButton(text="Сброс", callback_data=cb("settings", "last_reset"))],
+        nav_row("settings"),
+    ])
+
+
+# ──────────────────────────────────────
+# ABOUT
+# ──────────────────────────────────────
 
 def about_kb() -> InlineKeyboardMarkup:
-    """About actions."""
-    buttons = [
-        [InlineKeyboardButton(text="🏠 На главную", callback_data=cb("main"))]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+    return InlineKeyboardMarkup(inline_keyboard=[
+        nav_row("menu"),
+        [InlineKeyboardButton(text="✖ Закрыть", callback_data=cb("close"))],
+    ])
 
 
-# === ADMIN UI ===
+# ──────────────────────────────────────
+# ADMIN
+# ──────────────────────────────────────
 
 def admin_menu_kb() -> InlineKeyboardMarkup:
-    """Admin main menu."""
-    buttons = [
-        [
-            InlineKeyboardButton(text="🚦 Управление (Control)", callback_data=cb("control")),
-            InlineKeyboardButton(text="🧩 Источники (Sources)", callback_data=cb("sources")),
-        ],
-        [
-            InlineKeyboardButton(text="🧠 LLM Center", callback_data=cb("llm")),
-            InlineKeyboardButton(text="🧮 Фильтры (Filters)", callback_data=cb("filters")),
-        ],
-        [
-            InlineKeyboardButton(text="📊 Диагностика (Diag)", callback_data=cb("diag")),
-            InlineKeyboardButton(text="🚥 Лимиты (Ranking)", callback_data=cb("ranking")),
-        ],
-        [InlineKeyboardButton(text="📝 Reports (Not imp.)", callback_data=cb("reports"))],
-        [InlineKeyboardButton(text="🏠 В главное меню", callback_data=cb("main"))]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
-
-
-def sources_kb(sources: list, page: int, total_pages: int) -> InlineKeyboardMarkup:
-    """Sources list with pagination and toggles."""
-    buttons = []
-    
-    # Toggle buttons
-    for s in sources:
-        status_icon = "🟢" if s.is_enabled else "🔴"
-        # Action: toggle source
-        btn = InlineKeyboardButton(
-            text=f"{status_icon} {s.name[:20]}",
-            callback_data=cb("sources", "toggle", s.type, page) # Pass type correctly or unique ID
-        )
-        buttons.append([btn])
-        
-    # Pagination
-    nav = []
-    if page > 0:
-        nav.append(InlineKeyboardButton(text="⬅️", callback_data=cb("sources", "nav", "", page - 1)))
-    nav.append(InlineKeyboardButton(text=f"Стр {page+1}/{total_pages}", callback_data="noop"))
-    if page < total_pages - 1:
-        nav.append(InlineKeyboardButton(text="➡️", callback_data=cb("sources", "nav", "", page + 1)))
-    buttons.append(nav)
-    
-    # Reset health stats
-    buttons.append([
-        InlineKeyboardButton(text="🔄 Сброс проверок", callback_data=cb("sources", "reset_checks", "", page))
-    ])
-    
-    # Standard Nav
-    buttons.append(nav_row(back_to="admin"))
-    
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
-
-
-def filters_kb(current_thresholds: dict) -> InlineKeyboardMarkup:
-    """Adjust filter thresholds."""
-    def btn_row(label, key, val, step=0.1):
-        return [
-            InlineKeyboardButton(text=f"{label}: {val}", callback_data="noop"),
-            InlineKeyboardButton(text="➖", callback_data=cb("filters", "dec", key)),
-            InlineKeyboardButton(text="➕", callback_data=cb("filters", "inc", key)),
-        ]
-
-    buttons = []
-    buttons.append(btn_row("Filter1", "filter1", current_thresholds.get("filter1_threshold", 4.0), 0.5))
-    buttons.append(btn_row("Relevance", "relevance", current_thresholds.get("min_relevance", 0.6), 0.05))
-    buttons.append(btn_row("Urgency", "urgency", current_thresholds.get("min_urgency", 3), 1))
-    
-    buttons.append(nav_row(back_to="admin"))
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
-
-
-def ranking_kb(limits: dict) -> InlineKeyboardMarkup:
-    """Adjust ranking/limits."""
-    buttons = [
-        [
-            InlineKeyboardButton(text=f"Max/Day: {limits.get('max_signals_per_day', 5)}", callback_data="noop"),
-            InlineKeyboardButton(text="➖", callback_data=cb("ranking", "dec", "max_day")),
-            InlineKeyboardButton(text="➕", callback_data=cb("ranking", "inc", "max_day")),
-        ],
-        nav_row(back_to="admin")
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
-    
-# Alias for backwards compatibility if needed
-limits_kb = ranking_kb
-
-
-def confirm_kb(action: str, param: str) -> InlineKeyboardMarkup:
-    """Generic confirmation."""
-    buttons = [
-        [
-            InlineKeyboardButton(text="✅ Да", callback_data=cb("confirm", "yes", f"{action}:{param}")),
-            InlineKeyboardButton(text="❌ Нет", callback_data=cb("confirm", "no", f"{action}:{param}")),
-        ]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
-
-
-def close_kb() -> InlineKeyboardMarkup:
-    """Close button only."""
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="❌ Закрыть", callback_data=cb("close"))]
+        [
+            InlineKeyboardButton(text="🚦 Управление", callback_data=cb("admin", "control")),
+            InlineKeyboardButton(text="🧩 Источники", callback_data=cb("admin", "sources")),
+        ],
+        [
+            InlineKeyboardButton(text="🧮 Пороги", callback_data=cb("admin", "thresholds")),
+            InlineKeyboardButton(text="🏁 Лимиты", callback_data=cb("admin", "ranking")),
+        ],
+        [
+            InlineKeyboardButton(text="🧪 Диагностика", callback_data=cb("admin", "diag")),
+            InlineKeyboardButton(text="📝 Отчёты", callback_data=cb("reports")),
+        ],
+        nav_row("menu"),
     ])
 
 
 def control_kb(is_paused: bool) -> InlineKeyboardMarkup:
-    """Control panel actions."""
-    pause_text = "▶️ Resume" if is_paused else "⏸ Pause"
-    pause_action = "resume" if is_paused else "pause"
-    
-    buttons = [
+    toggle_text = "▶️ Резюм" if is_paused else "⏸ Пауза"
+    toggle_action = "toggle_pipeline"
+    return InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text=pause_text, callback_data=cb("control", pause_action)),
-            InlineKeyboardButton(text="⚡ Force Run", callback_data=cb("control", "force_run")),
+            InlineKeyboardButton(text=toggle_text, callback_data=cb("confirm", "ask", toggle_action)),
+            InlineKeyboardButton(text="🔄 Reload config", callback_data=cb("admin", "reload_config")),
         ],
         [
-            InlineKeyboardButton(text="🔄 Reload Config", callback_data=cb("control", "reload")),
-            InlineKeyboardButton(text="📸 Snapshot", callback_data=cb("snapshot", "create")),
+            InlineKeyboardButton(text="🔁 Force run", callback_data=cb("confirm", "ask", "force_run")),
+            InlineKeyboardButton(text="📌 Snapshot", callback_data=cb("snapshot", "create")),
         ],
-        nav_row(back_to="admin")
-    ]
+        nav_row("admin"),
+    ])
+
+
+def sources_kb(sources: list, page: int, total_pages: int = 1) -> InlineKeyboardMarkup:
+    buttons = []
+    for s in sources:
+        if isinstance(s, dict):
+            enabled = s.get("enabled", True)
+            name = s.get("name", "?")[:22]
+            sid = s.get("id", "")
+            fails = s.get("failures", 0)
+        else:
+            enabled = getattr(s, "is_enabled", True)
+            name = getattr(s, "name", "?")[:22]
+            sid = getattr(s, "id", "")
+            fails = getattr(s, "consecutive_failures", 0)
+
+        icon = "🟢" if enabled else "🔴"
+        label = f"{icon} {name}"
+        if fails:
+            label += f" ⚠{fails}"
+        buttons.append([
+            InlineKeyboardButton(text=label, callback_data=cb("admin", "toggle_source", sid, page))
+        ])
+
+    # Pagination
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="◀️", callback_data=cb("admin", "sources_page", "prev", page - 1)))
+    nav.append(InlineKeyboardButton(text=f"{page+1}/{total_pages}", callback_data="noop"))
+    if page < total_pages - 1:
+        nav.append(InlineKeyboardButton(text="▶️", callback_data=cb("admin", "sources_page", "next", page + 1)))
+    if nav:
+        buttons.append(nav)
+
+    buttons.append([
+        InlineKeyboardButton(text="🔄 Reset health", callback_data=cb("admin", "reset_health"))
+    ])
+    buttons.append(nav_row("admin"))
     return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def filters_kb(current_thresholds: dict) -> InlineKeyboardMarkup:
+    def btn_row(label, key, val):
+        return [
+            InlineKeyboardButton(text=f"{label}: {val}", callback_data="noop"),
+            InlineKeyboardButton(text="➖", callback_data=cb("admin", "thresh_dec", key)),
+            InlineKeyboardButton(text="➕", callback_data=cb("admin", "thresh_inc", key)),
+        ]
+    buttons = [
+        btn_row("Filter1", "filter1", current_thresholds.get("filter1_to_llm", 4)),
+        btn_row("Relevance", "relevance", current_thresholds.get("llm_relevance", 0.6)),
+        btn_row("Urgency", "urgency", current_thresholds.get("llm_urgency", 3)),
+    ]
+    buttons.append(nav_row("admin"))
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def ranking_kb(limits: dict) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text=f"Макс/день: {limits.get('max_signals_per_day', 5)}", callback_data="noop"),
+            InlineKeyboardButton(text="➖", callback_data=cb("admin", "limit_dec", "max_day")),
+            InlineKeyboardButton(text="➕", callback_data=cb("admin", "limit_inc", "max_day")),
+        ],
+        nav_row("admin"),
+    ])
+
+limits_kb = ranking_kb
 
 
 def diag_kb() -> InlineKeyboardMarkup:
-    """Diagnostics actions."""
-    buttons = [
+    return InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="🧪 Self-Check", callback_data=cb("diag", "check")),
-            InlineKeyboardButton(text="📜 Error Logs", callback_data=cb("diag", "logs")),
+            InlineKeyboardButton(text="🧪 Самопроверка", callback_data=cb("admin", "selfcheck")),
+            InlineKeyboardButton(text="📜 Журнал ошибок", callback_data=cb("admin", "error_logs")),
         ],
-        nav_row(back_to="admin")
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+        nav_row("admin"),
+    ])
 
 
-def llm_kb(stats: dict) -> InlineKeyboardMarkup:
-    """LLM Center main menu."""
-    buttons = [
+def confirm_kb(action: str, param: str = "") -> InlineKeyboardMarkup:
+    payload = f"{action}:{param}" if param else action
+    return InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="⚙️ Провайдеры", callback_data=cb("llm_provider")),
-            InlineKeyboardButton(text="🔑 API Keys", callback_data=cb("llm_key")),
+            InlineKeyboardButton(text="✅ Подтвердить", callback_data=cb("confirm", "yes", payload)),
+            InlineKeyboardButton(text="❌ Отмена", callback_data=cb("confirm", "no", payload)),
+        ]
+    ])
+
+
+# ──────────────────────────────────────
+# LLM CENTER (Admin only)
+# ──────────────────────────────────────
+
+def llm_kb(stats: dict = None) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="⚙️ Провайдер", callback_data=cb("llm", "provider")),
+            InlineKeyboardButton(text="🤖 Модель", callback_data=cb("llm", "model")),
         ],
-        nav_row(back_to="admin")
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+        [
+            InlineKeyboardButton(text="🔑 Ключ API", callback_data=cb("llm", "key")),
+            InlineKeyboardButton(text="📈 Usage", callback_data=cb("llm", "usage")),
+        ],
+        nav_row("menu"),
+    ])
 
 
-def llm_provider_kb(current: str) -> InlineKeyboardMarkup:
-    """Select LLM provider."""
-    # Mock list
+def llm_provider_kb(current: str = "openrouter") -> InlineKeyboardMarkup:
     providers = ["openrouter", "perplexity", "openai"]
     buttons = []
     for p in providers:
         icon = "✅" if p == current else "⚪"
         buttons.append([
-            InlineKeyboardButton(text=f"{icon} {p}", callback_data=cb("llm_provider", "set", p))
+            InlineKeyboardButton(text=f"{icon} {p}", callback_data=cb("llm", "set_provider", p))
         ])
-    buttons.append(nav_row(back_to="llm"))
+    buttons.append(nav_row("llm"))
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 def llm_key_kb(has_key: bool) -> InlineKeyboardMarkup:
-    """Manage API Keys."""
-    status = "✅ Configured" if has_key else "❌ Missing"
-    buttons = [
-        [InlineKeyboardButton(text=f"Status: {status}", callback_data="noop")],
-        # In real app, we'd have a way to input key or reset
-        [InlineKeyboardButton(text="🔄 Reset Key (Cmd only)", callback_data="noop")],
-        nav_row(back_to="llm")
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+    status = "✅ Подключен" if has_key else "❌ Отсутствует"
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=f"Статус: {status}", callback_data="noop")],
+        [InlineKeyboardButton(text="Ввод: /set_llm_key <KEY>", callback_data="noop")],
+        nav_row("llm"),
+    ])
+
+
+def reports_kb() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="↻ Обновить", callback_data=cb("reports", "refresh"))],
+        nav_row("admin"),
+    ])
+
+
+def close_kb() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="✖ Закрыть", callback_data=cb("close"))]
+    ])
+
+
+# ── Health (kept for backward compat) ──
+health_kb = check_kb

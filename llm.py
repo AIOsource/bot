@@ -47,7 +47,7 @@ class LLMClient:
         trace_id: str = ""
     ) -> tuple[Optional[LLMResponse], Optional[str], Optional[str]]:
         """
-        Analyze news article with Guardrails.
+        Analyze news article with Guardrails and Retries.
         """
         # 1. Budget Guardrail
         try:
@@ -59,11 +59,9 @@ class LLMClient:
         # 2. Circuit Breaker Guardrail
         if CircuitBreaker.is_open():
             logger.warning("llm_circuit_open", trace_id=trace_id)
-            # Try to switch model/provider if strict fallback logic allows
-            # For now, just fail fast to protect system
             return None, None, "CIRCUIT_OPEN"
 
-        prompt = self._build_prompt(title, text, region, source)
+        original_prompt = self._build_prompt(title, text, region, source)
         
         # Try primary model, then fallbacks
         models_to_try = [self.active_model] + [m for m in self.fallback_models if m != self.active_model]
@@ -72,17 +70,43 @@ class LLMClient:
         
         for model in models_to_try:
             self.active_model = model
-            response, raw, error_code = await self._call_provider(model, prompt, trace_id)
             
-            if response:
-                return response, raw, None
+            # Retry loop for this model (primarily for JSON errors)
+            # limit 2 attempts as requested
+            for attempt in range(2):
+                current_prompt = original_prompt
+                
+                # On retry, emphasize JSON requirement
+                if attempt > 0:
+                    current_prompt += "\n\nSYSTEM_NOTE: Previous response was invalid JSON. RETURN ONLY RAW JSON. NO MARKDOWN."
+                
+                response, raw, error_code = await self._call_provider(model, current_prompt, trace_id)
+                
+                if response:
+                    return response, raw, None
+                
+                # If JSON error, we can retry with the same model
+                if error_code == "LLM_INVALID_JSON":
+                    last_error = error_code
+                    logger.warning("llm_json_retry", trace_id=trace_id, model=model, attempt=attempt+1)
+                    continue
+                
+                # If network/rate limit error, stop retrying this model and switch to next model
+                last_error = error_code
+                break
             
-            # If rate limited or error, try next model
-            if error_code in ("LLM_RATE_LIMIT", "LLM_TIMEOUT", "LLM_API_ERROR"):
-                logger.info("llm_fallback_switch", trace_id=trace_id, from_model=model, reason=error_code)
+            # If we reached here, the model failed (either retries exhausted or fatal error)
+            # If rate limited, we definitely want to try next model
+            if last_error in ("LLM_RATE_LIMIT", "LLM_TIMEOUT", "LLM_API_ERROR"):
+                logger.info("llm_fallback_switch", trace_id=trace_id, from_model=model, reason=last_error)
                 continue
                 
-            last_error = error_code
+            # If it was a persistent JSON error even after retry, we might want to try another model too?
+            # User requirement: "Retry at invalid JSON (2 attempts max)" - likely implies per item.
+            # If one model fails JSON 2 times, maybe it's too stupid. Let's try fallback.
+            if last_error == "LLM_INVALID_JSON":
+                 logger.info("llm_fallback_switch_json", trace_id=trace_id, from_model=model)
+                 continue
             
         return None, None, last_error
 

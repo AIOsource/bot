@@ -34,16 +34,16 @@ async def cmd_admin(message: Message):
         "• /health — статус системы\n\n"
         "<b>Источники:</b>\n"
         "• /sources_list — список источников\n"
-        "• /sources_add \u003curl\u003e \u003cname\u003e — добавить\n"
-        "• /sources_remove \u003cname\u003e — удалить\n\n"
+        "• /sources_add {url} {name} — добавить\n"
+        "• /sources_remove {name} — удалить\n\n"
         "<b>Конфигурация:</b>\n"
         "• /config_show — текущие настройки\n"
-        "• /config_set \u003cpath\u003e \u003cvalue\u003e — изменить\n"
+        "• /config_set {path} {value} — изменить\n"
         "• /reload_config — перечитать конфиг\n\n"
         "<b>Тестирование:</b>\n"
         "• /test_signal — тестовый сигнал (только вам)\n\n"
         "<b>Рассылка:</b>\n"
-        "• /broadcast \u003ctext\u003e — разослать всем",
+        "• /broadcast {text} — разослать всем",
         parse_mode="HTML"
     )
 

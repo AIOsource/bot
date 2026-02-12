@@ -67,13 +67,18 @@ async def generate_weekly_report() -> str:
         )
         duplicate_count = duplicates.scalar() or 0
         
-        # Top sources for signals
-        source_counts: Dict[str, int] = Counter()
-        for signal in signals:
-            # Get source from news
-            news = await NewsRepository.get_by_id(session, signal.news_id)
-            if news:
-                source_counts[news.source] += 1
+        # Top sources for signals (single JOIN query instead of N+1)
+        from sqlalchemy import select, func
+        source_query = (
+            select(News.source, func.count(Signal.id).label("cnt"))
+            .join(Signal, Signal.news_id == News.id)
+            .where(Signal.sent_at >= cutoff)
+            .group_by(News.source)
+            .order_by(func.count(Signal.id).desc())
+            .limit(5)
+        )
+        source_result = await session.execute(source_query)
+        source_counts = {row[0]: row[1] for row in source_result.all()}
     
     # Group signals by day
     days_stats: Dict[str, int] = {}
@@ -90,7 +95,7 @@ async def generate_weekly_report() -> str:
     # Format report
     report_lines = [
         "📈 <b>НЕДЕЛЬНЫЙ ОТЧЁТ</b>",
-        f"Период: {(datetime.now() - timedelta(days=7)).strftime('%d.%m')} - {datetime.now().strftime('%d.%m.%Y')}",
+        f"Период: {(datetime.utcnow() - timedelta(days=7)).strftime('%d.%m')} - {datetime.utcnow().strftime('%d.%m.%Y')}",
         "",
         "<b>📊 Воронка обработки:</b>",
         f"• Собрано новостей: {total_count}",
